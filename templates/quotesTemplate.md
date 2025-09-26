@@ -7,8 +7,9 @@ project: ""
 
 ## The quote
 what was said, by whom, timeline
+> [!QUOTE]quote: "ipsum lorem"
 > "The quality of your life depends upon the quality of your thoughts"
- - Marcus Aurelius, 600 BC
+ - {whom} {when}
 
 ---
 ## Where

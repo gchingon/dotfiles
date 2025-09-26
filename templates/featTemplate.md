@@ -1,5 +1,5 @@
 ---
-title: 
+title: {{title}}
 date: 
 excerpt: " "
 collection: feat

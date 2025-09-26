@@ -81,9 +81,9 @@ tvd() {
 }
 
 # ===== Scripts =====
-alias fdm='move2dir'         # Move files matching pattern to dir $RX/fd-move-files-to-dir.sh
-alias fdd='move2excluded'  # Move files excluding a dir $RX/move-files-to-excluded-folder.sh
-alias fdf='findfilepwd'     # Find files in current dir (`fd` = fast find) $RX/find-files-in-dir.sh
+alias fdm='filemgr move'         # Move files matching pattern to dir $RX/fd-move-files-to-dir.sh
+alias fdd='filemgr exclude'  # Move files excluding a dir $RX/move-files-to-excluded-folder.sh
+alias fdf='filemgr find'     # Find files in current dir (`fd` = fast find) $RX/find-files-in-dir.sh
 alias pof='clipops paste' # paste and overwrite file with clipboard contents essentially `pbpaste > $1` $RX/paste-overwrite-to-file.sh
 alias paf='clipops append'    # paste to end of file with clipboard content `pbpaste >> $1` $RX/paste-append-to-file.sh
 alias ctc='clipops copy'  # Copy file contents to clipboard -- hard linked to $RX/copy-file-content-to-clipboard.sh

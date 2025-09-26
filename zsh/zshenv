@@ -26,7 +26,7 @@ export WP="$DX/webpage"
 export WC="$DX/widows-club"
 
 # Tool-specific settings
-export PATH="/opt/homebrew/opt/ruby/bin:$HOME/.cargo/bin:$HOME/.local/bin:$RX:$PATH"  # Add $RX to PATH
+export PATH="/opt/homebrew/opt/ruby/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/Library/Python/3.9/bin:$RX:$PATH"  # Add $RX to PATH
 export FZF_DEFAULT_OPTS='--height=20% --cycle --info=hidden --tabstop=4 --black'
 export CLICOLOR=1
 export EDITOR='nvim'

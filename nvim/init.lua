@@ -1,4 +1,4 @@
--- ~/.config/nvim/init.lua
+-- $HOME/.config/nvim/init.lua
 -- Final, stable, and complete version using vim-plug
 
 vim.g.mapleader = " "
@@ -34,10 +34,12 @@ vim.cmd([[
   Plug 'saghen/blink.cmp', { 'tag': 'v1.*' }
   Plug 'rafamadriz/friendly-snippets'
   Plug 'moyiz/blink-emoji.nvim'
+  Plug 'nvim-lua/plenary.nvim'
   Plug 'Kaiser-Yang/blink-cmp-dictionary'
   Plug 'saghen/blink.compat'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'L3MON4D3/LuaSnip', {'do': 'make install_jsregexp'}
+  Plug 'chomosuke/typst-preview.nvim', {'tag': 'v1.*'}
 
   " Treesitter
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -51,6 +53,10 @@ vim.cmd([[
   Plug 'mfussenegger/nvim-lint'
   Plug 'MeanderingProgrammer/render-markdown.nvim'
   Plug 'folke/flash.nvim'
+
+  " Org ecosystem
+  Plug 'nvim-orgmode/orgmode'
+  Plug 'obsidian-nvim/obsidian.nvim'
 
   call plug#end()
 ]])
@@ -69,10 +75,22 @@ local function setup_plugin(name, config_func)
   end
 end
 
+-- Ensure plenary is available before providers that require it
+pcall(require, "plenary")
+
 -- Load core settings first
-require("core.options")
-require("core.autocmds")
-require("core.keymaps") -- This contains ALL custom leader keymaps
+-- Check if these files exist before requiring them
+local function safe_require(module)
+  local ok, result = pcall(require, module)
+  if not ok then
+    vim.notify("Module not found: " .. module, vim.log.levels.WARN)
+  end
+  return ok, result
+end
+
+safe_require("core.options")
+safe_require("core.autocmds")
+safe_require("core.keymaps") -- This contains ALL custom leader keymaps
 
 -- -----------------------------------
 -- Plugin Configurations
@@ -85,7 +103,26 @@ setup_plugin("mini.pairs", function(p) p.setup({}) end)
 setup_plugin("mini.files",
   function(p) p.setup({ windows = { preview = true, width_focus = 40, width_nofocus = 25, width_preview = 60 } }) end)
 setup_plugin("mini.ai", function(p) p.setup({ n_lines = 500 }) end)
-setup_plugin("mini.surround", function(p) p.setup() end)
+setup_plugin("mini.surround", function(p)
+    p.setup({
+        mappings = {
+            add = "gza",            -- add surrounding: gza + motion/textobject + char(s)
+            delete = "gzd",         -- delete surrounding: gzd + char
+            find = "gzf",           -- find surrounding to the right
+            find_left = "gzF",      -- find surrounding to the left
+            highlight = "gzh",      -- highlight surrounding
+            replace = "gzr",        -- replace surrounding: gzr + target + replacement
+            update_n_lines = "gzn", -- update n_lines
+            add_visual = "s",       -- in VISUAL mode: s to surround the selection
+            suffix_last = "l",
+            suffix_next = "n",
+        },
+        n_lines = 50,
+        respect_selection_type = true,
+        search_method = "cover",
+    })
+end)
+
 setup_plugin("mini.tabline", function(p) p.setup({ show_icons = true }) end)
 setup_plugin("mini.statusline", function(p) p.setup() end)
 
@@ -126,12 +163,20 @@ setup_plugin("mini.hipatterns", function(hipatterns)
   hipatterns.setup({ highlighters = highlighters })
 end)
 
--- which-key.nvim - Load its dedicated config file
-setup_plugin("which-key", function() require("plugins.which-key")() end)
-
 -- LSP
 setup_plugin("lspconfig", function(lspconfig)
-  local capabilities = require("cmp_nvim_lsp").default_capabilities()
+  -- Check if we have blink.cmp or fallback to cmp-nvim-lsp
+  local capabilities
+  local ok_blink, blink = pcall(require, "blink.cmp")
+  if ok_blink then
+    capabilities = blink.get_lsp_capabilities()
+  else
+    local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
+    if ok_cmp then
+      capabilities = cmp_lsp.default_capabilities()
+    end
+  end
+
   local servers = { "lua_ls", "pyright", "bashls", "jsonls", "yamlls", "marksman", "gopls", "tinymist" }
   for _, server_name in ipairs(servers) do
     lspconfig[server_name].setup({ capabilities = capabilities })
@@ -139,32 +184,29 @@ setup_plugin("lspconfig", function(lspconfig)
 end)
 setup_plugin("fidget", function(p) p.setup({}) end)
 
--- Treesitter
 setup_plugin("nvim-treesitter.configs", function(configs)
   configs.setup({
-    ensure_installed = { "lua", "python", "bash", "json", "yaml", "html", "css", "javascript", "typescript", "tsx", "c", "cpp", "rust", "go", "markdown", "markdown_inline" },
+    ensure_installed = {
+      "lua", "python", "bash", "json", "yaml", "html", "css", "javascript", "typescript", "tsx",
+      "c", "cpp", "rust", "go", "markdown", "markdown_inline",
+    },
     sync_install = false,
     auto_install = true,
-    highlight = { enable = true },
+    highlight = {
+      enable = true,
+      -- Disable treesitter for org files, use orgmode's highlighting instead
+      disable = { "org" },
+      additional_vim_regex_highlighting = {},
+    },
     indent = { enable = true },
     autotag = { enable = true },
   })
 end)
 
--- Blink Completion
-setup_plugin("blink-cmp", function(blink_cmp)
-  blink_cmp.setup({
-    keymap = { preset = "default" },
-    snippets = {
-      expand = function(snippet) require("luasnip").lsp_expand(snippet) end,
-      active = function(filter)
-        if filter and filter.direction then return require("luasnip").jumpable(filter.direction) end
-        return require("luasnip").in_snippet()
-      end,
-      jump = function(direction) require("luasnip").jump(direction) end,
-    },
-  })
-end)
+-- Blink Completion (with ";" gate for snippets)
+setup_plugin("plugins.blink-cmp", function(mod) mod.setup() end)
+
+require("core.markdown").setup()
 
 -- Render-Markdown with your full callout config
 setup_plugin("render-markdown", function(rm)
@@ -196,7 +238,7 @@ setup_plugin("render-markdown", function(rm)
   }
   rm.setup({
     bullet = { enabled = true },
-    checkbox = { enabled = true, position = "inline" },
+    checkbox = { enabled = true },
     html = { enabled = true, comment = { conceal = false } },
     heading = { sign = false },
     callout = callout_definitions,
@@ -208,7 +250,85 @@ setup_plugin("gitsigns", function(p) p.setup() end)
 setup_plugin("fzf-lua", function(p) p.setup() end)
 setup_plugin("flash", function(p) p.setup() end)
 setup_plugin("luasnip.loaders.from_vscode", function(p) p.lazy_load() end)
-setup_plugin("lint", function(lint) lint.linters_by_ft = { python = { "flake8" } } end)
+setup_plugin("lint", function(lint)
+  lint.linters_by_ft = { python = { "flake8" } }
+end)
+
+-- Org-mode
+setup_plugin("orgmode", function(orgmode)
+  orgmode.setup({
+    org_agenda_files = { "$HOME/Documents/org/**/*" },
+    org_default_notes_file = "$HOME/Documents/org/inbox.org",
+  })
+end)
+
+-- obsidian.nvim
+setup_plugin("obsidian", function(obsidian)
+  obsidian.setup({
+    workspaces = {
+      {
+        name = "notes",
+        path = "$HOME/Documents/notes",
+      },
+      {
+        name = "novel",
+        path = "$HOME/Documents/widows-club",
+      },
+      {
+        name = "braindump",
+        path = "$HOME/Documents/markdown",
+      },
+    },
+    -- daily_notes = {
+    --   folder = "$HOME/Documents/daily",
+    --   date_format = "%Y-%^b-%d_%a",       -- 2025-SEP-17_Wed
+    -- },
+    completion = {
+      blink = true,
+      min_chars = 2,
+    },
+    new_notes_location = "notes_subdir",
+    legacy_commands = false,     -- Disable deprecated commands
+    note_id_func = function(title)
+      -- Create note IDs from title, removing spaces and special chars
+      local suffix = ""
+      if title ~= nil then
+        suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+      else
+        suffix = tostring(os.time())
+      end
+      return suffix
+    end,
+    -- Configure which workspace should handle daily notes
+    note_frontmatter_func = function(note)
+      local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+      if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+        for k, v in pairs(note.metadata) do
+          out[k] = v
+        end
+      end
+      return out
+    end,
+  })
+end)
+
+-- which-key.nvim - Load its dedicated config AFTER orgmode
+setup_plugin("which-key", function()
+  local ok, which_key_config = pcall(require, "plugins.which-key")
+  if ok and type(which_key_config) == "function" then
+    which_key_config()
+  else
+    -- Fallback basic which-key setup
+    local which_key = require("which-key")
+    which_key.setup()
+  end
+end)
 
 -- Load theme last
-require("core.theme").setup()
+local ok, theme = pcall(require, "themes.init")
+if ok and theme.setup then
+  theme.setup()
+else
+  vim.notify("Theme configuration not found, using default colorscheme", vim.log.levels.WARN)
+  vim.cmd("colorscheme default")
+end

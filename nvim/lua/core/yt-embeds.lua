@@ -1,0 +1,22 @@
+-- core/yt-embeds.lua
+-- Commented backup of YouTube embed/snippet logic; not loaded.
+-- Copy/paste from your reference md.lua as needed in the future.
+
+-- Example scaffold (commented):
+-- local ls = require("luasnip")
+-- local s, t = ls.s, ls.text_node
+-- local function load_youtube_snippets(file_path)
+--     -- read file of pairs (title, url) separated by blank lines
+--     -- generate snippets:
+--     --   ;yt<slug> -> title \n url
+--     --   ;ytmd<slug> -> [title](url)
+--     --   ;ytem<slug> -> {% include embed/youtube.html id='ID' %}
+-- end
+--
+-- return {
+--     setup = function()
+--         -- load_youtube_snippets("~/wherever/your-file.txt")
+--     end,
+-- }
+
+-- Keep this file as a dormant example. Do not require it from init.lua.

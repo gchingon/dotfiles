@@ -2,6 +2,6 @@
 id:
 title:
 tags: []
-created:
+created: {{date}}
 updated: {{date}}Z{{time}}
 ---

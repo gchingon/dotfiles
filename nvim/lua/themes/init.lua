@@ -10,23 +10,22 @@ local colors_json_path = vim.fn.expand("~/.config/colors/colors.json")
 
 -- Map colors.json theme keys to local theme modules
 local slug_to_module = {
-  ["tokyodark-dark"]      = "tokyodark",
-  ["tokyonight-night"]    = "tokyonight",
-  ["material-deep-ocean"] = "material",
-  ["onedark-deep"]        = "onedark",
-  ["eldritch-darker"]     = "eldritch",
-  -- New themes
-  ["nightblossom-default"] = "nightblossom",
-  ["nugotham"]             = "nugotham",
-  ["nightowl"]             = "nightowl",
-  ["neodark-dark"]         = "neodark",
+  ["deepdark"]      = "deepdark",
+  ["eldritch"]      = "eldritch",
+  ["nightowl"]      = "nightowl",
+  ["nightblossom"]  = "niteblossom",
+  ["nugotham"]      = "nugotham",
+  ["tokyodarknite"] = "tokyodarknite",
+  ["vague"]         = "vague",
 }
 
 local function read_file(path)
   local fd = uv.fs_open(path, "r", 438)
   if not fd then return nil end
   local stat = uv.fs_fstat(fd)
-  if not stat then uv.fs_close(fd); return nil end
+  if not stat then
+    uv.fs_close(fd); return nil
+  end
   local data = uv.fs_read(fd, stat.size, 0)
   uv.fs_close(fd)
   return data
@@ -74,11 +73,11 @@ local function build_base_from_colors(slug)
   if not all or not all.themes or not all.themes[slug] then
     return nil, "Theme slug not found in colors.json: " .. tostring(slug)
   end
-  local t = all.themes[slug]
-  local g = t.ghostty or {}
-  local bg  = g.background or "#000000"
-  local fg  = g.foreground or "#ffffff"
-  local c = {}
+  local t  = all.themes[slug]
+  local g  = t.ghostty or {}
+  local bg = g.background or "#000000"
+  local fg = g.foreground or "#ffffff"
+  local c  = {}
   for i = 0, 15 do c[i] = g["color" .. i] or fg end
 
   local bg0 = bg
@@ -96,9 +95,23 @@ local function build_base_from_colors(slug)
     meta = { slug = slug, module = slug_to_module[slug], name = (t.name or slug) },
     ghostty = g,
     base = {
-      bg0 = bg0, bg1 = bg1, bg2 = bg2, bg3 = bg3, bg4 = bg4, bg5 = bg5,
-      fg = fg, red = red, green = green, yellow = yellow, blue = blue, magenta = magenta, cyan = cyan,
-      gray = gray, black = c[0], white = c[15], cursor = g.cursor or blue,
+      bg0 = bg0,
+      bg1 = bg1,
+      bg2 = bg2,
+      bg3 = bg3,
+      bg4 = bg4,
+      bg5 = bg5,
+      fg = fg,
+      red = red,
+      green = green,
+      yellow = yellow,
+      blue = blue,
+      magenta = magenta,
+      cyan = cyan,
+      gray = gray,
+      black = c[0],
+      white = c[15],
+      cursor = g.cursor or blue,
     },
     ansi = c,
     extras = t.palette or {},
@@ -129,8 +142,11 @@ end
 local function apply_highlight_groups(groups)
   local set = vim.api.nvim_set_hl
   for group, spec in pairs(groups) do
-    if spec.link then set(0, group, { link = spec.link, default = false })
-    else set(0, group, spec) end
+    if spec.link then
+      set(0, group, { link = spec.link, default = false })
+    else
+      set(0, group, spec)
+    end
   end
 end
 

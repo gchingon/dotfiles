@@ -1,13 +1,11 @@
 ---
-title: 
-date: 
-excerpt: 
+title: {{title}}
+date: {{date}}
+description: 
 collection: blog
 header:
   teaser: /images/header-single-episode.png
   overlay_image: /images/header-single-episode.png
-  show_overlay_excerpt: false
-  overlay_filter: 0.6
 podcast_image: /images/show-logo.png
 ---
 

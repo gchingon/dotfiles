@@ -1,5 +1,5 @@
 ---
-id: episodeTeplate
+id: episodeTemplate
 tags: []
 area: ""
 header:
