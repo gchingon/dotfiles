@@ -1,0 +1,40 @@
+# ~/.config/zsh/zshrc
+# Main Zsh configuration file
+
+autoload -Uz compinit
+compinit -u
+
+# Initialize completions
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# Source all module files
+for module in "$HOME/.config/zsh/modules"/*.zsh; do
+  source "$module" >/dev/null 2>&1 || echo "Failed to source $module"
+done
+
+# History settings
+HISTSIZE=5000                  # Max history entries in memory
+HISTFILE="$HOME/.zsh_history"  # History file location
+SAVEHIST=$HISTSIZE             # Max history entries to save
+HISTDUP=erase                  # Remove duplicates from history
+HISTORY_IGNORE="mv*|ls*|lt*|ld*|c*|\$*|or|cp*|..*|mtt|source*|bu|brm*|la*"  # Ignore these patterns
+
+# Shell options
+setopt auto_cd               # Cd into directories without typing `cd`
+setopt appendhistory         # Append to history file
+setopt sharehistory          # Share history across sessions
+setopt hist_ignore_space     # Ignore commands starting with space
+setopt hist_ignore_all_dups  # Remove all duplicates
+setopt hist_save_no_dups     # Don’t save duplicates to file
+setopt hist_ignore_dups      # Ignore consecutive duplicates
+setopt hist_find_no_dups     # Don’t show duplicates in search
+
+# Keybindings (vi mode)
+bindkey -v
+bindkey '^[[A' history-search-backward  # Up arrow
+bindkey '^[[B' history-search-forward   # Down arrow
+bindkey '^[w' kill-region               # Alt+w
+
+# export TERM=xterm command ssh "$@"
+
+eval "$(/opt/homebrew/bin/starship init zsh)"

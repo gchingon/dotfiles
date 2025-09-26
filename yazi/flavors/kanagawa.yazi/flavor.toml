@@ -1,0 +1,100 @@
+"$schema" = "https://yazi-rs.github.io/schemas/theme.json"
+
+[mgr]
+cwd = { fg = "#DCD7BA", bg = "#1F1F28" }
+hovered = { fg = "#1F1F28", bg = "#7E9CD8", bold = true }
+preview_hovered = { fg = "#1F1F28", bg = "#7FB4CA", italic = true }
+find_keyword = { fg = "#7FB4CA", bold = true }
+find_position = { fg = "#E6C384" }
+symlink_target = { fg = "#7E9CD8" }
+marker_copied = { fg = "#1F1F28", bg = "#98BB6C" }
+marker_cut = { fg = "#1F1F28", bg = "#C34043" }
+marker_marked = { fg = "#1F1F28", bg = "#957FB8" }
+marker_selected = { fg = "#1F1F28", bg = "#7E9CD8" }
+count_copied = { fg = "#98BB6C" }
+count_cut = { fg = "#C34043" }
+count_selected = { fg = "#7E9CD8" }
+border_symbol = "│"
+border_style = { fg = "#223249" }
+
+[mode]
+normal_main = { fg = "#DCD7BA", bg = "#1F1F28" }
+normal_alt  = { fg = "#DCD7BA", bg = "#223249" }
+select_main = { fg = "#1F1F28", bg = "#7E9CD8", bold = true }
+select_alt  = { fg = "#1F1F28", bg = "#7FB4CA", bold = true }
+unset_main  = { fg = "#C8C093", bg = "#1F1F28", dim = true }
+unset_alt   = { fg = "#C8C093", bg = "#223249", dim = true }
+
+[status]
+overall = { fg = "#1F1F28", bg = "#7E9CD8" }
+perm_sep = { fg = "#223249" }
+perm_type = { fg = "#7FB4CA" }
+perm_read = { fg = "#98BB6C" }
+perm_write = { fg = "#E6C384" }
+perm_exec = { fg = "#C34043" }
+progress_label = { fg = "#DCD7BA" }
+progress_normal = { fg = "#7E9CD8" }
+progress_error = { fg = "#E82424" }
+
+[tabs]
+active = { fg = "#1F1F28", bg = "#7E9CD8", bold = true }
+inactive = { fg = "#C8C093", bg = "#1F1F28" }
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+[which]
+cols = 1
+mask = { fg = "#1F1F28", bg = "#223249" }
+cand = { fg = "#7E9CD8", bold = true }
+rest = { fg = "#DCD7BA" }
+desc = { fg = "#957FB8" }
+separator = "→"
+separator_style = { fg = "#7FB4CA" }
+
+[confirm]
+border = { fg = "#223249" }
+title = { fg = "#7E9CD8", bold = true }
+content = { fg = "#DCD7BA" }
+list = { fg = "#DCD7BA" }
+btn_yes = { fg = "#1F1F28", bg = "#98BB6C", bold = true }
+btn_no  = { fg = "#1F1F28", bg = "#C34043", bold = true }
+btn_labels = ["Yes", "No"]
+
+[input]
+border = { fg = "#223249" }
+title = { fg = "#7E9CD8" }
+value = { fg = "#DCD7BA" }
+selected = { fg = "#1F1F28", bg = "#957FB8" }
+
+[pick]
+border = { fg = "#223249" }
+active = { fg = "#1F1F28", bg = "#7E9CD8", bold = true }
+inactive = { fg = "#DCD7BA", bg = "#1F1F28" }
+
+[cmp]
+border = { fg = "#223249" }
+active = { fg = "#1F1F28", bg = "#7FB4CA" }
+inactive = { fg = "#DCD7BA", bg = "#1F1F28" }
+icon_file = ""
+icon_folder = ""
+icon_command = ""
+
+[tasks]
+border = { fg = "#223249" }
+title = { fg = "#7E9CD8", bold = true }
+hovered = { fg = "#1F1F28", bg = "#7FB4CA" }
+
+[help]
+on = { fg = "#98BB6C" }
+run = { fg = "#7FB4CA" }
+desc = { fg = "#DCD7BA" }
+hovered = { fg = "#1F1F28", bg = "#7E9CD8" }
+footer = { fg = "#223249" }
+
+[notify]
+title_info = { fg = "#7FB4CA", bold = true }
+title_warn = { fg = "#E6C384", bold = true }
+title_error = { fg = "#C34043", bold = true }
+icon_info = ""
+icon_warn = ""
+icon_error = ""

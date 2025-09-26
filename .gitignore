@@ -1,0 +1,54 @@
+# History and dump files
+*.*history*
+*.zcompdump
+*.zwc
+
+# System files
+*.DS_Store
+.DS_Store
+
+# Backup and temporary files
+*.bak
+*.tmp
+temp/
+
+# Log files and databases
+*.log
+*.log*
+log*.*
+*.db
+*.pid
+
+# Service directories (media server applications)
+Radarr/
+Sonarr/
+prowlarr/
+jellyfin/
+jellyseerr/
+deluge/
+
+# GTK configurations
+gtk*/
+gtk-*/
+
+# Development tools
+raycast/
+zed/
+
+# Runtime data directories
+*/data/
+*/logs/
+
+# SQLite temporary files
+*.sqlite*-wal
+*.sqlite*-shm
+
+# Large directories
+downloads/
+media/
+cache/
+transcoding/
+
+# Secrets and environment files
+.env
+secrets/

@@ -1,0 +1,174 @@
+{
+  "themes": {
+    "tokyodarknite": {
+      "name": "TokyoDarkNite",
+      "ghostty": {
+        "background": "#11121d",
+        "foreground": "#c0caf5",
+        "cursor": "#bb9af7",
+        "color0": "#16161e",
+        "color1": "#f7768e",
+        "color2": "#9ece6a",
+        "color3": "#e0af68",
+        "color4": "#7aa2f7",
+        "color5": "#bb9af7",
+        "color6": "#7dcfff",
+        "color7": "#a9b1d6",
+        "color8": "#414868",
+        "color9": "#f7768e",
+        "color10": "#9ece6a",
+        "color11": "#e0af68",
+        "color12": "#7aa2f7",
+        "color13": "#bb9af7",
+        "color14": "#7dcfff",
+        "color15": "#c0caf5"
+      },
+      "neovim": { "theme": "tokyonight", "style": "night" },
+      "yazi": { "theme": "tokyonight" },
+      "nushell": {
+        "foreground": "#c0caf5",
+        "background": "#11121d",
+        "cursor": "#bb9af7",
+        "accent": "#7aa2f7",
+        "separator": "#414868",
+        "empty": "dark_gray",
+        "bool": { "fg": "#7dcfff",
+          "attr": "b" },
+          "date": { "fg": "#e0af68" },
+        "float": { "fg": "#9ece6a" },
+        "int": { "fg": "#9ece6a" },
+        "range": { "fg": "#7aa2f7" },
+        "string": { "fg": "#c0caf5" },
+        "filesize": { "fg": "#bb9af7" },
+        "duration": { "fg": "#7dcfff" },
+        "row_index": { "fg": "#7aa2f7" },
+        "header": { "fg": "#bb9af7",
+          "attr": "b" },
+          "shape_block": { "fg": "#7aa2f7" },
+        "shape_directory": { "fg": "#7aa2f7",
+          "attr": "b" },
+          "shape_external": { "fg": "#f7768e" },
+          "shape_globpattern": { "fg": "#bb9af7" },
+        "shape_int": { "fg": "#9ece6a" },
+        "shape_float": { "fg": "#9ece6a" },
+        "shape_bool": { "fg": "#7dcfff" },
+        "shape_string": { "fg": "#c0caf5" },
+        "shape_filepath": { "fg": "#7aa2f7" },
+        "shape_key": { "fg": "#e0af68" },
+        "shape_operator": { "fg": "#f7768e" },
+        "shape_signature": { "fg": "#bb9af7" },
+        "shape_table": { "fg": "#c0caf5" },
+        "shape_error": { "fg": "#f7768e",
+          "attr": "b" },
+          "shape_hint": { "fg": "#414868" },
+        "search_result": { "fg": "#11121d",
+          "bg": "#7aa2f7" },
+          "status_bar": { "fg": "#11121d",
+            "bg": "#7aa2f7" }
+      },
+      "palette": {
+        "lualine": {
+          "normal": { "a": { "fg": "#11121d",
+            "bg": "#7aa2f7" },
+            "b": { "fg": "#c0caf5",
+            "bg": "#1f2335" },
+            "c": { "fg": "#c0caf5",
+            "bg": "#11121d" } },
+          "insert": { "a": { "fg": "#11121d",
+            "bg": "#9ece6a" } },
+          "visual": { "a": { "fg": "#11121d",
+            "bg": "#bb9af7" } },
+          "replace": { "a": { "fg": "#11121d",
+            "bg": "#e0af68" } },
+          "command": { "a": { "fg": "#11121d",
+            "bg": "#7dcfff" } },
+          "inactive": { "a": { "fg": "#a9b1d6",
+            "bg": "#11121d" },
+            "b": { "fg": "#a9b1d6",
+            "bg": "#11121d" },
+            "c": { "fg": "#a9b1d6",
+            "bg": "#11121d" } }
+        },
+        "render_markdown": { "color1_bg": "#2f3e76",
+          "color2_bg": "#2e6a53",
+          "color3_bg": "#2a5e71",
+          "color4_bg": "#3b3f6b",
+          "color5_bg": "#2d6e66",
+          "color6_bg": "#35557a",
+          "colorInline_bg": "#7dcfff",
+          "color_fg": "#0D1116" }
+      }
+    },
+    "deepdark": {
+      "name": "DeepDark",
+      "ghostty": {
+        "background": "#0F111A", "foreground": "#a0a8b7", "cursor": "#61afef", "color0": "#151820",
+        "color1": "#e06c75", "color2": "#98c379", "color3": "#e5c07b", "color4": "#61afef", "color5": "#c678dd",
+        "color6": "#56b6c2", "color7": "#abb2bf", "color8": "#2c313c", "color9": "#be5046", "color10": "#98c379",
+        "color11": "#d19a66", "color12": "#61afef", "color13": "#c678dd", "color14": "#56b6c2", "color15": "#c8ccd4"
+      },
+      "neovim": { "theme": "onedark", "style": "deep" },
+      "yazi": { "theme": "onedark" },
+      "nushell": {
+        "foreground": "#a0a8b7", "background": "#0F111A", "cursor": "#61afef", "accent": "#61afef", "separator": "#1b1f27",
+        "empty": "dark_gray", "bool": { "fg": "#56b6c2", "attr": "b" }, "date": { "fg": "#e5c07b" }, "float": { "fg": "#98c379" },
+        "int": { "fg": "#98c379" }, "range": { "fg": "#61afef" }, "string": { "fg": "#a0a8b7" }, "filesize": { "fg": "#c678dd" },
+        "duration": { "fg": "#56b6c2" }, "row_index": { "fg": "#61afef" }, "header": { "fg": "#c678dd", "attr": "b" },
+        "shape_block": { "fg": "#61afef" }, "shape_directory": { "fg": "#61afef", "attr": "b" }, "shape_external": { "fg": "#e06c75" },
+        "shape_globpattern": { "fg": "#c678dd" }, "shape_int": { "fg": "#98c379" }, "shape_float": { "fg": "#98c379" },
+        "shape_bool": { "fg": "#56b6c2" }, "shape_string": { "fg": "#a0a8b7" }, "shape_filepath": { "fg": "#61afef" },
+        "shape_key": { "fg": "#e5c07b" }, "shape_operator": { "fg": "#e06c75" }, "shape_signature": { "fg": "#c678dd" },
+        "shape_table": { "fg": "#a0a8b7" }, "shape_error": { "fg": "#be5046", "attr": "b" }, "shape_hint": { "fg": "#2c313c" },
+        "search_result": { "fg": "#0F111A", "bg": "#61afef" }, "status_bar": { "fg": "#0F111A", "bg": "#61afef" }
+      },
+      "palette": {
+        "lualine": {
+          "normal": { "a": { "fg": "#0F111A", "bg": "#61afef" }, "b": { "fg": "#a0a8b7", "bg": "#1b1f27" }, "c": { "fg": "#a0a8b7", "bg": "#0F111A" } },
+          "insert": { "a": { "fg": "#0F111A", "bg": "#98c379" } }, "visual": { "a": { "fg": "#0F111A", "bg": "#c678dd" } },
+          "replace": { "a": { "fg": "#0F111A", "bg": "#e5c07b" } }, "command": { "a": { "fg": "#0F111A", "bg": "#56b6c2" } },
+          "inactive": { "a": { "fg": "#5c6370", "bg": "#0F111A" }, "b": { "fg": "#5c6370", "bg": "#0F111A" }, "c": { "fg": "#5c6370", "bg": "#0F111A" } }
+        },
+        "render_markdown": { "color1_bg": "#4b5788", "color2_bg": "#2e6f4f", "color3_bg": "#2a6b78", "color4_bg": "#42507a", "color5_bg": "#2a6f66", "color6_bg": "#3a5f7f", "colorInline_bg": "#61afef", "color_fg": "#0D1116" }
+      }
+    },
+    "eldritch": {
+      "name": "Eldritch",
+      "ghostty": { "background": "#171928", "foreground": "#d8e6e6", "cursor": "#f0313e", "color0": "#2a2e45", "color1": "#cc5860", "color2": "#2dcc82", "color3": "#ccd663", "color4": "#8b75d9", "color5": "#d154a1", "color6": "#0396b3", "color7": "#8e94b8", "color8": "#506299", "color9": "#cc2935", "color10": "#00cc68", "color11": "#a1a34d", "color12": "#554971", "color13": "#94407a", "color14": "#2bafcc", "color15": "#d8e6e6" },
+      "neovim": { "theme": "eldritch", "style": "darker" },
+      "yazi": { "theme": "eldritch" },
+      "nushell": { "foreground": "#d8e6e6", "background": "#171928", "cursor": "#f0313e", "accent": "#8b75d9", "separator": "#2a2e45", "empty": "dark_gray", "bool": { "fg": "#0396b3", "attr": "b" }, "date": { "fg": "#ccd663" }, "float": { "fg": "#2dcc82" }, "int": { "fg": "#2dcc82" }, "range": { "fg": "#8b75d9" }, "string": { "fg": "#d8e6e6" }, "filesize": { "fg": "#d154a1" }, "duration": { "fg": "#0396b3" }, "row_index": { "fg": "#8b75d9" }, "header": { "fg": "#d154a1", "attr": "b" }, "shape_block": { "fg": "#8b75d9" }, "shape_directory": { "fg": "#8b75d9", "attr": "b" }, "shape_external": { "fg": "#cc5860" }, "shape_globpattern": { "fg": "#d154a1" }, "shape_int": { "fg": "#2dcc82" }, "shape_float": { "fg": "#2dcc82" }, "shape_bool": { "fg": "#0396b3" }, "shape_string": { "fg": "#d8e6e6" }, "shape_filepath": { "fg": "#8b75d9" }, "shape_key": { "fg": "#ccd663" }, "shape_operator": { "fg": "#cc5860" }, "shape_signature": { "fg": "#d154a1" }, "shape_table": { "fg": "#d8e6e6" }, "shape_error": { "fg": "#cc2935", "attr": "b" }, "shape_hint": { "fg": "#506299" }, "search_result": { "fg": "#171928", "bg": "#8b75d9" }, "status_bar": { "fg": "#171928", "bg": "#8b75d9" } },
+      "palette": { "lualine": { "normal": { "a": { "fg": "#171928", "bg": "#8b75d9" }, "b": { "fg": "#d8e6e6", "bg": "#2a2e45" }, "c": { "fg": "#d8e6e6", "bg": "#171928" } }, "insert": { "a": { "fg": "#171928", "bg": "#2dcc82" } }, "visual": { "a": { "fg": "#171928", "bg": "#d154a1" } }, "replace": { "a": { "fg": "#171928", "bg": "#ccd663" } }, "command": { "a": { "fg": "#171928", "bg": "#0396b3" } }, "inactive": { "a": { "fg": "#8e94b8", "bg": "#171928" }, "b": { "fg": "#8e94b8", "bg": "#171928" }, "c": { "fg": "#8e94b8", "bg": "#171928" } } }, "render_markdown": { "color1_bg": "#6b5ab6", "color2_bg": "#2a9b65", "color3_bg": "#1a7b92", "color4_bg": "#5b5f9c", "color5_bg": "#158e81", "color6_bg": "#3b7fa2", "colorInline_bg": "#0396b3", "color_fg": "#0D1116" } }
+    },
+    "niteblossom": {
+      "name": "Niteblossom",
+      "ghostty": { "background": "#00041F", "foreground": "#FFEBF7", "cursor": "#FFB3FF", "color0": "#00041F", "color1": "#E8336C", "color2": "#22DA6E", "color3": "#FFB46E", "color4": "#A99CFF", "color5": "#EB73BF", "color6": "#6ADCEA", "color7": "#EACFE3", "color8": "#1D1D38", "color9": "#FF7596", "color10": "#22DA6E", "color11": "#FFBAB8", "color12": "#A99CFF", "color13": "#FFB3FF", "color14": "#6ADCEA", "color15": "#FFEBF7" },
+      "neovim": { "theme": "nightblossom", "style": "default" },
+      "yazi": { "theme": "nightblossom" },
+      "nushell": { "foreground": "#FFEBF7", "background": "#00041F", "cursor": "#FFB3FF", "accent": "#A99CFF", "separator": "#1D1D38", "empty": "dark_gray", "bool": { "fg": "#6ADCEA", "attr": "b" }, "date": { "fg": "#FFB46E" }, "float": { "fg": "#22DA6E" }, "int": { "fg": "#22DA6E" }, "range": { "fg": "#A99CFF" }, "string": { "fg": "#FFEBF7" }, "filesize": { "fg": "#EB73BF" }, "duration": { "fg": "#6ADCEA" }, "row_index": { "fg": "#A99CFF" }, "header": { "fg": "#FFB3FF", "attr": "b" }, "shape_block": { "fg": "#A99CFF" }, "shape_directory": { "fg": "#A99CFF", "attr": "b" }, "shape_external": { "fg": "#E8336C" }, "shape_globpattern": { "fg": "#FFB3FF" }, "shape_int": { "fg": "#22DA6E" }, "shape_float": { "fg": "#22DA6E" }, "shape_bool": { "fg": "#6ADCEA" }, "shape_string": { "fg": "#FFEBF7" }, "shape_filepath": { "fg": "#A99CFF" }, "shape_key": { "fg": "#FFB46E" }, "shape_operator": { "fg": "#EB73BF" }, "shape_signature": { "fg": "#FFB3FF" }, "shape_table": { "fg": "#FFEBF7" }, "shape_error": { "fg": "#E8336C", "attr": "b" }, "shape_hint": { "fg": "#1D1D38" }, "search_result": { "fg": "#00041F", "bg": "#A99CFF" }, "status_bar": { "fg": "#00041F", "bg": "#A99CFF" } },
+      "palette": { "render_markdown": { "color1_bg": "#65285D", "color2_bg": "#22DA6E", "color3_bg": "#6ADCEA", "color4_bg": "#A99CFF", "color5_bg": "#FFB46E", "color6_bg": "#EB73BF", "colorInline_bg": "#FFB3FF", "color_fg": "#0D1116" } }
+    },
+    "nugotham": {
+      "name": "NuGotham",
+      "ghostty": { "background": "#0c1014", "foreground": "#99d1ce", "cursor": "#d3ebe9", "color0": "#0c1014", "color1": "#c23127", "color2": "#2aa889", "color3": "#edb443", "color4": "#195466", "color5": "#4e5166", "color6": "#33859e", "color7": "#99d1ce", "color8": "#11151c", "color9": "#ff4033", "color10": "#40ffd0", "color11": "#ffe054", "color12": "#195466", "color13": "#888ca6", "color14": "#52d7ff", "color15": "#d3ebe9" },
+      "neovim": { "theme": "nugotham", "style": "default" },
+      "yazi": { "theme": "nugotham" },
+      "nushell": { "foreground": "#99d1ce", "background": "#0c1014", "cursor": "#d3ebe9", "accent": "#4e5166", "separator": "#11151c", "empty": "dark_gray", "bool": { "fg": "#33859e", "attr": "b" }, "date": { "fg": "#edb443" }, "float": { "fg": "#2aa889" }, "int": { "fg": "#2aa889" }, "range": { "fg": "#195466" }, "string": { "fg": "#99d1ce" }, "filesize": { "fg": "#4e5166" }, "duration": { "fg": "#33859e" }, "row_index": { "fg": "#195466" }, "header": { "fg": "#888ca6", "attr": "b" }, "shape_block": { "fg": "#195466" }, "shape_directory": { "fg": "#195466", "attr": "b" }, "shape_external": { "fg": "#c23127" }, "shape_globpattern": { "fg": "#4e5166" }, "shape_int": { "fg": "#2aa889" }, "shape_float": { "fg": "#2aa889" }, "shape_bool": { "fg": "#33859e" }, "shape_string": { "fg": "#99d1ce" }, "shape_filepath": { "fg": "#195466" }, "shape_key": { "fg": "#edb443" }, "shape_operator": { "fg": "#888ca6" }, "shape_signature": { "fg": "#4e5166" }, "shape_table": { "fg": "#99d1ce" }, "shape_error": { "fg": "#ff4033", "attr": "b" }, "shape_hint": { "fg": "#11151c" }, "search_result": { "fg": "#0c1014", "bg": "#195466" }, "status_bar": { "fg": "#0c1014", "bg": "#195466" } },
+      "palette": { "render_markdown": { "color1_bg": "#0a3749", "color2_bg": "#233726", "color3_bg": "#1e6479", "color4_bg": "#4e5166", "color5_bg": "#d26937", "color6_bg": "#33859e", "colorInline_bg": "#99d1ce", "color_fg": "#0D1116" }, "ui_elements": { "CursorLine": { "bg": "#edb443" } } }
+    },
+    "nightowl": {
+      "name": "Night Owl",
+      "ghostty": { "background": "#011627", "foreground": "#d6deeb", "cursor": "#c792ea", "color0": "#011627", "color1": "#ff5874", "color2": "#addb67", "color3": "#f78c6c", "color4": "#82aaff", "color5": "#c792ea", "color6": "#7fdbca", "color7": "#aaaaaa", "color8": "#637777", "color9": "#ff5874", "color10": "#addb67", "color11": "#f78c6c", "color12": "#82aaff", "color13": "#c792ea", "color14": "#7fdbca", "color15": "#eeeeee" },
+      "neovim": { "theme": "nightowl", "style": "default" },
+      "yazi": { "theme": "nightowl" },
+      "nushell": { "foreground": "#d6deeb", "background": "#011627", "cursor": "#c792ea", "accent": "#82aaff", "separator": "#112630", "empty": "dark_gray", "bool": { "fg": "#7fdbca", "attr": "b" }, "date": { "fg": "#ecc48d" }, "float": { "fg": "#addb67" }, "int": { "fg": "#addb67" }, "range": { "fg": "#82aaff" }, "string": { "fg": "#d6deeb" }, "filesize": { "fg": "#c792ea" }, "duration": { "fg": "#7fdbca" }, "row_index": { "fg": "#82aaff" }, "header": { "fg": "#c792ea", "attr": "b" }, "shape_block": { "fg": "#82aaff" }, "shape_directory": { "fg": "#82aaff", "attr": "b" }, "shape_external": { "fg": "#ff5874" }, "shape_globpattern": { "fg": "#c792ea" }, "shape_int": { "fg": "#addb67" }, "shape_float": { "fg": "#addb67" }, "shape_bool": { "fg": "#7fdbca" }, "shape_string": { "fg": "#d6deeb" }, "shape_filepath": { "fg": "#82aaff" }, "shape_key": { "fg": "#ecc48d" }, "shape_operator": { "fg": "#c792ea" }, "shape_signature": { "fg": "#c792ea" }, "shape_table": { "fg": "#d6deeb" }, "shape_error": { "fg": "#ff5874", "attr": "b" }, "shape_hint": { "fg": "#637777" }, "search_result": { "fg": "#011627", "bg": "#82aaff" }, "status_bar": { "fg": "#011627", "bg": "#82aaff" } },
+      "palette": { "render_markdown": { "color1_bg": "#2d2c5d", "color2_bg": "#addb67", "color3_bg": "#82aaff", "color4_bg": "#c792ea", "color5_bg": "#7fdbca", "color6_bg": "#f78c6c", "colorInline_bg": "#c792ea", "color_fg": "#0D1116" } }
+    },
+    "vague": {
+      "name": "Vague",
+      "ghostty": { "background": "#001d46", "foreground": "#b8c9ec", "cursor": "#b8c9ec", "color0": "#001d46", "color1": "#f88897", "color2": "#5ac39c", "color3": "#d1a872", "color4": "#72a9df", "color5": "#a39de8", "color6": "#75cdd8", "color7": "#b8c9ec", "color8": "#334d70", "color9": "#f88897", "color10": "#5ac39c", "color11": "#d1a872", "color12": "#72a9df", "color13": "#a39de8", "color14": "#75cdd8", "color15": "#b8c9ec" },
+      "neovim": { "theme": "vague", "style": "default" },
+      "yazi": { "theme": "vague" },
+      "nushell": { "foreground": "#b8c9ec", "background": "#001d46", "cursor": "#b8c9ec", "accent": "#72a9df", "separator": "#334d70", "empty": "dark_gray", "bool": { "fg": "#75cdd8", "attr": "b" }, "date": { "fg": "#d1a872" }, "float": { "fg": "#5ac39c" }, "int": { "fg": "#5ac39c" }, "range": { "fg": "#72a9df" }, "string": { "fg": "#b8c9ec" }, "filesize": { "fg": "#a39de8" }, "duration": { "fg": "#75cdd8" }, "row_index": { "fg": "#72a9df" }, "header": { "fg": "#a39de8", "attr": "b" }, "shape_block": { "fg": "#72a9df" }, "shape_directory": { "fg": "#72a9df", "attr": "b" }, "shape_external": { "fg": "#f88897" }, "shape_globpattern": { "fg": "#a39de8" }, "shape_int": { "fg": "#5ac39c" }, "shape_float": { "fg": "#5ac39c" }, "shape_bool": { "fg": "#75cdd8" }, "shape_string": { "fg": "#b8c9ec" }, "shape_filepath": { "fg": "#72a9df" }, "shape_key": { "fg": "#d1a872" }, "shape_operator": { "fg": "#f88897" }, "shape_signature": { "fg": "#a39de8" }, "shape_table": { "fg": "#b8c9ec" }, "shape_error": { "fg": "#f88897", "attr": "b" }, "shape_hint": { "fg": "#334d70" }, "search_result": { "fg": "#001d46", "bg": "#72a9df" }, "status_bar": { "fg": "#001d46", "bg": "#72a9df" } }
+    }
+  }
+}

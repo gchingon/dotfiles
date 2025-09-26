@@ -1,0 +1,83 @@
+#!/bin/bash
+# ~/.mealilo - Centralized homelab configuration and secrets
+
+# Network Configuration
+export HOMELAB_STATIC_IP="192.168.1.39"
+export HOMELAB_HOSTNAME="bmini"
+export HOMELAB_GATEWAY="192.168.1.1"
+export HOMELAB_SMB_SERVER="192.168.1.30"
+export HOMELAB_TIMEZONE="America/Los_Angeles"
+export HOMELAB_USER="seedmin"
+
+# Directory Structure
+export HOMELAB_BASE_DIR="$HOME/homelab"
+export HOMELAB_LOG_DIR="$HOMELAB_BASE_DIR/logs"
+export HOMELAB_CONTAINER_DIR="$HOMELAB_BASE_DIR/compose"
+export HOMELAB_CONFIG_DIR="$HOMELAB_BASE_DIR/config"
+export HOMELAB_SCRIPTS_DIR="$HOMELAB_BASE_DIR/scripts"
+
+# SMB Configuration
+export SMB_USER="gchingon"
+export SMB_PASS="thanos"
+
+# Core Service Credentials
+export TRANSMISSION_USER="stick"
+export TRANSMISSION_PASS="ManualT56-FordRanger!4"
+export PIHOLE_PASS="PigStand-LittleMouth!4"
+
+# Database Passwords
+export POSTGRESQL_DB_PASS="7718-1e19-20b7-82f2-9474-df13-e62c-a3ea-bc57-490f-0917-3928-413e-ad47-a68b-f1cb"
+export PAPERLESS_DB_PASS="PaperlessDB123!"
+
+# Application Secrets
+export PAPERLESS_SECRET_KEY="vNXBqrJdw/KQ8D2SDDjRgPSlMaD/OA8Ff5YgbqAU0qI="
+export BYTESTASH_JWT_SECRET="ad2b-53e5-f46e-579f-2d47-d2ce-c472-b145-1c18-8771-c4de-7d30-7042-e1d5-44c1-b95c"
+
+# Calendar/Cal.com
+export CALCOM_ENCRYPTION_KEY="f0e7-b308-de98-f11b-23cd-d039-3113-81d7"
+export CALCOM_NEXTAUTH_SECRET="calcom-secret-3c20c44796381c044475b6d94193c6b4"
+
+# Finance
+export FIREFLY_APP_KEY="kashB-Agz4lyf-yuhUrd"
+
+# Security
+export VAULTWARDEN_ADMIN_TOKEN="a8f2-3d4c-5e6f-7890-1234-5678-9abc-def0-1234-5678-9abc-def0-1234-5678-9abc-def0"
+
+# Development
+export GITEA_SECRET_KEY="9e8d-7c6b-5a49-3827-1605-f4e3-d2c1-b0a9-8765-4321-0fed-cba9-8765-4321-0fed-cba9"
+
+# Wiki/Documentation
+export OUTLINE_SECRET_KEY="42fb-121e-3003-d227-e1a1-739a-be6b-6e76-5432-1098-7654-3210-fedc-ba98-7654-3210"
+export OUTLINE_UTILS_SECRET="2e3a-8c49-7e64-ae70-7ade-08cb-2395-b0a3-1234-5678-9abc-def0-1234-5678-9abc-def0"
+
+# Backup Configuration
+export BORG_REPO="/Volumes/armor/reserva/borg"
+export BORG_PASSPHRASE="borg-4f5e-6d7c-8b9a-0918-2736-4551-a2b3-c4d5-e6f7-8901-2345-6789-abcd-ef01-2345-6789"
+
+# Service Ports (for reference)
+export PORT_TRANSMISSION="9091"
+export PORT_PIHOLE="8080"
+export PORT_TRAEFIK="8000"
+export PORT_HOMEASSISTANT="8123"
+export PORT_GRAFANA="3001"
+export PORT_PROMETHEUS="9095"
+export PORT_PAPERLESS="8001"
+export PORT_GHOST="2368"
+export PORT_PORTAINER="9000"
+export PORT_VAULTWARDEN="8083"
+
+# Sonarr
+export SONARR_USER="showmin"
+export SONARR_PASS="showThanos!4"
+export RADARR_USER="cinemin"
+export RADARR_PASS="PassPopcorn!4"
+export NAVIDRONE_USER="whatCD"
+export NAVIDRONE_PASS="musicThanos!4"
+export PROWLARR_USER="indexmin"
+export PROWLARR_PASS="indexThanos!4"
+export AUDIOBOOKSHELF_USER="abookmin"
+export AUDIOBOOKSHELF_PASS="abookThanos!4"
+export JELLYFIN_USER="jellymin"
+export JELLYFIN_PASS="nuplexThanos!4"
+export FLOOD_USER="floodmin"
+export FLOOD_PASS="prittytorrentsThanos!4"

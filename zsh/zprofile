@@ -1,0 +1,17 @@
+# ~/.config/zsh/zprofile
+# Sets up PATH based on CPU architecture
+
+ARCH=$(sysctl -n hw.cputype)  # Get CPU type (16777228 = arm64, Apple Silicon)
+
+if [ "$ARCH" = "16777228" ]; then
+  # Apple Silicon: Homebrew in /opt/homebrew
+  BREW_PATH="/opt/homebrew/bin/brew"
+else
+  # Intel: Homebrew in /usr/local/Homebrew
+  BREW_PATH="/usr/local/Homebrew/bin/brew"
+fi
+
+# Initialize Homebrew environment
+eval "$($BREW_PATH shellenv)"
+export PATH="/opt/homebrew/bin:$PATH"
+

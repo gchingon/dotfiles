@@ -1,0 +1,59 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Kanata Configuration for macOS v4
+;; Built from official documentation and error log diagnostics.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; --- Configuration Settings ---
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold yes
+)
+
+;; --- Key Definitions (77-key MacBook Layout) ---
+(defsrc
+  esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    bksl
+  caps   a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft   z    x    c    v    b    n    m    ,    .    /    up   rsft
+  fn     lctl lalt lmet          spc            rmet ralt left down rght
+)
+
+
+;; --- ALIASES (The core logic) ---
+(defalias
+  ;; --- Core Modifier Remaps ---
+  caps-hyper (tap-hold-press 200 200 esc (multi lsft lctl lalt lmet))
+  tab-meh (tap-hold-press 200 200 tab (multi lsft lctl lalt))
+  ret-rctl (tap-hold-press 200 200 ret rctl)
+  rshift-fdel (tap-hold-press 200 200 del rsft)
+
+  ;; --- Advanced Modifier Remaps ---
+  ;; FIX: The action list for tap-dance is a single list of actions,
+  ;; not a list of lists.
+  ralt-dance (tap-dance 200 (
+    (multi rmet ralt) ;; Action 1 is a multi-key action, so it needs parens
+    C-A-M-m           ;; Action 2 is a simple chord, so it does not need parens <-- FIX HERE
+  ))
+)
+
+;; --- MAIN KEYMAP LAYER (77 keys) ---
+(deflayer base
+  ;; Top Row (F-Keys)
+  _    _    _    _    _    _    _    _    _    _    _    _   _ 
+
+  ;; Number Row
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+
+  ;; QWERTY Row
+  @tab-meh _    _    _    _    _    _    _    _    _    _    _    _    _
+
+  ;; Home Row
+  @caps-hyper _    _    _    _    _    _    _    _    _    _    _    @ret-rctl
+
+  ;; Bottom Row (zxc...)
+  _    _    _    _    _    _    _    _    _    _    _    _    @rshift-fdel
+
+  ;; Modifier/Arrow Row
+  _    _    _    _             spc            _    @ralt-dance _    _    _
+)

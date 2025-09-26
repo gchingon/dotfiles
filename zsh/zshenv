@@ -1,0 +1,57 @@
+# ~/.config/zsh/zshenv
+# Defines global environment variables for all Zsh sessions
+
+# Base directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export CF="$XDG_CONFIG_HOME"
+export CAPTURE_FOLDER="$HOME/Pictures"
+export DN="$HOME/Downloads"
+export DX="$HOME/Documents"
+export LB="$HOME/.local/bin"
+export NT="$DX/notes"     # git repo for notes
+export DZ="$CF/zsh"         # zsh config stuff
+export NV="$CF/nvim"        # Real Neovim repo
+export RX="$CF/rx"          # shortcut to global scripts
+export RP="$HOME/repos"    # podcast ideas, topics & published content
+
+case "$(hostname)" in
+  2mini*)
+    export HL="$RP/2lab"
+    ;;
+  4mini*)
+    export HL="$RP/4lab"
+    ;;
+esac
+export WP="$DX/webpage"
+export WC="$DX/widows-club"
+
+# Tool-specific settings
+export PATH="/opt/homebrew/opt/ruby/bin:$HOME/.cargo/bin:$HOME/.local/bin:$RX:$PATH"  # Add $RX to PATH
+export FZF_DEFAULT_OPTS='--height=20% --cycle --info=hidden --tabstop=4 --black'
+export CLICOLOR=1
+export EDITOR='nvim'
+
+# Set MAKEFLAGS based on system type
+if [[ "$(uname)" == "Darwin" ]]; then
+  if [[ "$(sysctl -n hw.cputype)" == "16777228" ]]; then
+    export MAKEFLAGS="-j$(sysctl -n hw.ncpu)"  # Apple Silicon
+  else
+    export MAKEFLAGS="-j$(sysctl -n hw.ncpu)"  # Intel
+  fi
+elif [[ "$(uname)" == "Linux" ]]; then
+  export MAKEFLAGS="-j$(nproc)"
+fi
+
+export FUNCNEST=25000
+
+# Homebrew path
+export PATH="/opt/homebrew/bin:$PATH"
+
+# Golang settings
+export GOROOT="/opt/homebrew/opt/go/libexec"
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# Source zprofile
+source "$DZ/zprofile"
+
