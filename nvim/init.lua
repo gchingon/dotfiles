@@ -287,7 +287,7 @@ setup_plugin("obsidian", function(obsidian)
       blink = true,
       min_chars = 2,
     },
-    new_notes_location = "notes_subdir",
+    new_notes_location = "current_dir",
     legacy_commands = false,     -- Disable deprecated commands
     note_id_func = function(title)
       -- Create note IDs from title, removing spaces and special chars
