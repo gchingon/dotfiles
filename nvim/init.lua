@@ -274,10 +274,6 @@ setup_plugin("obsidian", function(obsidian)
         name = "novel",
         path = "$HOME/Documents/widows-club",
       },
-      {
-        name = "braindump",
-        path = "$HOME/Documents/markdown",
-      },
     },
     -- daily_notes = {
     --   folder = "$HOME/Documents/daily",

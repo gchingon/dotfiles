@@ -156,6 +156,7 @@ alias vs='open-secrets'                  # Edit secrets (assumes file)
 alias vz='open-zshrc'                    # Edit zshrc
 alias vh='open-zsh-history'              # Edit zsh history
 alias vg='v $CF/ghostty/config'          # Edit Ghostty config
+alias vw='v $CF/wezterm/wezterm.lua'     # Edit wezterm config
 
 # ===== Rclone Aliases =====
 alias rcm='rclone-move'                  # Move files with rclone
