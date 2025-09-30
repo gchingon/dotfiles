@@ -68,7 +68,7 @@ setup_plugin("obsidian", function(obsidian)
       end
 
       if is_blank(note.metadata.created) then
-        out.created = os.date("%d-%^b-%YT%H:%M-0600")
+        out.created = os.date("%Y-%m-%d_%H:%M:%S-0600")
       else
         out.created = note.metadata.created
       end

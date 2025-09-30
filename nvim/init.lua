@@ -138,6 +138,7 @@ end)
 require("plugins.mini")
 require("plugins.render-md")
 require("plugins.obsidian")
+require("plugins.which-key")
 
 -- ============================================================================
 -- Theme Setup
