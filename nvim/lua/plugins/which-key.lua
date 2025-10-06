@@ -45,16 +45,6 @@ local mappings = {
   { "<leader>l",   "<cmd>bn<cr>",                                                  desc = "Next Buffer" },
   { "<leader>h",   "<cmd>bp<cr>",                                                  desc = "Previous Buffer" },
 
-  -- Surround (mini) labels using gz prefix
-  { "<leader>uS",  group = "Surround (mini)" },
-  { "<leader>uSa", "gza",                                                          desc = "Add surrounding (use motion)" },
-  { "<leader>uSd", "gzd",                                                          desc = "Delete surrounding" },
-  { "<leader>uSr", "gzr",                                                          desc = "Replace surrounding" },
-  { "<leader>uSf", "gzf",                                                          desc = "Find surrounding (right)" },
-  { "<leader>uSF", "gzF",                                                          desc = "Find surrounding (left)" },
-  { "<leader>uSh", "gzh",                                                          desc = "Highlight surrounding" },
-  { "<leader>uSn", "gzn",                                                          desc = "Update n_lines" },
-
   -- Git / Gitsigns
   { "<leader>Gs",  ":Gitsigns stage_hunk<CR>",                                     desc = "Stage Hunk",                  mode = { "n", "v" } },
   { "<leader>Gr",  ":Gitsigns reset_hunk<CR>",                                     desc = "Reset Hunk",                  mode = { "n", "v" } },

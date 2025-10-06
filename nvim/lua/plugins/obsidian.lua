@@ -42,6 +42,7 @@ setup_plugin("obsidian", function(obsidian)
     legacy_commands = false,
 
     -- ULID for note IDs; backdated by strict created if present
+    -- Simple ID generation - frontmatter function handles persistence
     note_id_func = function(title)
       return ulid_from_created_or_now()
     end,
@@ -55,24 +56,67 @@ setup_plugin("obsidian", function(obsidian)
         return val == nil or (type(val) == "string" and vim.trim(val) == "")
       end
 
-      if is_blank(note.metadata.id) then
-        out.id = ulid_from_created_or_now()
+      -- Helper function to read existing frontmatter from the buffer
+      local function get_existing_frontmatter()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 100, false)
+        
+        local frontmatter = {}
+        local in_frontmatter = false
+        local frontmatter_start = false
+        
+        for i, line in ipairs(lines) do
+          if i == 1 and line == "---" then
+            in_frontmatter = true
+            frontmatter_start = true
+          elseif in_frontmatter and line == "---" then
+            break
+          elseif in_frontmatter then
+            -- Parse key: value pairs
+            local key, value = line:match("^([%w_]+):%s*(.*)$")
+            if key and value then
+              frontmatter[key] = vim.trim(value)
+            end
+          end
+        end
+        
+        return frontmatter_start and frontmatter or {}
+      end
+      
+      -- Read existing frontmatter from the file
+      local existing_fm = get_existing_frontmatter()
+
+      -- Use existing ID if present, otherwise generate new one
+      if not is_blank(existing_fm.id) then
+        out.id = existing_fm.id
+        vim.notify("Using EXISTING ID: " .. out.id, vim.log.levels.INFO)
       else
-        out.id = note.metadata.id
+        out.id = ulid_from_created_or_now(existing_fm.created)
+        vim.notify("Generated NEW ID: " .. out.id, vim.log.levels.WARN)
       end
 
-      if is_blank(note.metadata.author) then
+      -- Use existing author if present
+      if not is_blank(existing_fm.author) then
+        out.author = existing_fm.author
+      else
         out.author = "Gallo Chingon"
-      else
-        out.author = note.metadata.author
       end
 
-      if is_blank(note.metadata.created) then
+      -- Use existing created date if present
+      if not is_blank(existing_fm.created) then
+        out.created = existing_fm.created
+      else
         out.created = os.date("%Y-%m-%d_%H:%M:%S-0600")
-      else
-        out.created = note.metadata.created
       end
 
+      -- Merge any other existing frontmatter fields
+      for k, v in pairs(existing_fm) do
+        if out[k] == nil then
+          out[k] = v
+        end
+      end
+
+      -- Then merge note.metadata (which might be incomplete)
       for k, v in pairs(note.metadata or {}) do
         if out[k] == nil then
           out[k] = v

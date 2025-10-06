@@ -3,16 +3,21 @@ local M = {}
 -- Crockford Base32 alphabet (no I, L, O, U)
 local BASE32_CHARS = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
--- Bitwise operations for LuaJIT
-local bor, band, rshift, lshift = bit.bor, bit.band, bit.rshift, bit.lshift
+-- Helper function to safely extract bits from large numbers
+-- Uses math operations instead of bitwise to avoid 32-bit overflow
+local function extract_bits(value, shift, mask)
+  return math.floor(value / (2 ^ shift)) % mask
+end
 
 -- Encode timestamp (48 bits) to 10 Base32 characters
 local function encode_timestamp(timestamp_ms)
   local chars = {}
   
   -- Extract 10 characters (each 5 bits) from 48-bit timestamp
+  -- Work from most significant to least significant
   for i = 9, 0, -1 do
-    local index = band(rshift(timestamp_ms, i * 5), 0x1F)
+    local shift = i * 5
+    local index = extract_bits(timestamp_ms, shift, 32)  -- 32 = 2^5
     table.insert(chars, BASE32_CHARS:sub(index + 1, index + 1))
   end
   
@@ -27,14 +32,14 @@ local function encode_random(random_bytes)
   
   -- Process all 10 bytes (80 bits)
   for i = 1, #random_bytes do
-    value = bor(lshift(value, 8), random_bytes:byte(i))
+    value = value * 256 + random_bytes:byte(i)
     bits = bits + 8
     
-    -- Extract 5-bit chunks
+    -- Extract 5-bit chunks when we have enough bits
     while bits >= 5 do
-      local index = band(rshift(value, bits - 5), 0x1F)
-      table.insert(chars, BASE32_CHARS:sub(index + 1, index + 1))
       bits = bits - 5
+      local index = extract_bits(value, bits, 32)  -- 32 = 2^5
+      table.insert(chars, BASE32_CHARS:sub(index + 1, index + 1))
     end
   end
   
@@ -46,8 +51,15 @@ function M.generate_ulid(timestamp_ms)
   -- Use provided timestamp or current time
   local ts = timestamp_ms or (os.time() * 1000)
   
-  -- Ensure timestamp is within valid 48-bit range
-  ts = band(ts, 0xFFFFFFFFFFFF)
+  -- Ensure timestamp is within valid 48-bit range (0 to 281474976710655)
+  -- This represents dates from 1970 to year 10889
+  local MAX_TIMESTAMP = 281474976710655
+  if ts > MAX_TIMESTAMP then
+    ts = MAX_TIMESTAMP
+  end
+  if ts < 0 then
+    ts = 0
+  end
   
   -- Generate 10 random bytes (80 bits)
   local rand_bytes = {}

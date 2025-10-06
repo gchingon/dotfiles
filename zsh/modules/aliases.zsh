@@ -165,14 +165,14 @@ alias rdo='rclone-dedupe-old'            # Dedupe, keep oldest
 alias rdn='rclone-dedupe-new'            # Dedupe, keep newest
 
 # ===== Tmux Aliases =====
-alias t='tmux'                           # Launch tmux
-alias ta='tmux a -t '                    # Attach to tmux session
-alias tl='tmux ls'                       # List tmux sessions
-alias tn='tmux-new-sesh'                 # New tmux session (assumes function)
-alias tm="tmuxinator"                    # Launch tmuxinator
-alias ttmp="tmux new-session -A -s tmp"  # New or attach to 'tmp' session
-alias fds='find_symlinks'
-alias csb='convert_symlinks_batch'
+# alias t='tmux'                           # Launch tmux
+# alias ta='tmux a -t '                    # Attach to tmux session
+# alias tl='tmux ls'                       # List tmux sessions
+# alias tn='tmux-new-sesh'                 # New tmux session (assumes function)
+# alias tm="tmuxinator"                    # Launch tmuxinator
+# alias ttmp="tmux new-session -A -s tmp"  # New or attach to 'tmp' session
+# alias fds='find_symlinks'
+# alias csb='convert_symlinks_batch'
 
 # s2h() {
 #     [[ -L "$1" ]] || { echo "Not a symlink"; return 1; }

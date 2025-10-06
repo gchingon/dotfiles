@@ -139,12 +139,14 @@ require("plugins.mini")
 require("plugins.render-md")
 require("plugins.obsidian")
 require("plugins.which-key")
+require("plugins.blink-cmp")
 
 -- ============================================================================
 -- Theme Setup
 -- ============================================================================
 
 local ok, theme = pcall(require, "themes.init")
+
 if ok and theme.setup then
   theme.setup()
 else
