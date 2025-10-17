@@ -54,6 +54,7 @@ vim.cmd([[
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'L3MON4D3/LuaSnip', {'do': 'make install_jsregexp'}
   Plug 'chomosuke/typst-preview.nvim', {'tag': 'v1.*'}
+  Plug 'obsidian-nvim/obsidian.nvim'
 
   " Treesitter
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -65,12 +66,12 @@ vim.cmd([[
   Plug 'ibhagwan/fzf-lua'
   Plug 'lewis6991/gitsigns.nvim'
   Plug 'mfussenegger/nvim-lint'
-  Plug 'MeanderingProgrammer/render-markdown.nvim'
+  Plug 'OXY2DEV/markview.nvim'
   Plug 'folke/flash.nvim'
 
   " Org ecosystem
   Plug 'nvim-orgmode/orgmode'
-  Plug 'obsidian-nvim/obsidian.nvim'
+  Plug 'nvimdev/lspsaga.nvim'
 
   call plug#end()
 ]])
@@ -83,45 +84,92 @@ require("core.options")
 require("core.autocmds")
 require("core.keymaps")
 require("core.markdown")
+require("core.ulid").setup()
+require("core.checkbox-cycle").setup()
 
 
 -- ============================================================================
 -- Other Plugin Setup (non-modular)
 -- ============================================================================
-
 setup_plugin("lspconfig", function(lspconfig)
-  local capabilities
-  local ok_blink, blink = pcall(require, "blink.cmp")
-  if ok_blink then
-    capabilities = blink.get_lsp_capabilities()
-  else
-    local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
-    if ok_cmp then
-      capabilities = cmp_lsp.default_capabilities()
+    -- Capabilities (blink.cmp -> cmp_nvim_lsp fallback)
+    local capabilities
+    local ok_blink, blink = pcall(require, "blink.cmp")
+    if ok_blink then
+        capabilities = blink.get_lsp_capabilities()
+    else
+        local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
+        if ok_cmp then
+            capabilities = cmp_lsp.default_capabilities()
+        end
     end
-  end
 
-  local servers = {
-    "lua_ls", "pyright", "bashls", "jsonls",
-    "yamlls", "marksman", "gopls", "tinymist"
-  }
-  for _, server_name in ipairs(servers) do
-    lspconfig[server_name].setup({
-      capabilities = capabilities
+    -- One on_attach for all LSPs: sets Saga keymaps buffer-locally
+    local function on_attach(_, bufnr)
+        local opts = { noremap = true, silent = true, buffer = bufnr }
+        vim.keymap.set("n", "K",  "<cmd>Lspsaga hover_doc<CR>",            opts)
+        vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>",      opts)
+        vim.keymap.set("n", "gr", "<cmd>Lspsaga finder ref<CR>",           opts)
+        vim.keymap.set("n", "gR", "<cmd>Lspsaga rename<CR>",               opts)
+        vim.keymap.set({ "n", "v" }, "ga", "<cmd>Lspsaga code_action<CR>", opts)
+        vim.keymap.set("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>",opts)
+        vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
+        vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
+    end
+
+    -- Your existing servers
+    local servers = {
+        "lua_ls", "pyright", "bashls", "jsonls",
+        "yamlls", "gopls", "tinymist",
+    }
+    for _, server_name in ipairs(servers) do
+        lspconfig[server_name].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+    end
+
+    -- markdown-oxide (replaces marksman)
+    local util = require("lspconfig.util")
+    lspconfig.markdown_oxide.setup({
+        cmd = { "markdown-oxide" },  -- use "mdoxide" or absolute path if needed
+        filetypes = { "markdown", "markdown.mdx" },
+        root_dir = function(fname)
+            return util.root_pattern("oxide.toml", "oxide.json", ".git")(fname)
+                or util.path.dirname(fname)
+        end,
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+            markdown = {
+                completion = { enable = true },
+                diagnostics = { enable = true },
+                links = { enable = true },
+            },
+        },
     })
-  end
 end)
 
 setup_plugin("fidget", function(p) p.setup() end)
 setup_plugin("gitsigns", function(p) p.setup() end)
 setup_plugin("fzf-lua", function(p) p.setup() end)
 setup_plugin("flash", function(p) p.setup() end)
-setup_plugin("luasnip.loaders.from_vscode", function(p) p.lazy_load() end)
 
 setup_plugin("lint", function(lint)
   lint.linters_by_ft = {
     python = { "flake8" }
   }
+end)
+
+setup_plugin("luasnip.loaders.from_vscode", function(p) p.lazy_load() end)
+
+setup_plugin("lspsaga", function(saga)
+    saga.setup({
+        ui = { border = "rounded" },
+        symbol_in_winbar = { enable = false },
+        lightbulb = { enable = true },
+        code_action = { extend_gitsigns = true },
+    })
 end)
 
 setup_plugin("orgmode", function(orgmode)
@@ -131,13 +179,22 @@ setup_plugin("orgmode", function(orgmode)
   })
 end)
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.breakindent = true  -- preserves indentation on wrapped lines
+    vim.opt_local.showbreak = "↪ "    -- visual indicator for wrapped lines
+  end,
+})
+
 -- ============================================================================
 -- Load Plugin Configurations
 -- ============================================================================
 
 require("plugins.mini")
-require("plugins.render-md")
-require("plugins.obsidian")
+require("plugins.markview")
 require("plugins.which-key")
 require("plugins.blink-cmp")
 

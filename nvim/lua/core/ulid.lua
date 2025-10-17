@@ -1,186 +1,287 @@
+-- lua/core/ulid.lua
+-- ULID generator + Markdown front matter ensure/merge on first save.
+
 local M = {}
+
+-- ================
+-- ULID primitives
+-- ================
 
 -- Crockford Base32 alphabet (no I, L, O, U)
 local BASE32_CHARS = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
--- Helper function to safely extract bits from large numbers
--- Uses math operations instead of bitwise to avoid 32-bit overflow
+-- Helper to avoid 32-bit bitop by using math
 local function extract_bits(value, shift, mask)
-  return math.floor(value / (2 ^ shift)) % mask
+    return math.floor(value / (2 ^ shift)) % mask
 end
 
 -- Encode timestamp (48 bits) to 10 Base32 characters
 local function encode_timestamp(timestamp_ms)
-  local chars = {}
-  
-  -- Extract 10 characters (each 5 bits) from 48-bit timestamp
-  -- Work from most significant to least significant
-  for i = 9, 0, -1 do
-    local shift = i * 5
-    local index = extract_bits(timestamp_ms, shift, 32)  -- 32 = 2^5
-    table.insert(chars, BASE32_CHARS:sub(index + 1, index + 1))
-  end
-  
-  return table.concat(chars)
+    local chars = {}
+    for i = 9, 0, -1 do
+        local shift = i * 5
+        local index = extract_bits(timestamp_ms, shift, 32) -- 32 = 2^5
+        table.insert(chars, BASE32_CHARS:sub(index + 1, index + 1))
+    end
+    return table.concat(chars)
 end
 
 -- Encode randomness (80 bits) to 16 Base32 characters
 local function encode_random(random_bytes)
-  local chars = {}
-  local value = 0
-  local bits = 0
-  
-  -- Process all 10 bytes (80 bits)
-  for i = 1, #random_bytes do
-    value = value * 256 + random_bytes:byte(i)
-    bits = bits + 8
-    
-    -- Extract 5-bit chunks when we have enough bits
-    while bits >= 5 do
-      bits = bits - 5
-      local index = extract_bits(value, bits, 32)  -- 32 = 2^5
-      table.insert(chars, BASE32_CHARS:sub(index + 1, index + 1))
+    local chars, value, bits = {}, 0, 0
+    for i = 1, #random_bytes do
+        value = value * 256 + random_bytes:byte(i)
+        bits = bits + 8
+        while bits >= 5 do
+            bits = bits - 5
+            local index = extract_bits(value, bits, 32)
+            table.insert(chars, BASE32_CHARS:sub(index + 1, index + 1))
+        end
     end
-  end
-  
-  return table.concat(chars)
+    return table.concat(chars)
 end
 
--- Generate a ULID string (timestamp + random)
 function M.generate_ulid(timestamp_ms)
-  -- Use provided timestamp or current time
-  local ts = timestamp_ms or (os.time() * 1000)
-  
-  -- Ensure timestamp is within valid 48-bit range (0 to 281474976710655)
-  -- This represents dates from 1970 to year 10889
-  local MAX_TIMESTAMP = 281474976710655
-  if ts > MAX_TIMESTAMP then
-    ts = MAX_TIMESTAMP
-  end
-  if ts < 0 then
-    ts = 0
-  end
-  
-  -- Generate 10 random bytes (80 bits)
-  local rand_bytes = {}
-  for _ = 1, 10 do
-    table.insert(rand_bytes, string.char(math.random(0, 255)))
-  end
-  local rand_str = table.concat(rand_bytes)
-  
-  -- Encode timestamp (10 chars) + randomness (16 chars) = 26 chars total
-  return encode_timestamp(ts) .. encode_random(rand_str)
+    local ts = timestamp_ms or (os.time() * 1000)
+    local MAX_TIMESTAMP = 281474976710655
+    if ts > MAX_TIMESTAMP then ts = MAX_TIMESTAMP end
+    if ts < 0 then ts = 0 end
+    local rand_bytes = {}
+    for _ = 1, 10 do
+        table.insert(rand_bytes, string.char(math.random(0, 255)))
+    end
+    return encode_timestamp(ts) .. encode_random(table.concat(rand_bytes))
 end
 
--- Generate example date in the correct format
+-- =====================
+-- created parsing + fmt
+-- =====================
+
 function M.get_example_date()
-  local now = os.date("*t")
-  return string.format("%04d-%02d-%02d_%02d:%02d:%02d-0600", 
-                      now.year,
-                      now.month,
-                      now.day,
-                      now.hour,
-                      now.min,
-                      now.sec)
+    local now = os.date("*t")
+    return string.format(
+        "%04d-%02d-%02d_%02d:%02d:%02d-0600",
+        now.year, now.month, now.day, now.hour, now.min, now.sec
+    )
 end
 
--- Parse timestamp from created field or use current time
+-- Parse only:
+-- - YYYY-MM-DD_TT:MM:SS[-0600]
+-- - YYYY-MM-DD_TT:MM:SS
+-- - YYYY-MM-DD_TT:MM:SS-zzzz (ignored, we assume US Central)
+-- - Same with underscore instead of 'T': YYYY-MM-DD_HH:MM:SS[-0600]
+-- If parsing fails, returns nil.
+local function parse_created_to_epoch_ms(created)
+    if not created or created == "" then return nil end
+
+    -- Accept either 'T' or '_' delimiter; optional timezone suffix.
+    local y, m, d, H, M, S = created:match("^(%d%d%d%d)%-(%d%d)%-(%d%d)[T_](%d%d):(%d%d):(%d%d)")
+    if not (y and m and d and H and M and S) then
+        return nil
+    end
+
+    y, m, d, H, M, S = tonumber(y), tonumber(m), tonumber(d), tonumber(H), tonumber(M), tonumber(S)
+    if not (y and m and d and H and M and S) then
+        return nil
+    end
+    if not (m >= 1 and m <= 12 and d >= 1 and d <= 31 and H >= 0 and H <= 23 and M >= 0 and M <= 59 and S >= 0 and S <= 59) then
+        return nil
+    end
+
+    -- We assume local time already matches US Central; if you want strict CST/CDT, adjust here.
+    local t = os.time({ year = y, month = m, day = d, hour = H, min = M, sec = S })
+    if not t then return nil end
+
+    -- Add a bit of ms randomness to keep ULIDs unique when saving quickly
+    local ms = math.random(0, 999)
+    return t * 1000 + ms
+end
+
+-- Use 'created' to derive ULID timestamp; fallback to now when missing/invalid.
 function M.ulid_from_created_or_now(created)
-  local timestamp_ms
-  
-  if created and created ~= "" then
-    -- Try new format first: YYYY-MM-DD_HH:MM:SS-0600
-    local year, month, day, hour, min, sec = created:match("(%d%d%d%d)%-(%d%d)%-(%d%d)_(%d%d):(%d%d):(%d%d)%-0600")
-    
-    -- Try without seconds: YYYY-MM-DD_HH:MM-0600
-    if not year then
-      year, month, day, hour, min = created:match("(%d%d%d%d)%-(%d%d)%-(%d%d)_(%d%d):(%d%d)%-0600")
-      sec = "0"
+    local ts_ms = parse_created_to_epoch_ms(created)
+    if not ts_ms then
+        -- Show a single helpful notification when supplied but invalid
+        if created and created ~= "" then
+            vim.notify(
+                string.format('Date improperly formatted. Expected like: "%s"', M.get_example_date()),
+                vim.log.levels.ERROR
+            )
+        end
+        ts_ms = os.time() * 1000
     end
-    
-    -- Try legacy format with seconds: d-MMM-YYYYTHH:MM:SS-0600
-    if not year then
-      local d, m, y, h, mi, s = created:match("(%d+)%-(%a+)%-(%d+)T(%d+):(%d+):(%d+)%-0600")
-      if d and m and y then
-        local months = {
-          JAN = 1, FEB = 2, MAR = 3, APR = 4, MAY = 5, JUN = 6,
-          JUL = 7, AUG = 8, SEP = 9, OCT = 10, NOV = 11, DEC = 12
-        }
-        month = tostring(months[m:upper()] or 0)
-        day = d
-        year = y
-        hour = h
-        min = mi
-        sec = s
-      end
+    return M.generate_ulid(ts_ms)
+end
+
+-- ==============================
+-- Front matter ensure/merge logic
+-- ==============================
+
+-- Set to nil to apply to all markdown files. To scope, uncomment and add paths like:
+-- local vaults = {
+--     vim.fn.expand("$HOME/path/to/markdown/dir"),
+--     -- vim.fn.expand("$HOME/another/path"),
+-- }
+local vaults = nil
+
+local function in_vault(filepath)
+    if not vaults then return true end
+    filepath = vim.fn.fnamemodify(filepath, ":p")
+    for _, v in ipairs(vaults) do
+        v = vim.fn.fnamemodify(v, ":p")
+        if vim.startswith(filepath, v) then
+            return true
+        end
     end
-    
-    -- Try legacy format without seconds: d-MMM-YYYYTHH:MM-0600
-    if not year then
-      local d, m, y, h, mi = created:match("(%d+)%-(%a+)%-(%d+)T(%d+):(%d+)%-0600")
-      if d and m and y then
-        local months = {
-          JAN = 1, FEB = 2, MAR = 3, APR = 4, MAY = 5, JUN = 6,
-          JUL = 7, AUG = 8, SEP = 9, OCT = 10, NOV = 11, DEC = 12
-        }
-        month = tostring(months[m:upper()] or 0)
-        day = d
-        year = y
-        hour = h
-        min = mi
-        sec = "0"
-      end
+    return false
+end
+
+local function now_created_str()
+    return os.date("%Y-%m-%d_%H:%M:%S-0600")
+end
+
+-- Parse a simple YAML front matter block of "key: value" lines.
+-- Returns map and end index of block (line number of closing ---).
+local function parse_frontmatter(lines)
+    if lines[1] ~= "---" then
+        return nil, 0
     end
-    
-    if year and month and day and hour and min and sec then
-      -- Convert to numbers
-      year = tonumber(year)
-      month = tonumber(month)
-      day = tonumber(day)
-      hour = tonumber(hour)
-      min = tonumber(min)
-      sec = tonumber(sec)
-      
-      -- Validate ranges
-      if year and year >= 1000 and
-         month and month >= 1 and month <= 12 and
-         day and day >= 1 and day <= 31 and
-         hour and hour >= 0 and hour <= 23 and
-         min and min >= 0 and min <= 59 and
-         sec and sec >= 0 and sec <= 59 then
-        
-        -- Create timestamp with parsed date/time including seconds
-        local time = os.time({
-          year = year,
-          month = month,
-          day = day,
-          hour = hour,
-          min = min,
-          sec = sec
-        })
-        
-        -- Add milliseconds (approximate based on random)
-        local ms = math.random(0, 999)
-        timestamp_ms = time * 1000 + ms
-      end
+    local fm, end_idx = {}, 0
+    for i = 2, #lines do
+        local line = lines[i]
+        if line == "---" then
+            end_idx = i
+            break
+        end
+        local key, value = line:match("^([%w_%-%[%]]+):%s*(.*)$")
+        if key and value then
+            -- Keep tags: [] literally if present; otherwise store as string
+            fm[key] = vim.trim(value)
+        end
     end
-    
-    -- If parsing failed, show error message
-    if not timestamp_ms then
-      local example = M.get_example_date()
-      vim.notify(
-        string.format('Date improperly formatted. Expected format: "%s"', example),
-        vim.log.levels.ERROR
-      )
+    if end_idx == 0 then
+        return nil, 0
     end
-  end
-  
-  -- If no created field or parsing failed, use current time
-  if not timestamp_ms then
-    timestamp_ms = os.time() * 1000
-  end
-  
-  return M.generate_ulid(timestamp_ms)
+    return fm, end_idx
+end
+
+-- Merge rules:
+-- - id: if missing/blank => generate via ULID(created)
+-- - created: if missing/blank => now in YYYY-MM-DD_HH:MM:SS-0600
+-- - author: if missing/blank => "Gallo Chingon"
+-- - source/status/topic/type: ensure keys exist (empty value if missing)
+-- - tags: ensure exists; if missing => "[]"
+local function merge_frontmatter(existing)
+    local fm = {}
+    for k, v in pairs(existing or {}) do
+        fm[k] = v
+    end
+
+    -- Normalize empties
+    local function is_blank(v)
+        return v == nil or (type(v) == "string" and vim.trim(v) == "")
+    end
+
+    if is_blank(fm.created) then
+        fm.created = now_created_str()
+    end
+
+    if is_blank(fm.id) then
+        fm.id = M.ulid_from_created_or_now(fm.created)
+    end
+
+    if is_blank(fm.author) then
+        fm.author = "Gallo Chingon"
+    end
+
+    if fm.tags == nil or is_blank(fm.tags) then
+        fm.tags = "[]"
+    end
+
+    if is_blank(fm.source) then fm.source = "" end
+    if is_blank(fm.status) then fm.status = "" end
+    if is_blank(fm.topic)  then fm.topic  = "" end
+    if is_blank(fm.type)   then fm.type   = "" end
+
+    return fm
+end
+
+-- Build FM lines with fixed order first, then extras alphabetically.
+local FIXED_ORDER = { "id", "created", "author", "source", "status", "tags", "topic", "type" }
+
+local function build_frontmatter_lines(fm)
+    local out = { "---" }
+
+    -- Fixed ordered keys
+    for _, key in ipairs(FIXED_ORDER) do
+        local v = fm[key]
+        if v ~= nil then
+            table.insert(out, string.format("%s: %s", key, v))
+        end
+    end
+
+    -- Extras (deterministic)
+    local extras = {}
+    for k, v in pairs(fm) do
+        local fixed = false
+        for _, fk in ipairs(FIXED_ORDER) do
+            if k == fk then fixed = true; break end
+        end
+        if not fixed then
+            table.insert(extras, { k, v })
+        end
+    end
+    table.sort(extras, function(a, b) return a[1] < b[1] end)
+    for _, kv in ipairs(extras) do
+        table.insert(out, string.format("%s: %s", kv[1], kv[2]))
+    end
+
+    table.insert(out, "---")
+    return out
+end
+
+local function inject_or_update_frontmatter(bufnr)
+    local path = vim.api.nvim_buf_get_name(bufnr)
+    if path == "" or not in_vault(path) then
+        return
+    end
+
+    local line_count = vim.api.nvim_buf_line_count(bufnr)
+    local head = vim.api.nvim_buf_get_lines(bufnr, 0, math.min(200, line_count), false)
+    local existing, end_idx = parse_frontmatter(head)
+
+    if not existing then
+        -- No FM: create new ordered block
+        local fm = merge_frontmatter({})
+        local fm_lines = build_frontmatter_lines(fm)
+        vim.api.nvim_buf_set_lines(bufnr, 0, 0, false, fm_lines)
+        -- Ensure a blank line after front matter if content starts immediately
+        local after = vim.api.nvim_buf_get_lines(bufnr, #fm_lines, #fm_lines + 1, false)[1]
+        if after and vim.trim(after) ~= "" then
+            vim.api.nvim_buf_set_lines(bufnr, #fm_lines, #fm_lines, false, { "" })
+        end
+        return
+    end
+
+    -- Merge and rewrite, preserving extras and reordering to fixed order first
+    local merged = merge_frontmatter(existing)
+    local fm_lines = build_frontmatter_lines(merged)
+    vim.api.nvim_buf_set_lines(bufnr, 0, end_idx, false, fm_lines)
+end
+
+-- Public: set up BufWritePre hook for Markdown files
+function M.setup()
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("ULIDFrontmatterEnsure", { clear = true }),
+        pattern = { "*.md", "*.markdown", "*.mdx" },
+        callback = function(args)
+            if vim.bo[args.buf].filetype ~= "markdown" then
+                return
+            end
+            inject_or_update_frontmatter(args.buf)
+        end,
+        desc = "Ensure and order YAML front matter; generate ULID from created",
+    })
 end
 
 return M

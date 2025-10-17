@@ -24,7 +24,7 @@ let-env DZ = $"($env.CF)/zsh"          # zsh config stuff (legacy, for reference
 let-env NV = $"($env.CF)/nvim"         # Real Neovim repo
 let-env RX = $"($env.CF)/rx"           # shortcut to global scripts
 let-env RP = $"($env.HOME)/repos"     # podcast ideas, etc.
-let-env WP = $"($env.DX)/webpage"
+let-env NT_INBOX = ($env.DX + '/inbox.md')
 let-env WC = $"($env.DX)/widows-club"
 
 # History settings

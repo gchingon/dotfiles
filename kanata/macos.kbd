@@ -27,25 +27,29 @@
   tab-meh (tap-hold-press 200 200 tab (multi lsft lctl lalt))
   ret-rctl (tap-hold-press 200 200 ret rctl)
   rshift-fdel (tap-hold-press 200 200 del rsft)
-  ;; aliases for raycast
-  rtrans  (cmd open "raycast://extensions/raycast/translator/translate")
-  rspoti  (cmd open "raycast://extensions/mattisssa/spotify-player/search")
-  rvidsr  (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
-  rrayai  (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
-  ;; aliases for applications
-  asafar  (cmd open "/Applications/Safari.app")
-  awezte  (cmd open "/Applications/WezTerm.app")
-  apages  (cmd open "/Applications/Pages.app")
-  aprevi  (cmd open "/System/Applications/Preview.app")
-
   ;; --- Advanced Modifier Remaps ---
-  ;; FIX: The action list for tap-dance is a single list of actions,
-  ;; not a list of lists.
+  ;; The action list for tap-dance is a single list of actions, not a list of lists.
   ralt-dance (tap-dance 200 (
     (multi rmet ralt) ;; Action 1 is a multi-key action, so it needs parens
-    C-A-M-m           ;; Action 2 is a simple chord, so it does not need parens <-- FIX HERE
+    C-A-M-m           ;; Action 2 is a simple chord, so it does not need parens
   ))
 )
+
+;; (defalias
+  ;; aliases for raycast
+  ;; rtrans  (cmd open "raycast://extensions/raycast/translator/translate")
+  ;; rspoti  (cmd open "raycast://extensions/mattisssa/spotify-player/search")
+  ;; rvidsr  (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+  ;; rrayai  (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
+;; )
+
+;; (defalias
+  ;; aliases for applications
+  ;; asafar  (cmd open "/Applications/Safari.app")
+  ;; awezte  (cmd open "/Applications/WezTerm.app")
+  ;; apages  (cmd open "/Applications/Pages.app")
+  ;; aprevi  (cmd open "/System/Applications/Preview.app")
+;; )
 
 ;; --- MAIN KEYMAP LAYER (77 keys) ---
 (deflayer base

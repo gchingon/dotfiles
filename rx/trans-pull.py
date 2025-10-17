@@ -5,17 +5,17 @@ tsp - Transcript Processing Tool
 A unified tool for downloading and converting video transcripts
 
 Usage:
-    tsp URL srt                    # Download transcript as SRT only
-    tsp URL stm                    # Download and convert to markdown 
-    tsp URL vtm                    # Download and convert to markdown (prefer VTT)
+    tsp srt URL                    # Download transcript as SRT only
+    tsp stm URL                    # Download and convert to markdown 
+    tsp vtm URL                    # Download and convert to markdown (prefer VTT)
     tsp stm filename.srt           # Convert SRT to markdown
     tsp vtm filename.vtt           # Convert VTT to markdown
     tsp -h, --help                 # Show help
     
 Additional features:
-    tsp URL batch                  # Download both SRT and VTT if available
+    tsp batch URL                  # Download both SRT and VTT if available
     tsp clean directory/           # Convert all SRT/VTT files in directory
-    tsp URL json                   # Download transcript as JSON with metadata
+    tsp json URL                   # Download transcript as JSON with metadata
 """
 
 import argparse
@@ -119,14 +119,28 @@ class TranscriptProcessor:
         lines = content.split('\n')
         cleaned_lines = []
         
+        # Improved timecode pattern matching
+        timecode_pattern = re.compile(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}[,\.]\d{3}')
+        
         for line in lines:
             line = line.strip()
-            # Skip empty lines, numbers, and timecodes
-            if (not line or 
-                line.isdigit() or 
-                '-->' in line or
-                re.match(r'^\d+:\d+:\d+', line)):
+            
+            # Skip empty lines
+            if not line:
                 continue
+            
+            # Skip sequence numbers (standalone integers)
+            if line.isdigit():
+                continue
+            
+            # Skip timecode lines (HH:MM:SS,mmm --> HH:MM:SS,mmm)
+            if timecode_pattern.match(line):
+                continue
+            
+            # Skip lines that look like timecodes without arrow
+            if re.match(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}', line):
+                continue
+                
             cleaned_lines.append(line)
         
         # Remove duplicates while preserving order
@@ -144,21 +158,44 @@ class TranscriptProcessor:
         lines = content.split('\n')
         cleaned_lines = []
         
+        # Improved timecode pattern matching
+        timecode_pattern = re.compile(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}[,\.]\d{3}')
+        
         for line in lines:
             line = line.strip()
-            # Skip WEBVTT header, empty lines, numbers, and timecodes
-            if (not line or 
-                line == 'WEBVTT' or
-                line.startswith('NOTE') or
-                line.isdigit() or 
-                '-->' in line or
-                re.match(r'^\d+:\d+:\d+', line)):
+            
+            # Skip empty lines
+            if not line:
                 continue
             
-            # Remove HTML tags
+            # Skip WEBVTT header
+            if line == 'WEBVTT' or line.startswith('WEBVTT '):
+                continue
+            
+            # Skip NOTE lines
+            if line.startswith('NOTE'):
+                continue
+            
+            # Skip sequence numbers
+            if line.isdigit():
+                continue
+            
+            # Skip timecode lines
+            if timecode_pattern.match(line):
+                continue
+            
+            # Skip lines that look like timecodes without arrow
+            if re.match(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}', line):
+                continue
+            
+            # Remove HTML/XML tags (common in VTT)
             line = re.sub(r'<[^>]+>', '', line)
-            if line:
-                cleaned_lines.append(line)
+            
+            # Skip if line became empty after tag removal
+            if not line.strip():
+                continue
+                
+            cleaned_lines.append(line)
         
         # Remove duplicates while preserving order
         seen = set()
@@ -314,17 +351,17 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  tsp https://youtube.com/watch?v=xyz srt    # Download SRT transcript
-  tsp https://youtube.com/watch?v=xyz stm    # Download and convert to markdown
+  tsp srt https://youtube.com/watch?v=xyz    # Download SRT transcript
+  tsp stm https://youtube.com/watch?v=xyz    # Download and convert to markdown
   tsp stm transcript.srt                     # Convert SRT to markdown  
   tsp vtm transcript.vtt                     # Convert VTT to markdown
-  tsp https://youtube.com/watch?v=xyz batch  # Download all available formats
+  tsp batch https://youtube.com/watch?v=xyz  # Download all available formats
   tsp clean ~/Downloads/                     # Convert all transcripts in directory
         """
     )
     
-    parser.add_argument('target', help='URL or filename to process')
     parser.add_argument('action', help='Action to perform: srt, stm, vtm, batch, clean, json')
+    parser.add_argument('target', help='URL, filename, or directory to process')
     parser.add_argument('-o', '--output', default='.', help='Output directory (default: current directory)')
     parser.add_argument('--keep-original', action='store_true', help='Keep original transcript file after conversion')
     
@@ -337,7 +374,7 @@ Examples:
     processor = TranscriptProcessor()
     
     # Handle URL-based actions
-    if args.target.startswith(('http://', 'https://')):
+    if args.target.startswith(('http://', 'https://', 'www.')):
         if args.action == 'srt':
             processor.download_transcript(args.target, args.output, 'srt')
         elif args.action == 'stm':
@@ -358,12 +395,8 @@ Examples:
     
     # Handle file-based actions
     elif os.path.exists(args.target):
-        if args.action == 'stm' and args.target.endswith('.srt'):
+        if args.action in ['stm', 'vtm']:
             processor.convert_to_markdown(args.target, keep_original=args.keep_original)
-        elif args.action == 'vtm' and args.target.endswith('.vtt'):
-            processor.convert_to_markdown(args.target, keep_original=args.keep_original)
-        elif args.action == 'clean' and os.path.isdir(args.target):
-            processor.clean_directory(args.target)
         else:
             print(f"ERROR: Action '{args.action}' not compatible with file '{args.target}'")
             return

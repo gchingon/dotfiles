@@ -87,6 +87,7 @@ alias fdf='filemgr find'     # Find files in current dir (`fd` = fast find) $RX/
 alias pof='clipops paste' # paste and overwrite file with clipboard contents essentially `pbpaste > $1` $RX/paste-overwrite-to-file.sh
 alias paf='clipops append'    # paste to end of file with clipboard content `pbpaste >> $1` $RX/paste-append-to-file.sh
 alias ctc='clipops copy'  # Copy file contents to clipboard -- hard linked to $RX/copy-file-content-to-clipboard.sh
+alias pafi='clipops append $NT_INBOX'
 
 # ==== No Longer Aliased ====
 # instead of hardlinking $RX/script-name.sh -> ~/.local/bin/scriptname and aliasing "sn" (short for scriptname) I decided to cut out the middleman and just hardlink to the "sn/shortname" below is just a reminder of what the script does based on the former alias

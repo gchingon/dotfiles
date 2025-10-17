@@ -35,3 +35,6 @@ nvim nushell/modules/functions.nu
 source nushell/config.nu
 nvim nushell/modules/functions.nu
 exit
+NT_INBOX
+open^ $env.NT_INBOX
+exit

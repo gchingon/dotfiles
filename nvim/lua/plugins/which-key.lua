@@ -24,16 +24,23 @@ wk.setup({
 local mappings = {
 
   -- Group Definitions
-  { "<leader>/",   group = "Find (FZF)" },
+  { "<leader>/",   group = "Find " },
   { "<leader>c",   group = "Code" },
+  { "<leader>t",   group = "mini.files"},
   { "<leader>G",   group = "Git" },
-  { "<leader>nd",  group = "Daily Notes" },
-  { "<leader>na",  group = "Aliases" },
-  { "<leader>no",  group = "Origins" },
   { "<leader>s",   group = "Search (Flash)" },
   { "<leader>t",   group = "Toggle" },
   { "<leader>u",   group = "UI" },
   { "<leader>r",   group = "Rename" },
+
+  { "K",           "Hover (Saga)" },
+  { "gd",          "Goto Definition (Saga)" },
+  { "gr",          "References (Saga Finder)" },
+  { "gR",          "Rename (Saga)" },
+  { "ga",          "Code Action (Saga)",                                           mode = { "n", "v" } },
+  { "gl",          "Line Diagnostics (Saga)" },
+  { "[d",          "Prev Diagnostic (Saga)" },
+  { "]d",          "Next Diagnostic (Saga)" },
 
   -- FZF
   { "<leader>/f",  "<cmd>FzfLua files<cr>",                                        desc = "Files" },
@@ -46,8 +53,8 @@ local mappings = {
   { "<leader>h",   "<cmd>bp<cr>",                                                  desc = "Previous Buffer" },
 
   -- Git / Gitsigns
-  { "<leader>Gs",  ":Gitsigns stage_hunk<CR>",                                     desc = "Stage Hunk",                  mode = { "n", "v" } },
-  { "<leader>Gr",  ":Gitsigns reset_hunk<CR>",                                     desc = "Reset Hunk",                  mode = { "n", "v" } },
+  { "<leader>Gs",  ":Gitsigns stage_hunk<CR>",                                     desc = "Stage Hunk",               mode = { "n", "v" } },
+  { "<leader>Gr",  ":Gitsigns reset_hunk<CR>",                                     desc = "Reset Hunk",               mode = { "n", "v" } },
   { "<leader>GS",  function() require("gitsigns").stage_buffer() end,              desc = "Stage Buffer" },
   { "<leader>Gu",  function() require("gitsigns").undo_stage_hunk() end,           desc = "Undo Stage" },
   { "<leader>GR",  function() require("gitsigns").reset_buffer() end,              desc = "Reset Buffer" },
@@ -70,14 +77,14 @@ local mappings = {
   { "<leader>t",   group = "Todo" },
 
   -- LSP
-  { "<leader>ca",  vim.lsp.buf.code_action,                                        desc = "Code Action",                 mode = { "n", "v" } },
+  { "<leader>ca",  vim.lsp.buf.code_action,                                        desc = "Code Action",              mode = { "n", "v" } },
   { "<leader>rn",  vim.lsp.buf.rename,                                             desc = "Rename" },
   { "<leader>D",   vim.lsp.buf.type_definition,                                    desc = "Type Definition" },
   { "<leader>f",   function() vim.lsp.buf.format({ async = true }) end,            desc = "Format" },
 
   -- Flash
-  { "<leader>s",   function() require("flash").jump() end,                         desc = "Flash Jump",                  mode = { "n", "v", "o" } },
-  { "<leader>S",   function() require("flash").treesitter() end,                   desc = "Flash Treesitter",            mode = { "n", "v", "o" } },
+  { "<leader>s",   function() require("flash").jump() end,                         desc = "Flash Jump",               mode = { "n", "v", "o" } },
+  { "<leader>S",   function() require("flash").treesitter() end,                   desc = "Flash Treesitter",         mode = { "n", "v", "o" } },
 
   -- Toggles
   { "<leader>uw",  "<cmd>set wrap!<cr>",                                           desc = "Toggle Wrap" },
