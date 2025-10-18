@@ -23,13 +23,11 @@ alias dcd='docker-compose down'
 alias dcu='docker-compose up -d'
 alias podi='podman ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
 alias cs='colorswitch'                   # colorselector script to switch colorschemes for yazi, neovim, ghostty, & starship
-alias cst='cs tokyodarknite'          # switch to tokyonight colorscheme
-alias csk='cs neodark'              # switch to neodark-dark colorscheme
+alias cst='cs tokyodark'          # switch to tokyonight colorscheme
 alias csn='cs niteblossom'      # switch to nightblossom
-alias csw='cs nightowl'                  # switch to nightowl colorscheme
+alias cso='cs nightowl'                  # switch to nightowl colorscheme
 alias csg='cs nugotham'                  # switch to nugotham colorscheme
 alias cse='cs eldritch'           # switch to eldritch-darker colorscheme
-alias csd='cs deepdark'       # switch to material-deep-ocean
 alias csv='cs vague'              # switch to onedark-deep
 
 # ===== Git Aliases =====

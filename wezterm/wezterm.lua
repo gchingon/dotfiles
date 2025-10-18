@@ -9,10 +9,17 @@ config.set_environment_variables = {
   PATH = '/opt/homebrew/bin:' .. os.getenv('PATH')
 }
 
-if appearance.is_dark() then
-  config.color_scheme = 'Tokyo Night'
+-- Load theme from theme.lua (managed by colorselector.sh)
+local theme_ok, theme = pcall(require, 'theme')
+if theme_ok and theme.color_scheme then
+  config.color_scheme = theme.color_scheme
 else
-  config.color_scheme = 'Tokyo Night dark'
+  -- Fallback to default theme if theme.lua doesn't exist
+  if appearance.is_dark() then
+    config.color_scheme = 'Tokyo Night'
+  else
+    config.color_scheme = 'Tokyo Night dark'
+  end
 end
 
 config.font = wezterm.font('IBM Plex Mono')

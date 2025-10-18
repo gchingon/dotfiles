@@ -2,6 +2,9 @@
   "themes": {
     "tokyodarknite": {
       "name": "TokyoDarkNite",
+      "wezterm": {
+        "color_scheme": "Tokyo Night"
+      },
       "ghostty": {
         "background": "#11121d",
         "foreground": "#c0caf5",
@@ -195,6 +198,9 @@
 
     "deepdark": {
       "name": "DeepDark",
+      "wezterm": {
+        "color_scheme": "OneDark (base16)"
+      },
       "ghostty": {
         "background": "#0F111A",
         "foreground": "#a0a8b7",
@@ -388,6 +394,9 @@
 
     "eldritch": {
       "name": "Eldritch",
+      "wezterm": {
+        "color_scheme": "Eldritch (Gogh)"
+      },
       "ghostty": {
         "background": "#171928",
         "foreground": "#d8e6e6",
@@ -581,6 +590,9 @@
 
     "niteblossom": {
       "name": "Niteblossom",
+      "wezterm": {
+        "color_scheme": "nightfox"
+      },
       "ghostty": {
         "background": "#00041F",
         "foreground": "#FFEBF7",
@@ -720,6 +732,9 @@
 
     "nugotham": {
       "name": "NuGotham",
+      "wezterm": {
+        "color_scheme": "Gotham (Gogh)"
+      },
       "ghostty": {
         "background": "#0c1014",
         "foreground": "#99d1ce",
@@ -864,6 +879,9 @@
 
     "nightowl": {
       "name": "Night Owl",
+      "wezterm": {
+        "color_scheme": "Night Owl (Gogh)"
+      },
       "ghostty": {
         "background": "#011627",
         "foreground": "#d6deeb",
@@ -1003,6 +1021,9 @@
 
     "vague": {
       "name": "Vague",
+      "wezterm": {
+        "color_scheme": "Vs Code Dark+ (Gogh)"
+      },
       "ghostty": {
         "background": "#001d46",
         "foreground": "#b8c9ec",
