@@ -31,9 +31,51 @@ blink.setup({
 
         ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<C-e>"]     = { "hide", "fallback" },
+
+        -- Accept completion with <C-y> (removes semicolon for snippets)
+        ["<C-y>"] = {
+            function(cmp)
+                local selected = cmp.get_selected_item()
+                local is_snippet = selected and selected.kind == require('blink.cmp.types').CompletionItemKind.Snippet
+
+                -- Capture current state before accepting
+                local line = vim.api.nvim_get_current_line()
+                local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+                local before_cursor = line:sub(1, col)
+                local semi_pos = before_cursor:find(";[_%w%-]+$")
+
+                -- Accept the completion first
+                local result = cmp.select_and_accept()
+
+                -- Then schedule semicolon removal after completion machinery finishes
+                if is_snippet and semi_pos then
+                    vim.schedule(function()
+                        local current_line = vim.api.nvim_get_current_line()
+                        -- Find and remove the semicolon that was left behind
+                        local updated_line = current_line:gsub(";", "", 1)
+                        if updated_line ~= current_line then
+                            vim.api.nvim_set_current_line(updated_line)
+                        end
+                    end)
+                end
+
+                return result
+            end,
+            "fallback",
+        },
+
+        -- LuaSnip choice node navigation
+        ["<C-l>"] = {
+            function()
+                local ls = require("luasnip")
+                if ls.choice_active() then
+                    ls.change_choice(1)
+                end
+            end,
+        },
     },
     sources = {
-        default = { "lsp", "path", "snippets", "buffer", "emoji" }, -- enable dictionary later if desired
+        default = { "lsp", "path", "snippets", "buffer", "dictionary", "emoji" },
         providers = {
             lsp = {
                 name = "lsp",
@@ -77,40 +119,7 @@ blink.setup({
                     local line = vim.api.nvim_get_current_line()
                     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
                     local before_cursor = line:sub(1, col)
-                    -- Check if we have a semicolon followed by word characters at the cursor position
-                    return before_cursor:match(";" .. "[_%w%-]*$") ~= nil
-                end,
-
-                -- Replace the entire ";trigger" region with the snippet body on accept
-                transform_items = function(_, items)
-                    local line = vim.api.nvim_get_current_line()
-                    local row, col = unpack(vim.api.nvim_win_get_cursor(0)) -- row 1-based, col 0-based
-                    local before_cursor = line:sub(1, col)
-
-                    -- Find the semicolon and trigger pattern
-                    local semicolon_start = before_cursor:find(";[_%w%-]*$")
-                    if not semicolon_start then
-                        return items
-                    end
-
-                    -- Calculate the range to replace (0-based for LSP)
-                    local start_col0 = semicolon_start - 1  -- Convert to 0-based
-                    local end_col0 = col  -- Current cursor position is already 0-based
-
-                    for _, item in ipairs(items) do
-                        if not item.trigger_text_modified then
-                            item.trigger_text_modified = true
-                            -- Create a textEdit that replaces the ";trigger" with the snippet content
-                            item.textEdit = {
-                                newText = item.insertText or item.label,
-                                range = {
-                                    start = { line = row - 1, character = start_col0 },
-                                    ["end"] = { line = row - 1, character = end_col0 },
-                                },
-                            }
-                        end
-                    end
-                    return items
+                    return before_cursor:match(";[_%w%-]+$") ~= nil
                 end,
             },
             emoji = {
@@ -121,7 +130,6 @@ blink.setup({
                 opts = { insert = true },
             },
 
-            -- Re-enable dictionary later if desired. Requires 'nvim-lua/plenary.nvim'.
             dictionary = {
                 module = "blink-cmp-dictionary",
                 name = "Dict",
@@ -148,3 +156,4 @@ blink.setup({
     cmdline = { enabled = true },
     snippets = { preset = "luasnip" },
 })
+

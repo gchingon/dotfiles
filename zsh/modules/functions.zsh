@@ -43,3 +43,15 @@ EOF
   success "Reload command sent to Ghostty."
 }
 
+dreams_md_shortcut() {
+  local dream_date=$(date "+%Y-%m-%d")
+  nvim "$CT/dreams.md" \
+    -c "normal! G" \
+    -c "normal! o# " \
+    -c "normal! o#" \
+    -c "normal! odate: $dream_date" \
+    -c "normal! o" \
+    -c "normal! 3k\$" \
+    -c "startinsert"
+}
+

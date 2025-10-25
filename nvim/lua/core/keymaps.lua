@@ -38,3 +38,11 @@ map("n", "[c",
   function()
     if vim.wo.diff then return "[c" end; vim.schedule(function() require("gitsigns").prev_hunk() end); return "<Ignore>"
   end, { expr = true, desc = "Previous Hunk" })
+
+-- LuaSnip choice node cycling (in insert mode during snippet expansion)
+map({ "i", "s" }, "<C-l>", function()
+  local ls = require("luasnip")
+  if ls.choice_active() then
+    ls.change_choice(1)
+  end
+end, { desc = "Cycle snippet choices" })

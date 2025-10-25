@@ -149,6 +149,7 @@ alias bs='brew search '                  # Search for package
 # ===== Neovim Aliases =====
 alias v='nvim'                           # Launch Neovim
 alias va='open-aliases'                  # Edit aliases.zsh
+alias vd='dreams_md_shortcut'            # Quick dream journal entry
 alias vf='open-functions'                # Edit functions.zsh
 alias vm='open-nvim-init'                # Edit Neovim init.lua
 alias vs='open-secrets'                  # Edit secrets (assumes file)

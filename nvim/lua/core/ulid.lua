@@ -122,7 +122,9 @@ end
 --     vim.fn.expand("$HOME/path/to/markdown/dir"),
 --     -- vim.fn.expand("$HOME/another/path"),
 -- }
-local vaults = nil
+local vaults = {
+    vim.fn.expand("$HOME/Documents"),
+}
 
 local function in_vault(filepath)
     if not vaults then return true end

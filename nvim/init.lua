@@ -83,9 +83,9 @@ vim.cmd([[
 require("core.options")
 require("core.autocmds")
 require("core.keymaps")
-require("core.markdown")
 require("core.ulid").setup()
 require("core.checkbox-cycle").setup()
+require("core.hugo-frontmatter").setup()
 
 
 -- ============================================================================
@@ -162,6 +162,11 @@ setup_plugin("lint", function(lint)
 end)
 
 setup_plugin("luasnip.loaders.from_vscode", function(p) p.lazy_load() end)
+
+-- Load custom lua snippets from ~/.config/nvim/snippets
+setup_plugin("luasnip.loaders.from_lua", function(p)
+  p.load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
+end)
 
 setup_plugin("lspsaga", function(saga)
     saga.setup({
