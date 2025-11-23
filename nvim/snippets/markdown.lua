@@ -13,23 +13,15 @@ local rep = require("luasnip.extras").rep
 
 -- Snippets
 return {
-  -- Obsidian frontmatter with date choice
-  s({ trig = "fm", name = "Frontmatter (Obsidian modified extension)" }, {
-    t({ "---" }),
-    t({ "", "created: " }),
-    c(1, {
-      -- Choice 1: Dynamic insert node with current date at expansion time
-      d(nil, function()
-        return sn(nil, {
-          i(1, os.date("%Y-%m-%d"))
-        })
-      end),
-      -- Choice 2: Empty insert node for manual entry
-      i(nil),
-    }),
-    t({ "", "---" }),
-    t({ "", "" }),
-    i(0),
+  -- social links for hugo theme
+  s({ trig = "socialls", name = "social links shortcode"}, {
+    t("{{< social-link url=\"https://"),
+    i(1),
+    t("\" text=\""),
+    i(2),
+    t("\" icon=\""),
+    i(3),
+    t("\" >}}")
   }),
 
   -- Blog post frontmatter

@@ -123,7 +123,8 @@ end
 --     -- vim.fn.expand("$HOME/another/path"),
 -- }
 local vaults = {
-    vim.fn.expand("$HOME/Documents"),
+    vim.fn.expand("$HOME/Documents/notes/content"),
+    vim.fn.expand("$HOME/Documents/notes/daily")
 }
 
 local function in_vault(filepath)
@@ -139,7 +140,7 @@ local function in_vault(filepath)
 end
 
 local function now_created_str()
-    return os.date("%Y-%m-%d_%H:%M:%S-0600")
+    return os.date("%Y-%m-%dT%H:%M:%S-0600")
 end
 
 -- Parse a simple YAML front matter block of "key: value" lines.

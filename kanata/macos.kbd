@@ -23,7 +23,8 @@
 ;; --- ALIASES (The core logic) ---
 (defalias
   ;; --- Core Modifier Remaps ---
-  caps-hyper (tap-hold-press 200 200 esc (multi lsft lctl lalt lmet))
+  esc-ctl (tap-hold-press 200 200 esc lctl)
+  s-hyp (tap-hold-press 250 250 spc (multi lsft lctl lalt lmet))
   tab-meh (tap-hold-press 200 200 tab (multi lsft lctl lalt))
   ret-rctl (tap-hold-press 200 200 ret rctl)
   rshift-fdel (tap-hold-press 200 200 del rsft)
@@ -53,21 +54,10 @@
 
 ;; --- MAIN KEYMAP LAYER (77 keys) ---
 (deflayer base
-  ;; Top Row (F-Keys)
-  _    _    _    _    _    _    _    _    _    _    _    _   _ 
-
-  ;; Number Row
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-
-  ;; QWERTY Row
-  @tab-meh _    _    _    _    _    _    _    _    _    _    _    _    _
-
-  ;; Home Row
-  @caps-hyper _    _    _    _    _    _    _    _    _    _    _    @ret-rctl
-
-  ;; Bottom Row (zxc...)
-  _    _    _    _    _    _    _    _    _    _    _    _    @rshift-fdel
-
-  ;; Modifier/Arrow Row
-  _    _    _    _             spc            _    @ralt-dance _    _    _
+  esc    brdn brup _    _    _    _   prev  pp   next mute vold volu ;; Top Row (F-Keys)
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _ ;; Number Row
+  @tab-meh _    _    _    _    _    _    _    _    _    _    _    _    _ ;; QWERTY Row
+  @esc-ctl _    _    _    _    _    _    _    _    _    _    _    @ret-rctl ;; Home Row
+  _    _    _    _    _    _    _    _    _    _    _    _    @rshift-fdel ;; Bottom Row (zxc...)
+  _    _    _    _             @s-hyp            _    _ @ralt-dance  _    _ ;; Modifier/Arrow Row
 )
