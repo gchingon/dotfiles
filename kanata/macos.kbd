@@ -1,14 +1,21 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;----------------------------------------------------
 ;; Kanata Configuration for macOS v4
 ;; Built from official documentation and error log diagnostics.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;----------------------------------------------------
 
 ;; --- Configuration Settings ---
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold yes
+  danger-enable-cmd yes
 )
 
+;; Variables
+(defvar
+ tt 200   ;; tap-time
+ ht 200   ;; hold-time
+ ct 60    ;; chord-time
+)
 ;; --- Key Definitions (77-key MacBook Layout) ---
 (defsrc
   esc    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
@@ -19,45 +26,105 @@
   fn     lctl lalt lmet          spc            rmet ralt left down rght
 )
 
-
 ;; --- ALIASES (The core logic) ---
 (defalias
-  ;; --- Core Modifier Remaps ---
-  esc-ctl (tap-hold-press 200 200 esc lctl)
-  s-hyp (tap-hold-press 250 250 spc (multi lsft lctl lalt lmet))
-  tab-meh (tap-hold-press 200 200 tab (multi lsft lctl lalt))
-  ret-rctl (tap-hold-press 200 200 ret rctl)
-  rshift-fdel (tap-hold-press 200 200 del rsft)
-  ;; --- Advanced Modifier Remaps ---
+;; aliases for raycast
+  ;; rtran  (cmd open "raycast://extensions/raycast/translator/translate")
+  ;; rspot  (cmd open "raycast://extensions/mattisssa/spotify-player/search")
+  ;; rvid/  (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+  ;; rayai  (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
+  ;; rcent   (cmd open "raycast://extensions/GastroGeek/recents/recents")
+
+;; hyper<->scam
+  scam6 S-C-A-M-6 ;; homerow
+  scam0 S-C-A-M-0 ;; cleanshot capture area
+  scam9 S-C-A-M-9 ;; cleanshot capture previous area
+  scamt S-C-A-M-tab ;; cleanshot capture history
+  scam= S-C-A-M-= ;; cleanshot capture history
+  scamz S-C-A-M-z ;; mouseless app
+  scamd S-C-A-M-d ;; presentify app
+
+;; Modifier keys
+  mlmet (tap-hold $tt $ht f lmet)
+  mrmet (tap-hold $tt $ht j rmet)
+  mlalt (tap-hold $tt $ht d lalt)
+  mralt (tap-hold $tt $ht k ralt)
+  
+;; Double actions,.
+  mhome (tap-hold $tt $ht . @scam6) ;; homerow
+  mmous (tap-hold $tt $ht , @scamz) ;; mouseless
+  mcopy (tap-hold $tt $ht c M-c)
+  mpast (tap-hold $tt $ht v M-v)
+  mmtab (tap-hold $tt $ht z M-tab)
+  mmgrv (tap-hold $tt $ht x M-grv)
+  esctl (tap-hold-press $tt $ht esc lctl)
+  sHYP (tap-hold-press $tt $ht spc (multi lsft lctl lalt lmet))
+  tabeh (tap-hold-press $tt $ht tab (multi lsft lctl lalt))
+  retl (tap-hold-press $tt $ht ret rctl)
+  shdl (tap-hold-press $tt $ht del rsft)
+
+;; aliases for applications
+  amld (cmd open -a "meld studio")
+  azom (cmd open -a zoom)
+  advs (cmd open -a Davinci\ Resolve\ Studio)
+  adis (cmd open -a discord)
+  afnd (cmd open -a finder)
+  anot (cmd open -a notes)
+  asaf (cmd open -a safari)
+  apag (cmd open -a pages)
+  apre (cmd open -a preview)
+  asoc (cmd open -a socialstream)
+  aspo (cmd open -a spotify)
+  asys (cmd open -a System\ Settings)
+  awez (cmd open -a wezterm)
+
+;; --- Advanced Modifier Remaps ---
   ;; The action list for tap-dance is a single list of actions, not a list of lists.
-  ralt-dance (tap-dance 200 (
+  rtaplt (tap-dance 200 (
     (multi rmet ralt) ;; Action 1 is a multi-key action, so it needs parens
     C-A-M-m           ;; Action 2 is a simple chord, so it does not need parens
   ))
+
+;; Other layers tap-hold-press
+  mappr (tap-hold-press $tt $ht ret (layer-toggle apps))
+  msymb (tap-hold $tt $ht bspc (layer-toggle symb))
+  mnavi (tap-hold-press $tt $ht esc (layer-toggle navi))
 )
 
-;; (defalias
-  ;; aliases for raycast
-  ;; rtrans  (cmd open "raycast://extensions/raycast/translator/translate")
-  ;; rspoti  (cmd open "raycast://extensions/mattisssa/spotify-player/search")
-  ;; rvidsr  (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
-  ;; rrayai  (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
-;; )
-
-;; (defalias
-  ;; aliases for applications
-  ;; asafar  (cmd open "/Applications/Safari.app")
-  ;; awezte  (cmd open "/Applications/WezTerm.app")
-  ;; apages  (cmd open "/Applications/Pages.app")
-  ;; aprevi  (cmd open "/System/Applications/Preview.app")
-;; )
-
 ;; --- MAIN KEYMAP LAYER (77 keys) ---
-(deflayer base
-  esc    brdn brup _    _    _    _   prev  pp   next mute vold volu ;; Top Row (F-Keys)
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _ ;; Number Row
-  @tab-meh _    _    _    _    _    _    _    _    _    _    _    _    _ ;; QWERTY Row
-  @esc-ctl _    _    _    _    _    _    _    _    _    _    _    @ret-rctl ;; Home Row
-  _    _    _    _    _    _    _    _    _    _    _    _    @rshift-fdel ;; Bottom Row (zxc...)
-  _    _    _    _             @s-hyp            _    _ @ralt-dance  _    _ ;; Modifier/Arrow Row
+(deflayer main
+  esc brdn brup f3 f4 f5 f6 prev  pp  next mute vold volu ;; Top Row (F-Keys)
+  _         _     _     _          _          _     _     _           _       _     _    _     _     @msymb ;; Number Row
+  @tabeh  _     _     _          _          _     _     _           _       _     _    _     _     _   ;; QWERTY Row
+  @esctl  _     _     @mlalt     @mlmet     _     _     @mrmet      @mralt  _     _    _    @retl ;; Home Row
+  _    _    _     _     _          _          _     _     _           _       _     _    @shdl ;; Bottom Row (zxc...)
+  _    _    _     @mnavi             @sHYP               @mappr      @rtaplt _     _    _ ;; Modifier/Arrow Row
+)
+
+(deflayer apps
+  _    XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX
+  _    XX     XX      XX      @apre   XX      @afnd   @apag   XX      XX      XX      XX      XX   XX
+  _    _      _       _       _       _       _       _       @asoc   _       @asaf   XX      XX   XX
+  XX   _      XX      _       _       _       @adis   _       _       @anot   @asys   _       ret
+  lsft _      _       _       _       _       _       @amld   @awez   @advs   @azom   ▲       rsft
+  fn   lctl   lalt    lmet              spc                   rmet    ralt    ◀       ▼       ▶
+)
+
+(deflayer navi
+  ;;     a      s       d       f       g       h       j       k       l       ;       '
+  esc    XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX
+  grv    XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX    del
+  @scamt @scam0 XX      @mhome  XX      XX      S-A-◀   S-A-▼   S-A-▲   S-A-▶   XX      XX      XX    XX
+  XX   @scam= @scam9     M-[     M-]     XX      ◀       ▼       ▲       ▶      XX      XX      XX
+  lsft XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      ▲       rsft
+  fn    lctl lalt lmet                  _                      rmet    ralt    ◀      ▼       ▶
+)
+
+(deflayer symb
+  esc  XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX
+  grv  XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX    XX
+  tab  S-1    S-2     S-3     S-4     S-5     S-6     S-7     S-8     S-9     S-0     XX      XX    XX
+  XX   1      2       3       4       5       6       7       8       9       0       XX      ret
+  lsft XX     XX      XX      [       S-[     S-]     ]       _       .       /       ▲       rsft
+  fn    lctl lalt lmet                  bspc                      rmet    ralt    ◀      ▼       ▶
 )
