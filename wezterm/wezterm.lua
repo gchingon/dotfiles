@@ -144,7 +144,7 @@ local function resize_pane(key, direction)
   }
 end
 
-config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
+config.leader = { key = 's', mods = 'CTRL', timeout_milliseconds = 1001 }
 
 -- Table mapping keypresses to actions
 config.keys = {
@@ -173,13 +173,13 @@ config.keys = {
   },
 
   {
-    key = '-',
+    key = '\\',
     -- Note that instead of a key modifier mapped to a key on your keyboard like CTRL or ALT, we can use the LEADER modifier instead. This means that this binding will be invoked when you press the leader (CTRL + A), quickly followed by dash (-).
     mods = 'LEADER',
     action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
   },
   {
-    key = '\\',
+    key = '-',
     mods = 'LEADER',
     action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
   },
@@ -228,7 +228,7 @@ config.keys = {
     action = wezterm.action.ShowLauncherArgs { flags = 'FUZZY|WORKSPACES' },
   },
   {
-    key = '[',
+    key = 'c',
     mods = 'LEADER',
     -- Enter copy mode with block cursor
     action = wezterm.action.Multiple {

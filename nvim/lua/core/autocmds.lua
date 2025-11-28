@@ -26,6 +26,14 @@ autocmd("VimEnter", {
   end,
 })
 
+-- Set .kbd files to lisp filetype
+autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "*.kbd",
+  callback = function()
+    vim.bo.filetype = "lisp"
+  end,
+})
+
 -- Create markdown snippet expansion commands
 autocmd("FileType", {
   pattern = "markdown",

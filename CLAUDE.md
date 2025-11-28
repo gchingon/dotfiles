@@ -125,6 +125,30 @@ The setup is transitioning from Zsh to Nushell as the primary shell. Both config
 - Follows modular structure with separate plugin config files
 - Uses `setup_plugin()` helper function for safe plugin loading
 
+### Shell History: Atuin Integration
+Atuin (`atuin/config.toml`) provides cross-session shell history sync:
+- **Sync v2 Records**: Enabled by default (`records = true`)
+- **Features**: Fuzzy search, host/directory/session filtering, secrets filtering
+- **Keybindings**: Ctrl+R for interactive search, Up arrow for shell up-key binding
+- **Configuration**:
+  - `enter_accept = true`: Execute immediately on Enter
+  - `sync_frequency`: How often history syncs (default 10m, syncs on command execution)
+  - `filter_mode`: Global (default), host-specific, session, or directory-scoped
+  - `search_mode`: Fuzzy (default), prefix, fulltext, or skim
+- **Integration**: Automatically hooked into Nushell config.nu via `pre_execution` and `pre_prompt` hooks
+- **Database**: Stored in `~/.local/share/atuin/history.db` (SQLite)
+
+### Shell Completions: Carapace
+Carapace (`carapace/`) provides context-aware command completion:
+- **Purpose**: Dynamic completions for CLI tools (like kubectl, docker, git subcommands)
+- **Integration**: Bridges between shell and completion engine (completion data as YAML/JSON)
+- **Status**: Partially integrated, Nushell support may require custom bridge setup
+- **Features**:
+  - Context-aware suggestions based on previous arguments
+  - Works with any command via completion spec files
+  - Can be extended with custom completions
+- **Configuration**: Located in `~/.config/carapace/`, includes zsh bridge for reference
+
 ### Fabric Integration
 Includes extensive AI prompt patterns from the Fabric project (`fabric/patterns/`). These are pre-built prompts for common tasks like analyzing code, creating summaries, etc.
 
@@ -147,3 +171,43 @@ The repository maintains `README.md` and `in-case-i-forget.md` for setup instruc
 
 ### Symbolic Links
 Configurations are meant to be symlinked to `~/.config`, not copied. Always verify symlinks are working correctly when making structural changes.
+
+## Per-App CLAUDE.md Guide
+
+Each major configuration directory has its own specialized CLAUDE.md file for focused guidance:
+
+### Core Development Tools
+- **[nvim/CLAUDE.md](nvim/CLAUDE.md)**: Neovim editor configuration
+  - Plugin architecture (vim-plug), LSP setup, themes, custom utilities
+  - Markdown frontmatter generation, snippet system, keybindings
+
+- **[nushell/CLAUDE.md](nushell/CLAUDE.md)**: Primary shell configuration
+  - Modular structure (config.nu, env.nu, modules/), Atuin integration
+  - Aliases, functions, environment variables, auto-CD hooks
+
+- **[kanata/CLAUDE.md](kanata/CLAUDE.md)**: Keyboard remapping
+  - Tap-hold mechanics, layers, hyper key system
+  - macOS 77-key layout, tap-dance sequences
+
+- **[wezterm/CLAUDE.md](wezterm/CLAUDE.md)**: Terminal emulator
+  - Lua configuration modules, dynamic theming, workspace management
+  - Appearance detection, project picker, zen mode
+
+### Utilities & Scripts
+- **[rx/CLAUDE.md](rx/CLAUDE.md)**: Custom utility scripts
+  - Script patterns (Bash/Python), hardlinking convention
+  - Content generation, media processing, file operations
+  - Bootstrap and installation scripts
+
+## Multi-Repo Structure
+
+This dotfiles setup spans three repositories:
+1. **dots** (this repo): Main configuration files, scripts, aliases
+2. **private** (separate): Private/sensitive configurations (excluded from public view)
+3. **lua-is-the-devil**: Dedicated Neovim configuration (can be showcased separately)
+
+All repos are symlinked to `~/.config` for unified configuration management. When making changes across repos, remember to commit and push from each repo separately.
+
+## Claude Code Workflow & Delegation Pattern
+
+See [Delegation Pattern](.claude/DELEGATION_PATTERN.md) for details on planning, context management, and delegation strategies used across all configuration files.

@@ -1,0 +1,55 @@
+;; --- ALIASES (The core logic) ---
+(defalias
+;; hyper<->scam
+  scam6 S-C-A-M-6 ;; homerow
+  scam0 S-C-A-M-0 ;; cleanshot capture area
+  scam9 S-C-A-M-9 ;; cleanshot capture previous area
+  scamt S-C-A-M-tab ;; cleanshot capture history
+  scamw S-C-A-M-w ;; cleanshot capture window
+
+;; key replacements
+  cros  (unicode †)
+
+;; aliases for applications
+  amld (cmd zsh -lc "$RX/app-switch.sh 'meld studio'")
+  azom (cmd zsh -lc "$RX/app-switch.sh zoom")
+  advs (cmd zsh -lc "$RX/app-switch.sh 'Davinci Resolve Studio'")
+  adis (cmd zsh -lc "$RX/app-switch.sh discord")
+  afnd (cmd zsh -lc "$RX/app-switch.sh finder")
+  anot (cmd zsh -lc "$RX/app-switch.sh notes")
+  asaf (cmd zsh -lc "$RX/app-switch.sh safari")
+  apag (cmd zsh -lc "$RX/app-switch.sh pages")
+  apre (cmd zsh -lc "$RX/app-switch.sh preview")
+  asoc (cmd zsh -lc "$RX/app-switch.sh socialstream")
+  aspo (cmd zsh -lc "$RX/app-switch.sh spotify")
+  asys (cmd zsh -lc "$RX/app-switch.sh 'System Settings'")
+  awez (cmd zsh -lc "$RX/app-switch.sh wezterm")
+  abtt (cmd zsh -lc "$RX/app-switch.sh BetterTouchTool")
+  acld (cmd zsh -lc "$RX/app-switch.sh claude")
+  aobs (cmd zsh -lc "$RX/app-switch.sh obsidian")
+
+;; Modifier keys HOME ROW MODS
+  mlctl (tap-hold $tt $ht a rctl)
+  mlalt (tap-hold $tt $ht d lalt)
+  mlmet (tap-hold $tt $ht f lmet)
+  mrmet (tap-hold $tt $ht j rmet)
+  mralt (tap-hold $tt $ht k ralt)
+  mrctl (tap-hold $tt $ht ; lctl)
+  
+;; Double actions,.
+  lHYP    (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))
+  mehsc   (tap-hold-press $tt $ht esc (multi lsft lctl lalt))
+  mhome   (tap-dance 240 ((tap-hold $tt 240 e @scam6) (one-shot-press 1500 (layer-while-held symb))))
+  altgrv  (tap-dance 240 (@mralt @cros))
+  rtaplt  (tap-hold-press $tt 240  C-A-M-m (multi rmet ralt))
+  shdel   (tap-hold-press $tt $ht del rsft)
+  shalt   (tap-hold-press $tt 240 (macro C-; i) (multi lsft lalt))
+  tabSG   (tap-hold-press $tt $ht tab (multi lsft lmet))            ;; makes screenshot shortcuts easier
+
+;; --- Advanced Modifier Remaps ---
+
+;; Other layers tap-hold-press
+  mappr (tap-hold-press $tt $ht spc (layer-toggle apps))
+  msymb (tap-hold $tt $ht esc (layer-toggle symb))
+  mnavi (tap-hold-press $tt $ht lmet (layer-toggle navi))
+)

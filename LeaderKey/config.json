@@ -1,0 +1,106 @@
+{
+  "actions" : [
+    {
+      "actions" : [
+        {
+          "key" : "d",
+          "label" : "discord",
+          "type" : "application",
+          "value" : "/Applications/Discord.app"
+        },
+        {
+          "iconPath" : "/System/Applications/Messages.app",
+          "key" : "s",
+          "label" : "SMS",
+          "type" : "application",
+          "value" : "/Applications/Messages.app"
+        },
+        {
+          "key" : "b",
+          "label" : "Safari",
+          "type" : "application",
+          "value" : "/Applications/Safari.app"
+        },
+        {
+          "key" : "m",
+          "label" : "Meld Studio",
+          "type" : "application",
+          "value" : "/Applications/Meld Studio.app"
+        },
+        {
+          "key" : "r",
+          "type" : "command",
+          "value" : "open /Volumes/hold/ulto/"
+        }
+      ],
+      "key" : "o",
+      "label" : "open apps",
+      "type" : "group"
+    },
+    {
+      "actions" : [
+        {
+          "iconPath" : "/System/Applications/Notes.app",
+          "key" : "a",
+          "label" : "append to note",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/apple-notes/add-text"
+        },
+        {
+          "iconPath" : "camera.fill",
+          "key" : "c",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/system/open-camera"
+        },
+        {
+          "iconPath" : "face.smiling.inverse",
+          "key" : "e",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols"
+        },
+        {
+          "key" : "p",
+          "type" : "url",
+          "value" : "raycast://confetti"
+        },
+        {
+          "iconPath" : "folder",
+          "key" : "r",
+          "label" : "recents",
+          "type" : "url",
+          "value" : "raycast://extensions/GastroGeek/recents/recents"
+        },
+        {
+          "iconPath" : "/Applications/Spotify.app",
+          "key" : "s",
+          "label" : "search spotify",
+          "type" : "url",
+          "value" : "raycast://extensions/mattisssa/spotify-player/search"
+        },
+        {
+          "iconPath" : "translate",
+          "key" : "t",
+          "label" : "translate",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/translator/translate"
+        },
+        {
+          "iconPath" : "link",
+          "key" : "v",
+          "label" : "YT video search",
+          "type" : "url",
+          "value" : "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D"
+        }
+      ],
+      "key" : "r",
+      "label" : "raycast commands",
+      "type" : "group"
+    },
+    {
+      "key" : "t",
+      "type" : "application",
+      "value" : "/Applications/WezTerm.app"
+    }
+  ],
+  "type" : "group"
+}
