@@ -64,15 +64,15 @@ wezterm.on('user-var-changed', function(window, pane, name, value)
 end)
 
 -- Slightly transparent and blurred background
-config.window_background_opacity = 0.9
+config.window_background_opacity = 0.8
 config.macos_window_background_blur = 30
 -- Removes the title bar, leaving only the tab bar. Keeps the ability to resize by dragging the window's edges. On macOS, 'RESIZE|INTEGRATED_BUTTONS' also looks nice if you want to keep the window controls visible and integrate them into the tab bar.
-config.window_decorations = 'RESIZE'
+config.window_decorations = 'RESIZE|INTEGRATED_BUTTONS'
 -- Sets the font for the window frame (tab bar)
 config.window_frame = {
   -- An idea could be to try a serif font here instead of monospace for a nicer look?
   font = wezterm.font({ family = 'IBM Plex Mono', weight = 'Bold' }),
-  font_size = 15,
+  font_size = 12,
 }
 
 local function segments_for_right_status(window)

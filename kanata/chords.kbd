@@ -3,4 +3,6 @@
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (w e)   home    $ct first-release ()
 (i o)   end     $ct first-release ()
+(' l)   pgup    $ct first-release ()
+(a s)   pgdn    $ct first-release ()
   )

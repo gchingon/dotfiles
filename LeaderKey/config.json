@@ -92,14 +92,66 @@
           "value" : "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D"
         }
       ],
+      "iconPath" : "/Applications/Raycast.app",
       "key" : "r",
       "label" : "raycast commands",
       "type" : "group"
     },
     {
-      "key" : "t",
-      "type" : "application",
-      "value" : "/Applications/WezTerm.app"
+      "actions" : [
+        {
+          "key" : "l",
+          "label" : "top R 6th",
+          "type" : "command",
+          "value" : "raycast://extensions/raycast/window-management/top-right-sixth"
+        },
+        {
+          "key" : "g",
+          "label" : "top L 6th",
+          "type" : "command",
+          "value" : "raycast://extensions/raycast/window-management/top-left-sixth"
+        },
+        {
+          "key" : "h",
+          "label" : "bottom L 6th",
+          "type" : "command",
+          "value" : "raycast://extensions/raycast/window-management/bottom-left-sixth"
+        },
+        {
+          "key" : "v",
+          "label" : "bottom R 6th",
+          "type" : "command",
+          "value" : "raycast://extensions/raycast/window-management/bottom-right-sixth"
+        },
+        {
+          "key" : "r",
+          "label" : "top R ¼",
+          "type" : "command",
+          "value" : "raycast://extensions/raycast/window-management/top-right-quarter"
+        },
+        {
+          "key" : "c",
+          "label" : "top L ¼",
+          "type" : "command",
+          "value" : "raycast://extensions/raycast/window-management/top-left-quarter"
+        },
+        {
+          "key" : "t",
+          "label" : "bottom R ¼",
+          "type" : "command",
+          "value" : "open raycast://extensions/raycast/window-management/bottom-right-quarter"
+        },
+        {
+          "key" : "space",
+          "label" : "center ½",
+          "type" : "command",
+          "value" : "open raycast://extensions/raycast/window-management/center-half"
+        }
+      ],
+      "iconPath" : "macwindow.on.rectangle",
+      "key" : "w",
+      "label" : "window managment",
+      "type" : "group"
     }
   ],
   "type" : "group"
