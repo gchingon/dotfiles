@@ -2,7 +2,7 @@
 (defalias
 ;; hyper<->scam
   scam6 S-C-A-M-6     ;; homerow
-  scam0 S-C-A-M-0     ;; cleanshot capture area
+  scam0 S-C-A-M-s     ;; cleanshot capture area
   scamt S-C-A-M-tab   ;; cleanshot capture history
   scamw S-C-A-M-w     ;; cleanshot capture window
 
@@ -14,7 +14,7 @@
   abtt (cmd zsh -lc "$RX/app-switch.sh BetterTouchTool")
   acld (cmd zsh -lc "$RX/app-switch.sh claude")
   adis (cmd zsh -lc "$RX/app-switch.sh discord")
-  advs (cmd zsh -lc "$RX/app-switch.sh 'Davinci Resolve Studio'")
+  advs (cmd zsh -lc "$RX/app-switch.sh 'Davinci Resolve'")
   afnd (cmd zsh -lc "$RX/app-switch.sh finder")
   amld (cmd zsh -lc "$RX/app-switch.sh 'meld studio'")
   anot (cmd zsh -lc "$RX/app-switch.sh notes")
@@ -27,16 +27,10 @@
   asys (cmd zsh -lc "$RX/app-switch.sh 'System Settings'")
   awez (cmd zsh -lc "$RX/app-switch.sh wezterm")
   azom (cmd zsh -lc "$RX/app-switch.sh zoom")
+  delu (cmd zsh -lc "$RX/app-switch.sh deluge")
+  aqbt (cmd zsh -lc "$RX/app-switch.sh qbittorrent")
   trsh (cmd open "raycast://extensions/raycast/system/empty-trash")
-  wtl6 (cmd open "raycast://extensions/raycast/window-management/top-left-sixth")
-  wtr6 (cmd open "raycast://extensions/raycast/window-management/top-right-sixth")
-  wtl4 (cmd open "raycast://extensions/raycast/window-management/top-left-quarter")
-  wtr4 (cmd open "raycast://extensions/raycast/window-management/top-right-quarter")
-  wbl6 (cmd open "raycast://extensions/raycast/window-management/bottom-left-sixth")
-  wbr6 (cmd open "raycast://extensions/raycast/window-management/bottom-right-sixth")
-  wbl4 (cmd open "raycast://extensions/raycast/window-management/bottom-left-quarter")
-  wbr4 (cmd open "raycast://extensions/raycast/window-management/bottom-right-quarter")
-  wcnt (cmd open "raycast://extensions/raycast/window-management/center-half")
+  yt/ (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
 
 ;; Modifier keys HOME ROW MODS
   mlctl (tap-hold $tt $ht a rctl)
@@ -49,17 +43,17 @@
 ;; Double actions,.
   lHYP    (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))
   mehsc   (tap-hold-press $tt $ht esc (multi lsft lctl lalt))
-  mhome   (tap-dance 200 ((tap-hold $tt 170 e @scam6) (one-shot-press 1500 (layer-while-held symb))))
+  mhome   (tap-hold-press 150 180 e @scam6)
+  myts    (tap-hold-press $tt $ht [ @yt/)
   altgrv  (tap-hold-press $tt $ht k @mralt)
+  metsc   (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))
   rtaplt  (tap-hold-press $tt 240 @trsh (multi rmet ralt))
   shdel   (tap-hold-press $tt $ht del rsft)                   ;; DELETE an tap, SHIFT on hold
   shalt   (tap-hold-press $tt 240 (macro C-; i) (multi lsft lalt))  ;; wezterm COPY MODE on tap, SHFT+ALT on hold
   tabSG   (tap-hold-press $tt $ht tab (multi lsft lmet))            ;; makes screenshot shortcuts and raycast CONFIG APP easier
 
-;; --- Advanced Modifier Remaps ---
-
 ;; Other layers tap-hold-press
   mappr (tap-dance 200 (spc (one-shot-press 1500 (layer-while-held apps))))
-  msymb (tap-hold $tt $ht esc (layer-toggle symb))
-  mnavi (tap-hold-press $tt $ht lmet (layer-toggle navi))
+  msymb (tap-dance 200 (i (one-shot-press 1500 (layer-while-held symb))))
+;;  mnavi (tap-hold-press $tt $ht lmet (layer-toggle navi))
 )
