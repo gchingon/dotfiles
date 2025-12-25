@@ -8,7 +8,7 @@
 
 ;; key replacements
   ;; cros  (unicode †)
-  2spc (macro spc spc)
+  2spc (macro spc spc)  ;;  app layer is on a tap-dance, this is in case i'm in app layer and meant to double-space instead of trigger app-layer
 
 ;; aliases for commands
   abtt (cmd zsh -lc "$RX/app-switch.sh BetterTouchTool")
@@ -30,7 +30,7 @@
   delu (cmd zsh -lc "$RX/app-switch.sh deluge")
   aqbt (cmd zsh -lc "$RX/app-switch.sh qbittorrent")
   trsh (cmd open "raycast://extensions/raycast/system/empty-trash")
-  yt/ (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+  yt/ (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")  ;; TODO tweak app-switch.sh doesn't trigger/work if app is minimized
 
 ;; Modifier keys HOME ROW MODS
   mlctl (tap-hold $tt $ht a rctl)
@@ -41,13 +41,13 @@
   mrctl (tap-hold $tt $ht ; lctl)
 
 ;; Double actions,.
-  lHYP    (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))
-  mehsc   (tap-hold-press $tt $ht esc (multi lsft lctl lalt))
-  mhome   (tap-hold-press 150 180 e @scam6)
-  myts    (tap-hold-press $tt $ht [ @yt/)
-  altgrv  (tap-hold-press $tt $ht k @mralt)
-  metsc   (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))
-  rtaplt  (tap-hold-press $tt 240 @trsh (multi rmet ralt))
+  lHYP    (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))  ;; f18 on tap (leaderkey.app trigger) / HYPER on HOLD
+  mehsc   (tap-hold-press $tt $ht esc (multi lsft lctl lalt))       ;; esc on TAP / MEH on hold
+  mhome   (tap-hold-press 150 180 e @scam6)                         ;; tap DOT (Dvorak) hold HOMEROW (set to Shift+Control+Alt+GUI+6)
+  myts    (tap-hold-press $tt $ht [ @yt/)                           ;; raycast extension YouTube Search
+  altgrv  (tap-hold-press $tt $ht k @mralt)                         ;; homerow mod Ralt on physical `k` (Dvorak `t`) Ralt on HOLD
+  metsc   (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))      ;; Force quit on tap / GUI+Control on HOLD
+  rtaplt  (tap-hold-press $tt 240 @trsh (multi rmet ralt))          ;; raycast extension empty trash on tap / GUI+Alt on HOLD
   shdel   (tap-hold-press $tt $ht del rsft)                   ;; DELETE an tap, SHIFT on hold
   shalt   (tap-hold-press $tt 240 (macro C-; i) (multi lsft lalt))  ;; wezterm COPY MODE on tap, SHFT+ALT on hold
   tabSG   (tap-hold-press $tt $ht tab (multi lsft lmet))            ;; makes screenshot shortcuts and raycast CONFIG APP easier

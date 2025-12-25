@@ -38,7 +38,7 @@
   _       XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX            ;; Top Row
   grv     1       2       3       4       5       6       7       8       9       0       XX      XX      del   ;; Number Row
   _       _       _       _       @apre   _       @afnd   @apag   @acld   XX      XX      @asys   XX      XX    ;; QWERTY Row
-  XX      _       @aobs   @delu   @aspo    _       @adis   _       @asoc   @anot   @asaf   _       @awez         ;; Home Row
+  XX      _       @aobs   @delu   @aspo   _       @adis   _       @asoc   @anot   @asaf   _       @awez         ;; Home Row
   lsft    _       @aqbt   _       _       _       _       @amld   _       @advs   @azom   ▲       rsft          ;; Bottom Row
   fn      lctl    lalt    lmet              @2spc                 rmet    ralt    ◀       ▼       ▶       )     ;; Mod/Arrow Row
 
