@@ -11,24 +11,15 @@
   2spc (macro spc spc)  ;;  app layer is on a tap-dance, this is in case i'm in app layer and meant to double-space instead of trigger app-layer
 
 ;; aliases for commands
-  abtt (cmd zsh -lc "$RX/app-switch.sh BetterTouchTool")
-  acld (cmd zsh -lc "$RX/app-switch.sh claude")
   adis (cmd zsh -lc "$RX/app-switch.sh discord")
   advs (cmd zsh -lc "$RX/app-switch.sh 'Davinci Resolve'")
   afnd (cmd zsh -lc "$RX/app-switch.sh finder")
-  amld (cmd zsh -lc "$RX/app-switch.sh 'meld studio'")
   anot (cmd zsh -lc "$RX/app-switch.sh notes")
-  aobs (cmd zsh -lc "$RX/app-switch.sh obsidian")
   apag (cmd zsh -lc "$RX/app-switch.sh pages")
   apre (cmd zsh -lc "$RX/app-switch.sh preview")
   asaf (cmd zsh -lc "$RX/app-switch.sh safari")
-  asoc (cmd zsh -lc "$RX/app-switch.sh socialstream")
-  aspo (cmd zsh -lc "$RX/app-switch.sh spotify")
   asys (cmd zsh -lc "$RX/app-switch.sh 'System Settings'")
   awez (cmd zsh -lc "$RX/app-switch.sh wezterm")
-  azom (cmd zsh -lc "$RX/app-switch.sh zoom")
-  delu (cmd zsh -lc "$RX/app-switch.sh deluge")
-  aqbt (cmd zsh -lc "$RX/app-switch.sh qbittorrent")
   trsh (cmd open "raycast://extensions/raycast/system/empty-trash")
   yt/ (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")  ;; TODO tweak app-switch.sh doesn't trigger/work if app is minimized
 
@@ -45,6 +36,7 @@
   mehsc   (tap-hold-press $tt $ht esc (multi lsft lctl lalt))       ;; esc on TAP / MEH on hold
   mhome   (tap-hold-press 150 180 e @scam6)                         ;; tap DOT (Dvorak) hold HOMEROW (set to Shift+Control+Alt+GUI+6)
   myts    (tap-hold-press $tt $ht [ @yt/)                           ;; raycast extension YouTube Search
+  enterm  (tap-hold-press $tt $ht ret @awez)
   altgrv  (tap-hold-press $tt $ht k @mralt)                         ;; homerow mod Ralt on physical `k` (Dvorak `t`) Ralt on HOLD
   metsc   (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))      ;; Force quit on tap / GUI+Control on HOLD
   rtaplt  (tap-hold-press $tt 240 @trsh (multi rmet ralt))          ;; raycast extension empty trash on tap / GUI+Alt on HOLD
@@ -54,6 +46,6 @@
 
 ;; Other layers tap-hold-press
   mappr (tap-dance 200 (spc (one-shot-press 1500 (layer-while-held apps))))
-  msymb (tap-dance 200 (i (one-shot-press 1500 (layer-while-held symb))))
+;;  msymb (tap-dance 200 (i (one-shot-press 1500 (layer-while-held symb))))
 ;;  mnavi (tap-hold-press $tt $ht lmet (layer-toggle navi))
 )

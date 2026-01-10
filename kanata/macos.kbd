@@ -1,20 +1,16 @@
 ;;----------------------------------------------------
 ;; Kanata Configuration for macOS v4. Built from official documentation and error log diagnostics.
-;;----------------------------------------------------
-
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold yes
   danger-enable-cmd yes)
 
-(include chords.kbd)
 (include aliases.kbd)
 
 ;; Variables
 (defvar
  tt 175   ;; tap-time
- ht 200   ;; hold-time
- ct 60   );; chord-time)
+ ht 200   ;; hold-time)
 
 ;; --- Key Definitions (77-key MacBook Layout) ---
 (defsrc
@@ -29,23 +25,15 @@
 (deflayer main
   _       brdn    brup    f3      f4      f5      f6      prev    pp        next    mute    vold    volu        ;; Top Row (F-Keys)
   _       1       2       3       4       5       6       7       8         9       0       _       _       _   ;; Number Row
-  @tabSG  _       _       @mhome  _       _       _       _       @msymb    _       _       @myts   _       _   ;; QWERTY Row
-  @mehsc  @mlctl  _       @mlalt  @mlmet  _       _       @mrmet  @altgrv   _       @mrctl  _       _           ;; Home Row
+  @tabSG  _       _       @mhome  _       _       _       _       _         _       _       @myts   _       _   ;; QWERTY Row
+  @mehsc  @mlctl  _       @mlalt  @mlmet  _       _       @mrmet  @altgrv   _       @mrctl  _       @enterm     ;; Home Row
   _       _       _       _       _       _       _       _       _         _       _       _       @shdel      ;; Bottom Row
   _       _       @shalt  @metsc             @mappr               @lHYP     @rtaplt _       _       _       )   ;; Modifier/Arrow Row
 
 (deflayer apps
-  _       XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX            ;; Top Row
-  grv     1       2       3       4       5       6       7       8       9       0       XX      XX      del   ;; Number Row
-  _       _       _       _       @apre   _       @afnd   @apag   @acld   XX      XX      @asys   XX      XX    ;; QWERTY Row
-  XX      _       @aobs   @delu   @aspo   _       @adis   _       @asoc   @anot   @asaf   _       @awez         ;; Home Row
-  lsft    _       @aqbt   _       _       _       _       @amld   _       @advs   @azom   ▲       rsft          ;; Bottom Row
-  fn      lctl    lalt    lmet              @2spc                 rmet    ralt    ◀       ▼       ▶       )     ;; Mod/Arrow Row
-
-(deflayer symb
-  esc     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX            ;; Top Row
-  grv     S-1     S-2     S-3     S-4     S-5     S-6     S-7     S-8     S-9     S-0     S-[     S-]     del   ;; Number Row
-  @scamt  XX      XX      e       XX      XX      S-M-4   XX      XX      XX      XX      XX      XX      XX    ;; QWERTY Row
-  XX      XX      XX      XX      XX      XX      XX      ◀       ▼       ▲       ▶       XX      ret           ;; Home Row
-  lsft    XX      XX      XX      XX      XX      XX      XX      @scamw  XX      XX      ▲       rsft          ;; Bottom Row
-  fn      lctl    lalt lmet                  bspc                 rmet    ralt    ◀       ▼       ▶       )     ;; Mod/Arrow Row)
+  _       XX      XX      XX      XX      XX      XX      XX      XX        XX      XX      XX      XX            ;; Top Row
+  grv     1       2       3       4       5       6       7       8         9       0       _       _       del   ;; Number Row
+  _       _       _       _       @apre   _       @afnd   @apag   _         XX      XX      @asys   _       _     ;; QWERTY Row
+  XX      _       _       _       _       _       @adis   _       _         @anot   @asaf   _       -             ;; Home Row
+  lsft    _       _       _       _       _       _       _       _         @advs   _       ▲       rsft          ;; Bottom Row
+  fn      lctl    lalt    lmet              @2spc                 rmet      ralt    ◀       ▼       ▶       )     ;; Mod/Arrow Row
