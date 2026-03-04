@@ -1,0 +1,134 @@
+
+# Fix SSH garbled input — remote hosts lack alacritty terminfo
+[env]
+TERM = "xterm-256color"
+
+# ============================================================================
+# Window
+# ============================================================================
+
+[window]
+decorations = "Buttonless"          # Clean look like wezterm RESIZE mode
+opacity = 0.8                        # Match wezterm transparency
+blur = true                          # macOS background blur
+dynamic_padding = true
+startup_mode = "Maximized"
+
+[window.padding]
+x = 8
+y = 4
+
+# ============================================================================
+# Font
+# ============================================================================
+
+[font]
+size = 17.0                          # Match wezterm
+
+[font.normal]
+family = "MesloLGS Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "MesloLGS Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "MesloLGS Nerd Font Mono"
+style = "Italic"
+
+[font.bold_italic]
+family = "MesloLGS Nerd Font Mono"
+style = "Bold Italic"
+
+# ============================================================================
+# Cursor — match wezterm blinking bar
+# ============================================================================
+
+[cursor]
+unfocused_hollow = true
+
+[cursor.style]
+shape = "Beam"
+blinking = "On"
+
+[cursor.vi_mode_style]
+shape = "Block"
+blinking = "Off"
+
+# ============================================================================
+# Scrolling
+# ============================================================================
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+# ============================================================================
+# Colors — Tokyo Night (matching wezterm default)
+# ============================================================================
+
+[colors.primary]
+background = "#1a1b26"
+foreground = "#c0caf5"
+
+[colors.normal]
+black   = "#15161e"
+red     = "#f7768e"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+blue    = "#7aa2f7"
+magenta = "#bb9af7"
+cyan    = "#7dcfff"
+white   = "#a9b1d6"
+
+[colors.bright]
+black   = "#414868"
+red     = "#f7768e"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+blue    = "#7aa2f7"
+magenta = "#bb9af7"
+cyan    = "#7dcfff"
+white   = "#c0caf5"
+
+[colors.selection]
+background = "#33467c"
+text       = "#c0caf5"
+
+# ============================================================================
+# Keyboard — match wezterm Option key behavior (word jump)
+# ============================================================================
+
+[keyboard]
+# macOS: treat Option as Alt for word-jumping in shell
+# Option+Left = ESC+b, Option+Right = ESC+f
+# Alacritty handles this natively when option_as_alt is set
+# bindings = []  # Add custom bindings below if needed
+
+[[keyboard.bindings]]
+key    = "Left"
+mods   = "Alt"
+chars  = "\u001bb"
+
+[[keyboard.bindings]]
+key    = "Right"
+mods   = "Alt"
+chars  = "\u001bf"
+
+# ============================================================================
+# Mouse
+# ============================================================================
+
+[mouse]
+hide_when_typing = true
+
+[general]
+# Alacritty config — ported from wezterm
+# See: https://alacritty.org/config-alacritty.html
+
+# ============================================================================
+# General
+# ============================================================================
+
+live_config_reload = true

@@ -39,7 +39,8 @@
   enterm  (tap-hold-press $tt $ht ret @awez)
   altgrv  (tap-hold-press $tt $ht k @mralt)                         ;; homerow mod Ralt on physical `k` (Dvorak `t`) Ralt on HOLD
   metsc   (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))      ;; Force quit on tap / GUI+Control on HOLD
-  rtaplt  (tap-hold-press $tt 240 @trsh (multi rmet ralt))          ;; raycast extension empty trash on tap / GUI+Alt on HOLD
+  btab    (tap-hold-press $tt $ht (multi lalt tab) (multi lalt lmet))   ;; alt+tab on tap, alt+GUI on hold (to swap betwixt browser tabs w/L|R arrows)
+  rtaplt  (tap-hold-press $tt 240 @trsh (multi rmet ralt lsft))          ;; raycast extension empty trash on tap / GUI+Alt on HOLD
   shdel   (tap-hold-press $tt $ht del rsft)                   ;; DELETE an tap, SHIFT on hold
   shalt   (tap-hold-press $tt 240 (macro C-; i) (multi lsft lalt))  ;; wezterm COPY MODE on tap, SHFT+ALT on hold
   tabSG   (tap-hold-press $tt $ht tab (multi lsft lmet))            ;; makes screenshot shortcuts and raycast CONFIG APP easier

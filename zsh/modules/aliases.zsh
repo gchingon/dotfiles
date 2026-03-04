@@ -29,6 +29,10 @@ alias cso='cs nightowl'                  # switch to nightowl colorscheme
 alias csg='cs nugotham'                  # switch to nugotham colorscheme
 alias cse='cs eldritch'           # switch to eldritch-darker colorscheme
 alias csv='cs vague'              # switch to onedark-deep
+alias ytv='ytd video'
+alias oct='openclaw tui'
+alias occ='openclaw configure'
+alias ocd='openclaw doctor'
 
 # ===== Git Aliases =====
 alias g='git'                            # Shortcut for git

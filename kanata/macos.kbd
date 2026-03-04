@@ -10,7 +10,8 @@
 ;; Variables
 (defvar
  tt 175   ;; tap-time
- ht 200   ;; hold-time)
+ ht 200   ;; hold-time
+ )
 
 ;; --- Key Definitions (77-key MacBook Layout) ---
 (defsrc
@@ -28,7 +29,7 @@
   @tabSG  _       _       @mhome  _       _       _       _       _         _       _       @myts   _       _   ;; QWERTY Row
   @mehsc  @mlctl  _       @mlalt  @mlmet  _       _       @mrmet  @altgrv   _       @mrctl  _       @enterm     ;; Home Row
   _       _       _       _       _       _       _       _       _         _       _       _       @shdel      ;; Bottom Row
-  _       _       @shalt  @metsc             @mappr               @lHYP     @rtaplt _       _       _       )   ;; Modifier/Arrow Row
+  _       @btab   @shalt  @metsc             @mappr               @lHYP     @rtaplt _       _       _       )   ;; Modifier/Arrow Row
 
 (deflayer apps
   _       XX      XX      XX      XX      XX      XX      XX      XX        XX      XX      XX      XX            ;; Top Row
