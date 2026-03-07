@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+dir=$1
+find "$dir" -type f -name ".DS_Store" -delete 2>/dev/null
+exec rclone dedupe "$dir" \
+  --dedupe-mode newest \
+  --by-hash \
+  -P \
+  --exclude ".DS_Store"
+

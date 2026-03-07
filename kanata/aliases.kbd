@@ -32,6 +32,7 @@
   mrctl (tap-hold $tt $ht ; lctl)
 
 ;; Double actions,.
+  gcs     (tap-hold-press $tt $ht grv (multi lctl lsft))            ;; esc on TAP/ CTL+SFT on hold
   lHYP    (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))  ;; f18 on tap (leaderkey.app trigger) / HYPER on HOLD
   mehsc   (tap-hold-press $tt $ht esc (multi lsft lctl lalt))       ;; esc on TAP / MEH on hold
   mhome   (tap-hold-press 150 180 e @scam6)                         ;; tap DOT (Dvorak) hold HOMEROW (set to Shift+Control+Alt+GUI+6)

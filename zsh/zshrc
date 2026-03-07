@@ -1,12 +1,6 @@
 # ~/.config/zsh/zshrc
 # Main Zsh configuration file
 
-autoload -Uz compinit
-compinit -u
-
-# Initialize completions
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
 # Source all module files
 for module in "$HOME/.config/zsh/modules"/*.zsh; do
   source "$module" >/dev/null 2>&1 || echo "Failed to source $module"
@@ -17,7 +11,7 @@ HISTSIZE=5000                  # Max history entries in memory
 HISTFILE="$HOME/.zsh_history"  # History file location
 SAVEHIST=$HISTSIZE             # Max history entries to save
 HISTDUP=erase                  # Remove duplicates from history
-HISTORY_IGNORE="mv*|ls*|lt*|ld*|c*|\$*|or|cp*|..*|mtt|source*|bu|brm*|la*"  # Ignore these patterns
+HISTORY_IGNORE="mv*|ls*|lt*|ld*|tree*|bi*|or*|cs*|\$*|or|cp*|..*|mtt|source*|bu|brm*|la*"  # Ignore these patterns
 
 # Shell options
 setopt auto_cd               # Cd into directories without typing `cd`
@@ -38,3 +32,29 @@ bindkey '^[w' kill-region               # Alt+w
 # export TERM=xterm command ssh "$@"
 
 eval "$(/opt/homebrew/bin/starship init zsh)"
+source ${HOME}/.ghcup/env
+
+export PATH="/opt/homebrew/opt/ffmpeg-full/bin:$PATH"
+
+# bun completions
+[ -s "/Users/schingon/.bun/_bun" ] && source "/Users/schingon/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# One single compinit
+autoload -Uz compinit && compinit
+
+# Case-insensitive matching
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+
+# Fallback to plain file completion
+zstyle ':completion:*' completer _complete _files
+
+# Carapace: comment this OUT for now while we debug
+# export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+# zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+# source <(carapace _carapace)
+
+bindkey '^I' expand-or-complete

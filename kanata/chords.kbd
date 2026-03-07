@@ -1,9 +1,0 @@
-
-(defchordsv2
-;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
-(q w e)   home    $ct first-release ()
-(i o p)   end     $ct first-release ()
-(w e r)   pgup    $ct first-release ()
-(j k l)   pgdn    $ct first-release ()
-
-  )

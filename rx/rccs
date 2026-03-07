@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+src=$1
+dst=$2
+find "$src" -type f -name ".DS_Store" -delete 2>/dev/null
+exec rclone copy "$src" "$dst" \
+  -P \
+  --transfers 8 \
+  --checkers 8 \
+  --exclude ".DS_Store"
+

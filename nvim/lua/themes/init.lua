@@ -8,17 +8,6 @@ local uv = vim.uv or vim.loop
 local active_theme_path = vim.fn.expand("~/.config/colors/active_theme.json")
 local colors_json_path = vim.fn.expand("~/.config/colors/colors.json")
 
--- Map colors.json theme keys to local theme modules
-local slug_to_module = {
-  ["deepdark"]      = "deepdark",
-  ["eldritch"]      = "eldritch",
-  ["nightowl"]      = "nightowl",
-  ["nightblossom"]  = "niteblossom",
-  ["nugotham"]      = "nugotham",
-  ["tokyodarknite"] = "tokyodarknite",
-  ["vague"]         = "vague",
-}
-
 local function read_file(path)
   local fd = uv.fs_open(path, "r", 438)
   if not fd then return nil end
@@ -75,6 +64,8 @@ local function build_base_from_colors(slug)
   end
   local t  = all.themes[slug]
   local g  = t.ghostty or {}
+  local nv = t.neovim or {}
+  local module_name = nv.theme or slug
   local bg = g.background or "#000000"
   local fg = g.foreground or "#ffffff"
   local c  = {}
@@ -92,7 +83,7 @@ local function build_base_from_colors(slug)
   local gray = c[8] or c[7]
 
   return {
-    meta = { slug = slug, module = slug_to_module[slug], name = (t.name or slug) },
+    meta = { slug = slug, module = module_name, name = (t.name or slug), style = nv.style },
     ghostty = g,
     base = {
       bg0 = bg0,

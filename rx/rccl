@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+src=$1
+dst=$2
+find "$src" -type f -name ".DS_Store" -delete 2>/dev/null
+exec rclone copy "$src" "$dst" \
+  -P \
+  --transfers 2 \
+  --checkers 4 \
+  --multi-thread-streams 8 \
+  --multi-thread-cutoff 256M \
+  --exclude ".DS_Store"
+

@@ -25,7 +25,7 @@
 ;; --- MAIN KEYMAP LAYER (77 keys) ---
 (deflayer main
   _       brdn    brup    f3      f4      f5      f6      prev    pp        next    mute    vold    volu        ;; Top Row (F-Keys)
-  _       1       2       3       4       5       6       7       8         9       0       _       _       _   ;; Number Row
+  @gcs    1       2       3       4       5       6       7       8         9       0       _       _       _   ;; Number Row
   @tabSG  _       _       @mhome  _       _       _       _       _         _       _       @myts   _       _   ;; QWERTY Row
   @mehsc  @mlctl  _       @mlalt  @mlmet  _       _       @mrmet  @altgrv   _       @mrctl  _       @enterm     ;; Home Row
   _       _       _       _       _       _       _       _       _         _       _       _       @shdel      ;; Bottom Row
