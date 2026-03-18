@@ -16,7 +16,6 @@ alias mnf='mediainfo'                    # Show media file info (uses `mediainfo
 alias o.='open .'                        # Open current directory in Finder (macOS)
 alias ptc='paste-output-to-clipboard'    # Copy command output to clipboard
 alias nowrap='setterm --linewrap off'    # Disable line wrapping in terminal
-alias w2b='wrap2block'
 alias wrap='setterm --linewrap on'       # Enable line wrapping in terminal
 alias sv='sudo nvim '
 alias dcd='docker-compose down'
@@ -62,25 +61,7 @@ alias feat='$RX/blog.sh feat'            # Run blog script with 'feat' arg
 # ===== Transcript =====
 alias vtm='tsp vtm'             # convert existing vtt file | vtm path/to/filename.vtt
 alias stm='tsp stm'             # convert existing srt file | stm path/to/filename.srt
-
-# Convenience functions for URL downloading and conversion
-tsd() {
-    # tsd URL -> tsp URL stm (transcript srt download)
-    if [ $# -eq 0 ]; then
-        echo "Usage: tsd <youtube_url>"
-        return 1
-    fi
-    tsp "$1" stm
-}
-
-tvd() {
-    # tvd URL -> tsp URL vtm (transcript vtt download)  
-    if [ $# -eq 0 ]; then
-        echo "Usage: tvd <youtube_url>"
-        return 1
-    fi
-    tsp "$1" vtm
-}
+alias cl='clear; ls'
 
 # ===== Scripts =====
 alias fdm='filemgr move'         # Move files matching pattern to dir $RX/fd-move-files-to-dir.sh
@@ -89,7 +70,10 @@ alias fdf='filemgr find'     # Find files in current dir (`fd` = fast find) $RX/
 alias pof='clipops paste' # paste and overwrite file with clipboard contents essentially `pbpaste > $1` $RX/paste-overwrite-to-file.sh
 alias paf='clipops append'    # paste to end of file with clipboard content `pbpaste >> $1` $RX/paste-append-to-file.sh
 alias ctc='clipops copy'  # Copy file contents to clipboard -- hard linked to $RX/copy-file-content-to-clipboard.sh
-alias pafi='clipops append $NT_INBOX'
+alias w2b='clipops wcpcmd' # copy command and output to markdown code block
+alias wob='clipops wcmd' # Copy command output only to markdown code block
+
+# alias pafi='clipops append $NT_INBOX'
 
 # ==== No Longer Aliased ====
 # instead of hardlinking $RX/script-name.sh -> ~/.local/bin/scriptname and aliasing "sn" (short for scriptname) I decided to cut out the middleman and just hardlink to the "sn/shortname" below is just a reminder of what the script does based on the former alias
@@ -168,20 +152,4 @@ alias rcc='rclone-copy'                  # Copy files with rclone
 alias rdo='rclone-dedupe-old'            # Dedupe, keep oldest
 alias rdn='rclone-dedupe-new'            # Dedupe, keep newest
 
-# ===== Tmux Aliases =====
-# alias t='tmux'                           # Launch tmux
-# alias ta='tmux a -t '                    # Attach to tmux session
-# alias tl='tmux ls'                       # List tmux sessions
-# alias tn='tmux-new-sesh'                 # New tmux session (assumes function)
-# alias tm="tmuxinator"                    # Launch tmuxinator
-# alias ttmp="tmux new-session -A -s tmp"  # New or attach to 'tmp' session
-# alias fds='find_symlinks'
-# alias csb='convert_symlinks_batch'
 
-# s2h() {
-#     [[ -L "$1" ]] || { echo "Not a symlink"; return 1; }
-#     local target="$(readlink "$1")"
-#     [[ -f "$target" ]] || { echo "Target not found"; return 1; }
-#     echo "Converting: $1"
-#     rm "$1" && ln "$target" "$1" && echo "SUCCESS" || echo "FAILED"
-# }

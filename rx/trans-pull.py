@@ -43,7 +43,7 @@ class TranscriptProcessor:
         """Check if yt-dlp is installed"""
         try:
             subprocess.run(['yt-dlp', '--version'], 
-                         capture_output=True, check=True)
+                           capture_output=True, check=True)
             return True
         except (subprocess.CalledProcessError, FileNotFoundError):
             print("ERROR: yt-dlp is not installed. Please install it first.")
@@ -53,10 +53,10 @@ class TranscriptProcessor:
     def get_video_info(self, url: str) -> Optional[Tuple[str, str]]:
         """Get video title and ID from URL"""
         try:
-            result = subprocess.run([
-                'yt-dlp', '--print', 'title', '--print', 'id', url
-            ], capture_output=True, text=True, check=True)
-            
+            result = subprocess.run(
+                ['yt-dlp', '--print', 'title', '--print', 'id', url],
+                capture_output=True, text=True, check=True
+            )
             lines = result.stdout.strip().split('\n')
             if len(lines) >= 2:
                 title = self.slugify(lines[0])
@@ -68,8 +68,8 @@ class TranscriptProcessor:
             return None
     
     def download_transcript(self, url: str, output_dir: str = ".", 
-                          format_pref: str = "srt") -> Optional[str]:
-        """Download transcript from URL"""
+                            format_pref: str = "srt") -> Optional[str]:
+        """Download transcript from URL and return subtitle filepath"""
         if not self.check_dependencies():
             return None
             
@@ -80,7 +80,6 @@ class TranscriptProcessor:
         title, video_id = video_info
         base_filename = f"{title}-[{video_id}]"
         
-        # Try to download preferred format first
         formats_to_try = [format_pref]
         if format_pref == "srt":
             formats_to_try.append("vtt")
@@ -94,19 +93,28 @@ class TranscriptProcessor:
                 cmd = [
                     'yt-dlp',
                     '--write-auto-sub',
+                    '--write-subs',
                     '--skip-download',
                     '--sub-format', fmt,
+                    '--sub-langs', 'en.*',
                     '-o', output_template,
                     url
                 ]
                 
-                result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+                subprocess.run(cmd, capture_output=True, text=True, check=True)
                 
-                # Find the downloaded file
-                downloaded_file = os.path.join(output_dir, f"{base_filename}.{fmt}")
-                if os.path.exists(downloaded_file):
-                    print(f"Downloaded transcript: {downloaded_file}")
-                    return downloaded_file
+                # Glob by title only to find subs, ignore video_id / language suffixes
+                candidates = list(Path(output_dir).glob(f"{title}*.{fmt}"))
+                if not candidates:
+                    continue
+
+                # Prefer non "-orig" if both exist
+                preferred = [p for p in candidates if "-orig" not in p.stem]
+                chosen = preferred[0] if preferred else candidates[0]
+
+                downloaded_file = str(chosen)
+                print(f"Downloaded transcript: {downloaded_file}")
+                return downloaded_file
                     
             except subprocess.CalledProcessError:
                 continue
@@ -119,31 +127,22 @@ class TranscriptProcessor:
         lines = content.split('\n')
         cleaned_lines = []
         
-        # Improved timecode pattern matching
-        timecode_pattern = re.compile(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}[,\.]\d{3}')
+        timecode_pattern = re.compile(
+            r'^\d{2}:\d{2}:\d{2}[,.]\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}[,.]\d{3}'
+        )
         
         for line in lines:
             line = line.strip()
-            
-            # Skip empty lines
             if not line:
                 continue
-            
-            # Skip sequence numbers (standalone integers)
             if line.isdigit():
                 continue
-            
-            # Skip timecode lines (HH:MM:SS,mmm --> HH:MM:SS,mmm)
             if timecode_pattern.match(line):
                 continue
-            
-            # Skip lines that look like timecodes without arrow
-            if re.match(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}', line):
+            if re.match(r'^\d{2}:\d{2}:\d{2}[,.]\d{3}', line):
                 continue
-                
             cleaned_lines.append(line)
         
-        # Remove duplicates while preserving order
         seen = set()
         deduped_lines = []
         for line in cleaned_lines:
@@ -158,46 +157,29 @@ class TranscriptProcessor:
         lines = content.split('\n')
         cleaned_lines = []
         
-        # Improved timecode pattern matching
-        timecode_pattern = re.compile(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}[,\.]\d{3}')
+        timecode_pattern = re.compile(
+            r'^\d{2}:\d{2}:\d{2}[,.]\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}[,.]\d{3}'
+        )
         
         for line in lines:
             line = line.strip()
-            
-            # Skip empty lines
             if not line:
                 continue
-            
-            # Skip WEBVTT header
             if line == 'WEBVTT' or line.startswith('WEBVTT '):
                 continue
-            
-            # Skip NOTE lines
             if line.startswith('NOTE'):
                 continue
-            
-            # Skip sequence numbers
             if line.isdigit():
                 continue
-            
-            # Skip timecode lines
             if timecode_pattern.match(line):
                 continue
-            
-            # Skip lines that look like timecodes without arrow
-            if re.match(r'^\d{2}:\d{2}:\d{2}[,\.]\d{3}', line):
+            if re.match(r'^\d{2}:\d{2}:\d{2}[,.]\d{3}', line):
                 continue
-            
-            # Remove HTML/XML tags (common in VTT)
             line = re.sub(r'<[^>]+>', '', line)
-            
-            # Skip if line became empty after tag removal
             if not line.strip():
                 continue
-                
             cleaned_lines.append(line)
         
-        # Remove duplicates while preserving order
         seen = set()
         deduped_lines = []
         for line in cleaned_lines:
@@ -237,13 +219,11 @@ class TranscriptProcessor:
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(cleaned_content)
             
-            # Count lines for reporting
             original_lines = len([line for line in content.split('\n') if line.strip()])
             final_lines = len([line for line in cleaned_content.split('\n') if line.strip()])
             
             print(f"SUCCESS: Created {output_file} (reduced from {original_lines} to {final_lines} lines)")
             
-            # Delete original file if requested
             if not keep_original:
                 os.remove(input_file)
                 print(f"Deleted original file: {input_file}")
@@ -267,14 +247,12 @@ class TranscriptProcessor:
         output_file = os.path.join(output_dir, f"{title}-[{video_id}].json")
         
         try:
-            # Get video metadata
-            metadata_cmd = [
-                'yt-dlp', '--dump-json', '--no-download', url
-            ]
-            metadata_result = subprocess.run(metadata_cmd, capture_output=True, text=True, check=True)
+            metadata_cmd = ['yt-dlp', '--dump-json', '--no-download', url]
+            metadata_result = subprocess.run(
+                metadata_cmd, capture_output=True, text=True, check=True
+            )
             metadata = json.loads(metadata_result.stdout)
             
-            # Try to get transcript
             transcript_file = self.download_transcript(url, output_dir, "srt")
             if not transcript_file:
                 transcript_file = self.download_transcript(url, output_dir, "vtt")
@@ -288,7 +266,6 @@ class TranscriptProcessor:
                     else:
                         transcript_content = self.clean_vtt_content(content)
             
-            # Create JSON output
             output_data = {
                 'title': metadata.get('title', ''),
                 'video_id': video_id,
@@ -305,7 +282,6 @@ class TranscriptProcessor:
                 
             print(f"SUCCESS: Created JSON transcript: {output_file}")
             
-            # Clean up transcript file if it was created
             if transcript_file and os.path.exists(transcript_file):
                 os.remove(transcript_file)
                 
@@ -318,12 +294,10 @@ class TranscriptProcessor:
     def batch_download(self, url: str, output_dir: str = ".") -> List[str]:
         """Download all available transcript formats"""
         downloaded_files = []
-        
         for fmt in ['srt', 'vtt']:
             file_path = self.download_transcript(url, output_dir, fmt)
             if file_path:
                 downloaded_files.append(file_path)
-                
         return downloaded_files
     
     def clean_directory(self, directory: str) -> List[str]:
@@ -353,10 +327,10 @@ def main():
 Examples:
   tsp srt https://youtube.com/watch?v=xyz    # Download SRT transcript
   tsp stm https://youtube.com/watch?v=xyz    # Download and convert to markdown
-  tsp stm transcript.srt                     # Convert SRT to markdown  
-  tsp vtm transcript.vtt                     # Convert VTT to markdown
-  tsp batch https://youtube.com/watch?v=xyz  # Download all available formats
-  tsp clean ~/Downloads/                     # Convert all transcripts in directory
+  tsp stm transcript.srt                      # Convert SRT to markdown  
+  tsp vtm transcript.vtt                      # Convert VTT to markdown
+  tsp batch https://youtube.com/watch?v=xyz   # Download all available formats
+  tsp clean ~/Downloads/                      # Convert all transcripts in directory
         """
     )
     

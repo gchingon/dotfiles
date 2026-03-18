@@ -61,20 +61,13 @@ else
   IS_FILE=false
 fi
 
-MARKDOWN_BLOCK=""
 if $COPY_COMMAND && ! $IS_FILE; then
-  MARKDOWN_BLOCK="\\\`\\\`\\\`$LANGUAGE
-$COMMAND
-$OUTPUT
-\\\`\\\`\\\`"
+  MARKDOWN_BLOCK=$(printf '```%s\n%s\n%s\n```' "$LANGUAGE" "$COMMAND" "$OUTPUT")
 else
-  MARKDOWN_BLOCK="\\\`\\\`\\\`$LANGUAGE
-$OUTPUT
-\\\`\\\`\\\`"
+  MARKDOWN_BLOCK=$(printf '```%s\n%s\n```' "$LANGUAGE" "$OUTPUT")
 fi
 
-# Clipboard handling
-# 1) macOS local
+# Clipboard handling 1) macOS local
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "$MARKDOWN_BLOCK" | pbcopy
   echo "✓ Content copied to clipboard as markdown block (macOS)"

@@ -32,7 +32,6 @@ bindkey '^[w' kill-region               # Alt+w
 # export TERM=xterm command ssh "$@"
 
 eval "$(/opt/homebrew/bin/starship init zsh)"
-source ${HOME}/.ghcup/env
 
 export PATH="/opt/homebrew/opt/ffmpeg-full/bin:$PATH"
 
@@ -43,7 +42,15 @@ export PATH="/opt/homebrew/opt/ffmpeg-full/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# One single compinit
+# FZF keybindings and completions This needs to be sourced before compinit
+if [[ -f "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh" ]]; then
+  source "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh"
+
+  # -- Remap ALT-C to CTRL-L for fzf directory change -- This overwrites the default 'clear-screen' binding for CTRL-L.
+  bindkey '^L' fzf-cd-widget
+fi
+# FZF keybindings and completions This needs to be sourced before compinit
+
 autoload -Uz compinit && compinit
 
 # Case-insensitive matching
@@ -51,10 +58,5 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 
 # Fallback to plain file completion
 zstyle ':completion:*' completer _complete _files
-
-# Carapace: comment this OUT for now while we debug
-# export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
-# zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-# source <(carapace _carapace)
 
 bindkey '^I' expand-or-complete
