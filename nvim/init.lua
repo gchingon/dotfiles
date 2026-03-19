@@ -82,9 +82,8 @@ vim.cmd([[
 require("core.options")
 require("core.autocmds")
 require("core.keymaps")
-require("core.ulid").setup()
 require("core.checkbox-cycle").setup()
-require("core.hugo-frontmatter").setup()
+require("core.frontmatter").setup()
 
 
 -- ============================================================================
