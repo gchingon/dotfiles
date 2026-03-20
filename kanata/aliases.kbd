@@ -1,53 +1,95 @@
-;; --- ALIASES (The core logic) ---
+;; --- ALIASES ---
+;; aliases.kbd — included by macos.kbd
+;; All (cmd ...) calls run as root when kanata is a LaunchDaemon.
+;; app-switch.sh resolves the real console user internally via /dev/console,
+;; so no sudo -u needed here.
+
 (defalias
-;; hyper<->scam
-  scam6 S-C-A-M-6     ;; homerow
-  scam0 S-C-A-M-s     ;; cleanshot capture area
-  scamt S-C-A-M-tab   ;; cleanshot capture history
-  scamw S-C-A-M-w     ;; cleanshot capture window
 
-;; key replacements
-  ;; cros  (unicode †)
-  2spc (macro spc spc)  ;;  app layer is on a tap-dance, this is in case i'm in app layer and meant to double-space instead of trigger app-layer
+  ;; -------------------------------------------------------
+  ;; Hyper / SCAM shortcuts (used by other apps)
+  ;; -------------------------------------------------------
+  scam6 S-C-A-M-6    ;; homerow trigger
+  scam0 S-C-A-M-s    ;; cleanshot capture area
+  scamt S-C-A-M-tab  ;; cleanshot capture history
+  scamw S-C-A-M-w    ;; cleanshot capture window
+;; Yabai window management
+(defalias
+  yfwes (cmd zsh -lc "yabai -m window --focus west")
+  yfsou (cmd zsh -lc "yabai -m window --focus south")
+  yfnor (cmd zsh -lc "yabai -m window --focus north")
+  yfeas (cmd zsh -lc "yabai -m window --focus east")
+  yswes (cmd zsh -lc "yabai -m window --swap west")
+  yssou (cmd zsh -lc "yabai -m window --swap south")
+  ysnor (cmd zsh -lc "yabai -m window --swap north")
+  yseas (cmd zsh -lc "yabai -m window --swap east")
+  ywrem (cmd zsh -lc "yabai -m window --close")
+  ysmir (cmd zsh -lc "yabai -m space --mirror y-axis")
+)
+  ;; -------------------------------------------------------
+  ;; Key replacements
+  ;; -------------------------------------------------------
+  2spc (macro spc spc)  ;; double-space when accidentally in apps layer
 
-;; aliases for commands
-  adis (cmd zsh -lc "$RX/app-switch.sh discord")
-  advs (cmd zsh -lc "$RX/app-switch.sh 'Davinci Resolve'")
-  afnd (cmd zsh -lc "$RX/app-switch.sh finder")
-  anot (cmd zsh -lc "$RX/app-switch.sh notes")
-  apag (cmd zsh -lc "$RX/app-switch.sh pages")
-  apre (cmd zsh -lc "$RX/app-switch.sh preview")
-  asaf (cmd zsh -lc "$RX/app-switch.sh safari")
-  asys (cmd zsh -lc "$RX/app-switch.sh 'System Settings'")
-  awez (cmd zsh -lc "$RX/app-switch.sh wezterm")
-  trsh (cmd open "raycast://extensions/raycast/system/empty-trash")
-  yt/ (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")  ;; TODO tweak app-switch.sh doesn't trigger/work if app is minimized
+  ;; -------------------------------------------------------
+  ;; App switching — ordered by frequency of use
+  ;; Physical key positions are QWERTY; Dvorak chars shown in comments
+  ;; -------------------------------------------------------
 
-;; Modifier keys HOME ROW MODS
+  ;; Terminal / dev
+  akitt (cmd zsh -lc "$RX/app-switch.sh kitty")           ;; physical `i` = Dvorak `c`
+  acurs (cmd zsh -lc "$RX/app-switch.sh Cursor")          ;; physical `s` = Dvorak `o`
+
+  ;; Browsers
+  acmtb (cmd zsh -lc "$RX/app-switch.sh Comet")           ;; physical `o` = Dvorak `r`
+
+  ;; Productivity / notes
+  aobsi (cmd zsh -lc "$RX/app-switch.sh Obsidian")        ;; physical `a` = Dvorak `a`
+  anot  (cmd zsh -lc "$RX/app-switch.sh Notes")           ;; physical `m` = Dvorak `m`
+  apag  (cmd zsh -lc "$RX/app-switch.sh Pages")           ;; physical `u` = Dvorak `g`
+
+  ;; Media / creative
+  aspti (cmd zsh -lc "$RX/app-switch.sh Spotify")         ;; physical `p` = Dvorak `l`
+  advs  (cmd zsh -lc "$RX/app-switch.sh 'DaVinci Resolve'") ;; physical `h` = Dvorak `d`
+  aclsh (cmd zsh -lc "$RX/app-switch.sh 'CleanShot X'")   ;; physical `e` = Dvorak `.`
+
+  ;; System / utils
+  afnd  (cmd zsh -lc "$RX/app-switch.sh Finder")          ;; physical `y` = Dvorak `f`
+  arayc (cmd zsh -lc "$RX/app-switch.sh Raycast")         ;; physical `r` = Dvorak `p`
+  apre  (cmd zsh -lc "$RX/app-switch.sh Preview")         ;; physical `t` = Dvorak `y`
+  asys  (cmd zsh -lc "$RX/app-switch.sh 'System Settings'") ;; physical `;` = Dvorak `s`
+  adis  (cmd zsh -lc "$RX/app-switch.sh Discord")         ;; physical `d` = Dvorak `e`
+
+  ;; Raycast utilities
+  trsh  (cmd open "raycast://extensions/raycast/system/empty-trash")
+  yt/   (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+
+  ;; -------------------------------------------------------
+  ;; HOME ROW MODS (tap = letter, hold = modifier)
+  ;; Dvorak layout — physical positions same as QWERTY src
+  ;; a=lctl  s=lsft  d=lalt  f=lmet | j=rmet  k=ralt  l=rsft  ;=rctl
+  ;; -------------------------------------------------------
   mlctl (tap-hold $tt $ht a rctl)
   mlalt (tap-hold $tt $ht d lalt)
   mlmet (tap-hold $tt $ht f lmet)
   mrmet (tap-hold $tt $ht j rmet)
   mralt (tap-hold $tt $ht k ralt)
-  mrctl (tap-hold $tt $ht ; lctl)
+  mrctl (tap-hold $tt $ht \; lctl)
 
-;; Double actions,.
-  gcs     (tap-hold-press $tt $ht grv (multi lctl lsft))            ;; esc on TAP/ CTL+SFT on hold
-  lHYP    (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))  ;; f18 on tap (leaderkey.app trigger) / HYPER on HOLD
-  mehsc   (tap-hold-press $tt $ht esc (multi lsft lctl lalt))       ;; esc on TAP / MEH on hold
-  mhome   (tap-hold-press 150 180 e @scam6)                         ;; tap DOT (Dvorak) hold HOMEROW (set to Shift+Control+Alt+GUI+6)
-  myts    (tap-hold-press $tt $ht [ @yt/)                           ;; raycast extension YouTube Search
-  enterm  (tap-hold-press $tt $ht ret @awez)
-  altgrv  (tap-hold-press $tt $ht k @mralt)                         ;; homerow mod Ralt on physical `k` (Dvorak `t`) Ralt on HOLD
-  metsc   (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))      ;; Force quit on tap / GUI+Control on HOLD
-  btab    (tap-hold-press $tt $ht (multi lalt tab) (multi lalt lmet))   ;; alt+tab on tap, alt+GUI on hold (to swap betwixt browser tabs w/L|R arrows)
-  rtaplt  (tap-hold-press $tt 240 @trsh (multi rmet ralt lsft))          ;; raycast extension empty trash on tap / GUI+Alt on HOLD
-  shdel   (tap-hold-press $tt $ht del rsft)                   ;; DELETE an tap, SHIFT on hold
-  shalt   (tap-hold-press $tt 240 (macro C-; i) (multi lsft lalt))  ;; wezterm COPY MODE on tap, SHFT+ALT on hold
-  tabSG   (tap-hold-press $tt $ht tab (multi lsft lmet))            ;; makes screenshot shortcuts and raycast CONFIG APP easier
-
-;; Other layers tap-hold-press
-  mappr (tap-dance 200 (spc (one-shot-press 1500 (layer-while-held apps))))
-;;  msymb (tap-dance 200 (i (one-shot-press 1500 (layer-while-held symb))))
-;;  mnavi (tap-hold-press $tt $ht lmet (layer-toggle navi))
-)
+  ;; -------------------------------------------------------
+  ;; DOUBLE-ACTION KEYS (tap = one thing, hold = another)
+  ;; Replaces the old @enterm (ret → kitty) with sublayer access
+  enterm (tap-hold-press $tt    $ht        ret   (layer-while-held raycast))
+  mkses  (tap-hold-press $subl-time $subl-time tab (layer-while-held kitty-sessions))
+  myaba  (tap-hold-press $subl-time $subl-time rmet (layer-while-held yabai-manage))
+  ;; -------------------------------------------------------
+  gcs    (tap-hold-press $tt $ht grv (multi lctl lsft))
+                          ;; ` on tap / Ctrl+Shift on hold
+  lHYP   (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))
+                          ;; f18 → LeaderKey.app on tap / HYPER on hold
+  mehsc  (tap-hold-press $tt $ht esc (multi lsft lctl lalt))
+                          ;; Esc on tap / MEH on hold
+  mhome  (tap-hold-press 150 180 e @scam6)
+                          ;; Dvorak `.` on tap / HOMEROW trigger on hold
+  myts   (tap-hold-press $tt $ht \[ @yt/)
+                          ;; 
