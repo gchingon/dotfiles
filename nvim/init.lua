@@ -1,5 +1,5 @@
 -- $HOME/.config/nvim/init.lua
-vim.g.mapleader = " "
+vim.g.mapleader = ";"
 
 -- ============================================================================
 -- Plugin Setup Utilities
