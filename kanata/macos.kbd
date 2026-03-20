@@ -106,21 +106,21 @@
 ;;
 ;; Physical key → Dvorak char → Raycast action
 ;;   Home row:
-;;     a → a  → emoji search   (@remoj)
+;;     a → a  → ai chat presets (@rayi)
 ;;     s → o  → clipboard hist (@rclip)
-;;     d → e  → file search    (@rfile)
-;;     f → u  → window mgmt    (@rwin)
+;;     d → e  → emoji search   (@remoj)
+;;     f → u  → file search    (@rfile)
 ;;   QWERTY row:
 ;;     i → c  → Spotify search (@rspot)
-;;     o → r  → YouTube search (@rvide)
+;;     o → r  → YouTube search (@ryout)
 ;;----------------------------------------------------
 (deflayer raycast
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    @remoj @rclip @rfile @rwin XX   XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  fn    lctl  lalt  lmet              spc               rmet  ralt  left  down  rght
+  _     XX    XX      XX      XX      XX    XX    XX    XX    XX    XX    XX    XX
+  grv   1     2       3       4       5     6     7     8     9     0     _     _     del
+  _     XX    XX      @ryout  @rspot  XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    @rayi @remoj  @rclip  @rfile  XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX      XX      XX      XX    XX    XX    XX    XX    XX    XX    XX
+  fn    lctl  lalt    lmet              spc               rmet  ralt  left  down  rght
 )
 
 ;;----------------------------------------------------
@@ -136,19 +136,19 @@
 ;;
 ;; Physical key → Dvorak char → Session
 ;;   Home row:
-;;     a → a  → home session     (@kshom)
-;;     s → o  → dotfiles session (@ksdot)
-;;     d → e  → nvim session     (@ksnvim)
-;;     f → u  → automation       (@ksaut)
-;;     j → h  → podcast          (@kspod)
+;;     j → h  → home session     (@kshom)
+;;     k → t  → dotfiles session (@ksdot)
+;;     l → n  → nvim session     (@ksnvim)
+;;     ; → s  → automation       (@ksaut)
+;;     h → d  → podcast          (@kspod)
 ;;----------------------------------------------------
 (deflayer kitty-sessions
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    @kshom @ksdot @ksnvim @ksaut XX  XX    @kspod XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  fn    lctl  lalt  lmet              spc               rmet  ralt  left  down  rght
+  _     XX    XX    XX    XX    XX    XX      XX     XX     XX      XX      XX    XX
+  grv   1     2     3     4     5     6       7      8      9       0       _     _     del
+  _     XX    XX    XX    XX    XX    XX      XX     XX     XX      XX      XX    XX    XX
+  XX    XX    XX    XX    XX    XX    @kspod  @kshom @ksdot @ksnvim @ksaut  XX    XX
+  XX    XX    XX    XX    XX    XX    XX      XX     XX     XX      XX      XX    XX
+  fn    lctl  lalt  lmet              spc               rmet  ralt  left    down  rght
 )
 
 ;;----------------------------------------------------
@@ -167,7 +167,7 @@
 ;;----------------------------------------------------
 (deflayer yabai-manage
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  grv   1     2     3     4     5     6     7     8     9     0     _     _     del
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
   XX    XX    XX    XX    XX    XX    @yfwes @yfsou @yfnor @yfeas XX   XX    XX
   XX    XX    XX    XX    XX    XX    @ysmir @ywrem @yswes @yssou @ysnor XX  XX
@@ -178,7 +178,7 @@
 ;; TEMPLATE — copy this to add new layers
 ;; (deflayer template
 ;;   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-;;   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+;;   grv   1     2     3     4     5     6     7     8     9     0     _     _     del
 ;;   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
 ;;   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
 ;;   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
