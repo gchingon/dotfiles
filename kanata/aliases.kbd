@@ -13,8 +13,10 @@
   scam0 S-C-A-M-s    ;; cleanshot capture area
   scamt S-C-A-M-tab  ;; cleanshot capture history
   scamw S-C-A-M-w    ;; cleanshot capture window
-;; Yabai window management
-(defalias
+
+  ;; -------------------------------------------------------
+  ;; Yabai window management
+  ;; -------------------------------------------------------
   yfwes (cmd zsh -lc "yabai -m window --focus west")
   yfsou (cmd zsh -lc "yabai -m window --focus south")
   yfnor (cmd zsh -lc "yabai -m window --focus north")
@@ -25,7 +27,7 @@
   yseas (cmd zsh -lc "yabai -m window --swap east")
   ywrem (cmd zsh -lc "yabai -m window --close")
   ysmir (cmd zsh -lc "yabai -m space --mirror y-axis")
-)
+
   ;; -------------------------------------------------------
   ;; Key replacements
   ;; -------------------------------------------------------
@@ -37,28 +39,31 @@
   ;; -------------------------------------------------------
 
   ;; Terminal / dev
-  akitt (cmd zsh -lc "$RX/app-switch.sh kitty")           ;; physical `i` = Dvorak `c`
-  acurs (cmd zsh -lc "$RX/app-switch.sh Cursor")          ;; physical `s` = Dvorak `o`
+  akitt (cmd zsh -lc "$RX/app-switch.sh kitty")             ;; physical `i` = Dvorak `c`
+  acurs (cmd zsh -lc "$RX/app-switch.sh Cursor")            ;; physical `s` = Dvorak `o`
 
   ;; Browsers
-  acmtb (cmd zsh -lc "$RX/app-switch.sh Comet")           ;; physical `o` = Dvorak `r`
+  acmtb (cmd zsh -lc "$RX/app-switch.sh Comet")             ;; physical `o` = Dvorak `r`
 
   ;; Productivity / notes
-  aobsi (cmd zsh -lc "$RX/app-switch.sh Obsidian")        ;; physical `a` = Dvorak `a`
-  anot  (cmd zsh -lc "$RX/app-switch.sh Notes")           ;; physical `m` = Dvorak `m`
-  apag  (cmd zsh -lc "$RX/app-switch.sh Pages")           ;; physical `u` = Dvorak `g`
+  aobsi (cmd zsh -lc "$RX/app-switch.sh Obsidian")          ;; physical `a` = Dvorak `a`
+  anot  (cmd zsh -lc "$RX/app-switch.sh Notes")             ;; physical `m` = Dvorak `m`
+  apag  (cmd zsh -lc "$RX/app-switch.sh Pages")             ;; physical `u` = Dvorak `g`
 
   ;; Media / creative
-  aspti (cmd zsh -lc "$RX/app-switch.sh Spotify")         ;; physical `p` = Dvorak `l`
+  aspti (cmd zsh -lc "$RX/app-switch.sh Spotify")           ;; physical `p` = Dvorak `l`
   advs  (cmd zsh -lc "$RX/app-switch.sh 'DaVinci Resolve'") ;; physical `h` = Dvorak `d`
-  aclsh (cmd zsh -lc "$RX/app-switch.sh 'CleanShot X'")   ;; physical `e` = Dvorak `.`
+  aclsh (cmd zsh -lc "$RX/app-switch.sh 'CleanShot X'")     ;; physical `e` = Dvorak `.`
 
   ;; System / utils
-  afnd  (cmd zsh -lc "$RX/app-switch.sh Finder")          ;; physical `y` = Dvorak `f`
-  arayc (cmd zsh -lc "$RX/app-switch.sh Raycast")         ;; physical `r` = Dvorak `p`
-  apre  (cmd zsh -lc "$RX/app-switch.sh Preview")         ;; physical `t` = Dvorak `y`
+  afnd  (cmd zsh -lc "$RX/app-switch.sh Finder")            ;; physical `y` = Dvorak `f`
+  arayc (cmd zsh -lc "$RX/app-switch.sh Raycast")           ;; physical `r` = Dvorak `p`
+  apre  (cmd zsh -lc "$RX/app-switch.sh Preview")           ;; physical `t` = Dvorak `y`
   asys  (cmd zsh -lc "$RX/app-switch.sh 'System Settings'") ;; physical `;` = Dvorak `s`
-  adis  (cmd zsh -lc "$RX/app-switch.sh Discord")         ;; physical `d` = Dvorak `e`
+  adis  (cmd zsh -lc "$RX/app-switch.sh Discord")           ;; physical `d` = Dvorak `e`
+
+  ;; Dotfiles sync — opens kitty tab and runs dots alias
+  adots (cmd zsh -lc "kitten @ launch --type=tab zsh -lc 'cd ~/dotfiles && gac \"sync $(date +%Y-%m-%d)\" ; exec zsh'")
 
   ;; Raycast utilities
   trsh  (cmd open "raycast://extensions/raycast/system/empty-trash")
@@ -67,7 +72,7 @@
   ;; -------------------------------------------------------
   ;; HOME ROW MODS (tap = letter, hold = modifier)
   ;; Dvorak layout — physical positions same as QWERTY src
-  ;; a=lctl  s=lsft  d=lalt  f=lmet | j=rmet  k=ralt  l=rsft  ;=rctl
+  ;; a=lctl  s=—  d=lalt  f=lmet | j=rmet  k=ralt  l=—  ;=rctl
   ;; -------------------------------------------------------
   mlctl (tap-hold $tt $ht a rctl)
   mlalt (tap-hold $tt $ht d lalt)
@@ -78,18 +83,18 @@
 
   ;; -------------------------------------------------------
   ;; DOUBLE-ACTION KEYS (tap = one thing, hold = another)
-  ;; Replaces the old @enterm (ret → kitty) with sublayer access
-  enterm (tap-hold-press $tt    $ht        ret   (layer-while-held raycast))
-  mkses  (tap-hold-press $subl-time $subl-time tab (layer-while-held kitty-sessions))
-  myaba  (tap-hold-press $subl-time $subl-time rmet (layer-while-held yabai-manage))
   ;; -------------------------------------------------------
+  enterm (tap-hold-press $tt        $ht        ret  (layer-while-held raycast))
+  mkses  (tap-hold-press $subl-time $subl-time tab  (layer-while-held kitty-sessions))
+  myaba  (tap-hold-press $subl-time $subl-time rmet (layer-while-held yabai-manage))
+
   gcs    (tap-hold-press $tt $ht grv (multi lctl lsft))
-                          ;; ` on tap / Ctrl+Shift on hold
+                              ;; ` on tap / Ctrl+Shift on hold
   lHYP   (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))
-                          ;; f18 → LeaderKey.app on tap / HYPER on hold
+                              ;; f18 → LeaderKey.app on tap / HYPER on hold
   mehsc  (tap-hold-press $tt $ht esc (multi lsft lctl lalt))
-                          ;; Esc on tap / MEH on hold
+                              ;; Esc on tap / MEH on hold
   mhome  (tap-hold-press 150 180 e @scam6)
-                          ;; Dvorak `.` on tap / HOMEROW trigger on hold
+                              ;; Dvorak `.` on tap / HOMEROW trigger on hold
   myts   (tap-hold-press $tt $ht \[ @yt/)
-                          ;; 
+                              ;; 
