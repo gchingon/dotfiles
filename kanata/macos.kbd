@@ -1,8 +1,5 @@
 ;;----------------------------------------------------
-;; macos.kbd — Kanata config for macOS (all machines)
-;; Dvorak keyboard layout — physical QWERTY positions
-;; Runs as LaunchDaemon (root). app-switch.sh resolves
-;; real user internally via /dev/console.
+;; macos.kbd — Kanata config for macOS (all machines) Dvorak keyboard layout — physical QWERTY positions Runs as LaunchDaemon (root). app-switch.sh resolves real user internally via /dev/console.
 ;;
 ;; LAYER MAP:
 ;;   main          — daily typing, home row mods
@@ -30,9 +27,7 @@
 )
 
 ;;----------------------------------------------------
-;; defsrc — 77-key MacBook physical layout
-;; Order MUST match all deflayer declarations exactly.
-;; These are hardware key positions, not Dvorak chars.
+;; defsrc — 77-key MacBook physical layout Order MUST match all deflayer declarations exactly. These are hardware key positions, not Dvorak chars.
 ;;----------------------------------------------------
 (defsrc
   esc   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12

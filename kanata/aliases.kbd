@@ -17,16 +17,16 @@
   ;; -------------------------------------------------------
   ;; Yabai window management
   ;; -------------------------------------------------------
-  yfwes (cmd zsh -lc "yabai -m window --focus west")
-  yfsou (cmd zsh -lc "yabai -m window --focus south")
-  yfnor (cmd zsh -lc "yabai -m window --focus north")
-  yfeas (cmd zsh -lc "yabai -m window --focus east")
-  yswes (cmd zsh -lc "yabai -m window --swap west")
-  yssou (cmd zsh -lc "yabai -m window --swap south")
-  ysnor (cmd zsh -lc "yabai -m window --swap north")
-  yseas (cmd zsh -lc "yabai -m window --swap east")
-  ywrem (cmd zsh -lc "yabai -m window --close")
-  ysmir (cmd zsh -lc "yabai -m space --mirror y-axis")
+  yfwes (cmd zsh -lc r#"yabai -m window --focus west"#)
+  yfsou (cmd zsh -lc r#"yabai -m window --focus south"#)
+  yfnor (cmd zsh -lc r#"yabai -m window --focus north"#)
+  yfeas (cmd zsh -lc r#"yabai -m window --focus east"#)
+  yswes (cmd zsh -lc r#"yabai -m window --swap west"#)
+  yssou (cmd zsh -lc r#"yabai -m window --swap south"#)
+  ysnor (cmd zsh -lc r#"yabai -m window --swap north"#)
+  yseas (cmd zsh -lc r#"yabai -m window --swap east"#)
+  ywrem (cmd zsh -lc r#"yabai -m window --close"#)
+  ysmir (cmd zsh -lc r#"yabai -m space --mirror y-axis"#)
 
   ;; -------------------------------------------------------
   ;; Key replacements
@@ -34,45 +34,44 @@
   2spc (macro spc spc)  ;; double-space when accidentally in apps layer
 
   ;; -------------------------------------------------------
-  ;; App switching — ordered by frequency of use
+  ;; App switching
   ;; Physical key positions are QWERTY; Dvorak chars shown in comments
   ;; -------------------------------------------------------
 
   ;; Terminal / dev
-  akitt (cmd zsh -lc "$RX/app-switch.sh kitty")             ;; physical `i` = Dvorak `c`
-  acurs (cmd zsh -lc "$RX/app-switch.sh Cursor")            ;; physical `s` = Dvorak `o`
+  akitt (cmd zsh -lc r#"$RX/app-switch.sh kitty"#)              ;; physical `i` = Dvorak `c`
+  acurs (cmd zsh -lc r#"$RX/app-switch.sh Cursor"#)             ;; physical `s` = Dvorak `o`
 
   ;; Browsers
-  acmtb (cmd zsh -lc "$RX/app-switch.sh Comet")             ;; physical `o` = Dvorak `r`
+  acmtb (cmd zsh -lc r#"$RX/app-switch.sh Comet"#)              ;; physical `o` = Dvorak `r`
 
   ;; Productivity / notes
-  aobsi (cmd zsh -lc "$RX/app-switch.sh Obsidian")          ;; physical `a` = Dvorak `a`
-  anot  (cmd zsh -lc "$RX/app-switch.sh Notes")             ;; physical `m` = Dvorak `m`
-  apag  (cmd zsh -lc "$RX/app-switch.sh Pages")             ;; physical `u` = Dvorak `g`
+  aobsi (cmd zsh -lc r#"$RX/app-switch.sh Obsidian"#)           ;; physical `a` = Dvorak `a`
+  anot  (cmd zsh -lc r#"$RX/app-switch.sh Notes"#)              ;; physical `m` = Dvorak `m`
+  apag  (cmd zsh -lc r#"$RX/app-switch.sh Pages"#)              ;; physical `u` = Dvorak `g`
 
   ;; Media / creative
-  aspti (cmd zsh -lc "$RX/app-switch.sh Spotify")           ;; physical `p` = Dvorak `l`
-  advs  (cmd zsh -lc "$RX/app-switch.sh 'DaVinci Resolve'") ;; physical `h` = Dvorak `d`
-  aclsh (cmd zsh -lc "$RX/app-switch.sh 'CleanShot X'")     ;; physical `e` = Dvorak `.`
+  aspti (cmd zsh -lc r#"$RX/app-switch.sh Spotify"#)            ;; physical `p` = Dvorak `l`
+  advs  (cmd zsh -lc r#"$RX/app-switch.sh 'DaVinci Resolve'"#)  ;; physical `h` = Dvorak `d`
+  aclsh (cmd zsh -lc r#"$RX/app-switch.sh 'CleanShot X'"#)      ;; physical `e` = Dvorak `.`
 
   ;; System / utils
-  afnd  (cmd zsh -lc "$RX/app-switch.sh Finder")            ;; physical `y` = Dvorak `f`
-  arayc (cmd zsh -lc "$RX/app-switch.sh Raycast")           ;; physical `r` = Dvorak `p`
-  apre  (cmd zsh -lc "$RX/app-switch.sh Preview")           ;; physical `t` = Dvorak `y`
-  asys  (cmd zsh -lc "$RX/app-switch.sh 'System Settings'") ;; physical `;` = Dvorak `s`
-  adis  (cmd zsh -lc "$RX/app-switch.sh Discord")           ;; physical `d` = Dvorak `e`
+  afnd  (cmd zsh -lc r#"$RX/app-switch.sh Finder"#)             ;; physical `y` = Dvorak `f`
+  arayc (cmd zsh -lc r#"$RX/app-switch.sh Raycast"#)            ;; physical `r` = Dvorak `p`
+  apre  (cmd zsh -lc r#"$RX/app-switch.sh Preview"#)            ;; physical `t` = Dvorak `y`
+  asys  (cmd zsh -lc r#"$RX/app-switch.sh 'System Settings'"#)  ;; physical `;` = Dvorak `s`
+  adis  (cmd zsh -lc r#"$RX/app-switch.sh Discord"#)            ;; physical `d` = Dvorak `e`
 
-  ;; Dotfiles sync — opens kitty tab and runs dots alias
-  adots (cmd zsh -lc "kitten @ launch --type=tab zsh -lc 'cd ~/dotfiles && gac \"sync $(date +%Y-%m-%d)\" ; exec zsh'")
+  ;; Dotfiles sync — $() subshells can't live inline; delegate to script
+  adots (cmd zsh -lc r#"$RX/dots-sync.sh"#)
 
   ;; Raycast utilities
-  trsh  (cmd open "raycast://extensions/raycast/system/empty-trash")
-  yt/   (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+  trsh  (cmd open r#"raycast://extensions/raycast/system/empty-trash"#)
+  yt/   (cmd open r#"raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D"#)
 
   ;; -------------------------------------------------------
-  ;; HOME ROW MODS (tap = letter, hold = modifier)
-  ;; Dvorak layout — physical positions same as QWERTY src
-  ;; a=lctl  s=—  d=lalt  f=lmet | j=rmet  k=ralt  l=—  ;=rctl
+  ;; HOME ROW MODS
+  ;; a=lctl  d=lalt  f=lmet | j=rmet  k=ralt  ;=rctl
   ;; -------------------------------------------------------
   mlctl (tap-hold $tt $ht a rctl)
   mlalt (tap-hold $tt $ht d lalt)
@@ -82,19 +81,58 @@
   mrctl (tap-hold $tt $ht \; lctl)
 
   ;; -------------------------------------------------------
-  ;; DOUBLE-ACTION KEYS (tap = one thing, hold = another)
+  ;; DOUBLE-ACTION KEYS
   ;; -------------------------------------------------------
   enterm (tap-hold-press $tt        $ht        ret  (layer-while-held raycast))
   mkses  (tap-hold-press $subl-time $subl-time tab  (layer-while-held kitty-sessions))
   myaba  (tap-hold-press $subl-time $subl-time rmet (layer-while-held yabai-manage))
 
   gcs    (tap-hold-press $tt $ht grv (multi lctl lsft))
-                              ;; ` on tap / Ctrl+Shift on hold
   lHYP   (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))
-                              ;; f18 → LeaderKey.app on tap / HYPER on hold
   mehsc  (tap-hold-press $tt $ht esc (multi lsft lctl lalt))
-                              ;; Esc on tap / MEH on hold
   mhome  (tap-hold-press 150 180 e @scam6)
-                              ;; Dvorak `.` on tap / HOMEROW trigger on hold
   myts   (tap-hold-press $tt $ht \[ @yt/)
-                              ;; 
+  altgrv (tap-hold-press $tt $ht k @mralt)
+  metsc  (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))
+  btab   (tap-hold-press $tt $ht (multi lalt tab) (multi lalt lmet))
+  rtaplt (tap-hold-press $tt 240 @trsh (multi rmet ralt lsft))
+  shdel  (tap-hold-press $tt $ht del rsft)
+  shalt  (tap-hold-press $tt 240 (macro C-\; i) (multi lsft lalt))
+  tabSG  (tap-hold-press $tt $ht tab (multi lsft lmet))
+
+  ;; -------------------------------------------------------
+  ;; LAYER SWITCHES
+  ;; -------------------------------------------------------
+  mappr (tap-dance 200 (spc (one-shot-press 1500 (layer-while-held apps))))
+
+)
+
+;; -------------------------------------------------------
+;; RAYCAST COMMANDS
+;; -------------------------------------------------------
+(defalias
+  remoj (cmd open r#"raycast://extensions/raycast/emoji-symbols/search-emoji-symbols"#)
+  rfile (cmd open r#"raycast://extensions/raycast/file-search/search-files"#)
+  rspot (cmd open r#"raycast://extensions/mattisssa/spotify-player/search"#)
+  rvide (cmd open r#"raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D"#)
+  rclip (cmd open r#"raycast://extensions/raycast/clipboard-history/clipboard-history"#)
+  rwin  (cmd open r#"raycast://extensions/raycast/window-management/index"#)
+)
+
+;; -------------------------------------------------------
+;; KITTY SESSION JUMPS
+;; -------------------------------------------------------
+(defalias
+  kshom  (cmd zsh -lc r#"kitten @ focus-window --match title:home 2>/dev/null || open -a kitty"#)
+  ksdot  (cmd zsh -lc r#"kitten @ focus-window --match title:dotfiles 2>/dev/null || open -a kitty"#)
+  ksnvim (cmd zsh -lc r#"kitten @ focus-window --match title:nvim 2>/dev/null || open -a kitty"#)
+  ksaut  (cmd zsh -lc r#"kitten @ focus-window --match title:automation 2>/dev/null || open -a kitty"#)
+  kspod  (cmd zsh -lc r#"kitten @ focus-window --match title:podcast 2>/dev/null || open -a kitty"#)
+)
+
+;; -------------------------------------------------------
+;; COLORSCHEME CYCLE
+;; -------------------------------------------------------
+(defalias
+  acol (cmd zsh -lc r#"$HOME/.local/bin/colorswitch next"#)
+)
