@@ -54,12 +54,12 @@
 ;;   rght → empty-trash/GUI+Alt+Shift
 ;;----------------------------------------------------
 (deflayer main
-  _       brdn  brup  f3    f4    f5    f6    prev  pp    next  mute  vold  volu
-  @gcs    1     2     3     4     5     6     7     8     9     0     _     _     _
-  @tabSG  _     _     @mhome _    _     _     _     _     _     @myts _     _     _
-  @mehsc  @mlctl _    @mlalt @mlmet _   _     @mrmet @altgrv _  @mrctl _    @enterm
-  _       _     @shalt @metsc _   _     @mappr _    _     _     _     up    @shdel
-  fn      lctl  lalt  lmet              spc               rmet  ralt  @btab down  @rtaplt
+  _       brdn   brup  f3     f4     f5    f6     prev   pp      next  mute    vold  volu
+  @gcs    1      2     3      4      5     6      7      8       9     0       _     _       _
+  @tabSG  _      _     @mhome _      _     _      _      _       _     _       @myts _    _
+  @mehsc  @mlctl _     @mlalt @mlmet _     _      @mrmet @altgrv _     @mrctl  _     @enterm
+  _       _      _     _      _      _     _      _      _       _     _       _     @shdel      ;; Bottom Row
+  _       @btab   @shalt  @metsc           @mappr                @lHYP @rtaplt _     _       _   ;; Modifier/Arrow Row
 )
 
 ;;----------------------------------------------------

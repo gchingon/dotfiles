@@ -78,7 +78,7 @@
   mlmet (tap-hold $tt $ht f lmet)
   mrmet (tap-hold $tt $ht j rmet)
   mralt (tap-hold $tt $ht k ralt)
-  mrctl (tap-hold $tt $ht \; lctl)
+  mrctl (tap-hold $tt $ht ; lctl)
 
   ;; -------------------------------------------------------
   ;; DOUBLE-ACTION KEYS
@@ -91,13 +91,13 @@
   lHYP   (tap-hold-press $tt $ht f18 (multi lsft lctl lalt lmet))
   mehsc  (tap-hold-press $tt $ht esc (multi lsft lctl lalt))
   mhome  (tap-hold-press 150 180 e @scam6)
-  myts   (tap-hold-press $tt $ht \[ @yt/)
+  myts   (tap-hold-press $tt $ht [ @yt/)
   altgrv (tap-hold-press $tt $ht k @mralt)
   metsc  (tap-hold-press $tt $ht (multi lmet lalt esc) (multi lmet lctl))
   btab   (tap-hold-press $tt $ht (multi lalt tab) (multi lalt lmet))
   rtaplt (tap-hold-press $tt 240 @trsh (multi rmet ralt lsft))
   shdel  (tap-hold-press $tt $ht del rsft)
-  shalt  (tap-hold-press $tt 240 (macro C-\; i) (multi lsft lalt))
+  shalt  (tap-hold-press $tt 240 (macro C-; i) (multi lsft lalt))
   tabSG  (tap-hold-press $tt $ht tab (multi lsft lmet))
 
   ;; -------------------------------------------------------
