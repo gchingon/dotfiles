@@ -1,0 +1,7 @@
+#!/bin/zsh
+MACHINE=${MACHINE_NAME:-$(hostname -s)}
+# Append machine name to commit message if not already there
+if ! grep -q "\[$MACHINE\]" "$1"; then
+  echo "" >> "$1"
+  echo "[from: $MACHINE]" >> "$1"
+fi

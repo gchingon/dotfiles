@@ -64,6 +64,11 @@ git-pull-all() {
 
 git-add-commit-push() {
   setup-ssh
+  # Pull with rebase first — aborts cleanly if conflicts exist
+  git pull --rebase -q origin "$(git rev-parse --abbrev-ref HEAD)" || {
+    echo "(X︿x) Pull failed — resolve conflicts before pushing."
+    return 1
+  }
   git-add "$@"
   git-commit-message "$@"
   git-push "$@"

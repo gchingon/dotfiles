@@ -32,6 +32,7 @@ alias ytv='ytd video'
 alias oct='openclaw tui'
 alias occ='openclaw configure'
 alias ocd='openclaw doctor'
+alias dots='cd $CF && gac "sync $(date +%Y-%m-%d) [$MACHINE_NAME]" && cd -'
 
 # ===== Git Aliases =====
 alias g='git'                            # Shortcut for git

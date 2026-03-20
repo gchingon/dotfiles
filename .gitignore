@@ -4,6 +4,7 @@
 *.zwc
 *claude*
 *gemini*
+*.env
 
 # System files
 *.DS_Store
