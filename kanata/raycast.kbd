@@ -10,27 +10,27 @@
 ;;   home, dotfiles, nvim, automation, podcast
 ;;
 ;; Mapped to physical hjkl (home row) for muscle memory:
-;;   Physical q → Dvorak ' → home session      (@kshom)
-;;   Physical w → Dvorak , → dotfiles session  (@ksdot)
-;;   Physical e → Dvorak . → nvim session      (@ksnvim)
-;;   Physical r → Dvorak p → automation        (@ksaut)
-;;   Physical t → Dvorak y → podcast           (@kspod)
+;;   Physical q → Dvorak ' → home session      (@khom)
+;;   Physical w → Dvorak , → dotfiles session  (@kdot)
+;;   Physical e → Dvorak . → nvim session      (@knvm)
+;;   Physical r → Dvorak p → automation        (@kaut)
+;;   Physical t → Dvorak y → podcast           (@kpod)
 ;; Physical key → Dvorak char → Raycast action
 ;; Home row:
-;;   a  → a  → emoji search     (@remoj)
-;;   s  → o  → clipboard hist   (@rclip)
-;;   d  → e  → file search      (@rfile)
-;;   f  → u  → window mgmt      (@rwin)
+;;   a  → a  → ai chat preset   (@rayi)
+;;   s  → o  → emoji search     (@remoj)
+;;   d  → e  → clipboard hist   (@rclip)
+;;   f  → u  → file search      (@rfile)
 ;;   '  → -  → zoom toggle mute (@rzoom)  [lmet+lsft+a physical]
-;; QWERTY row:
-;;   i  → c  → Spotify search   (@rspot)
-;;   o  → r  → YouTube search   (@rvide)
+;; Bottom row:
+;;   c  → j  → Spotify search   (@rspot)
+;;   v  → k  → YouTube search   (@rvide)
 ;;----------------------------------------------------
 (deflayer raycast
-  _     XX      XX      XX      XX      XX      XX    XX    XX      XX      XX    XX      XX
-  grv   1       2       3       4       5       6     7     8       9       0     _       _    del
-  _     @kshom  @ksdot  @ksnvim @ksaut  @kspod  XX    XX    XX      XX      XX    XX      XX    XX
-  XX    @remoj  @rclip  @rfile  @rwin   XX      XX    XX    XX      XX      XX    @rzoom  XX
-  XX    XX      XX      @rspot  @rvide  XX      XX    XX    XX      XX      XX    XX      XX ;; Bottom Row
-  fn    lctl    lalt    lmet            spc           rmet  ralt    left    down  rght
+  _     XX     XX     XX     XX      XX    XX    XX    XX      XX      XX    XX      XX
+  grv   1      2      3      4       5     6     7     8       9       0     _       _    del
+  _     @khom  @kdot  @knvm  @kaut   @kpod XX    XX    XX      XX      XX    XX      XX    XX
+  XX    @rayi  @remoj @rclip @rfile  XX    XX    XX    XX      XX      XX    @rzoom  XX
+  XX    XX     XX     @rspot @rvide  XX    XX    XX    XX      XX      XX    XX      XX ;; Bottom Row
+  fn    lctl   lalt   lmet            spc           rmet  ralt    left    down  rght
 )
