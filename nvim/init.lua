@@ -67,10 +67,7 @@ vim.cmd([[
   Plug 'mfussenegger/nvim-lint'
   Plug 'OXY2DEV/markview.nvim'
   Plug 'folke/flash.nvim'
-
-  " Org ecosystem
-  Plug 'nvim-orgmode/orgmode'
-  Plug 'nvimdev/lspsaga.nvim'
+  Plug 'knubie/vim-kitty-navigator'
 
   call plug#end()
 ]])
@@ -198,3 +195,10 @@ else
   vim.notify("Theme configuration not found, using default colorscheme", vim.log.levels.WARN)
   vim.cmd("colorscheme default")
 end
+
+-- vim-kitty-navigator
+vim.g.kitty_navigator_no_mappings = 1
+vim.keymap.set("n", "<C-h>", ":KittyNavigateLeft<CR>",  { silent = true })
+vim.keymap.set("n", "<C-j>", ":KittyNavigateDown<CR>",  { silent = true })
+vim.keymap.set("n", "<C-k>", ":KittyNavigateUp<CR>",    { silent = true })
+vim.keymap.set("n", "<C-l>", ":KittyNavigateRight<CR>", { silent = true })

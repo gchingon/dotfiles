@@ -27,6 +27,20 @@
   ywrem (cmd zsh -lc "yabai -m window --close")
   ysmir (cmd zsh -lc "yabai -m space --mirror y-axis")
 
+  ;; ── App additions ──────────────────────────────────────────────────────────
+  asaf (cmd zsh -lc "$RX/app-switch.sh Safari")               ;; physical 'x' = Dvorak 'q'
+  aned (cmd zsh -lc "$RX/app-switch.sh Neovide")              ;; physical 'b' = Dvorak 'x'  
+  amld (cmd zsh -lc "$RX/app-switch.sh 'Meld Studio'")        ;; pick a physical key
+  acnm (cmd zsh -lc "$HOME/.config/rx/calendar-next-meeting.sh") ;; calendar + open meeting
+  
+  ;; ── System ────────────────────────────────────────────────────────────────
+  smute (cmd zsh -lc "$HOME/.config/rx/mic-mute.sh")
+  slrld (macro (cmd zsh -lc "osascript -e 'display notification \"Reloading kanata\" with title \"Kanata\"'") 500 lrld)
+  
+  ;; ── Focus modes ───────────────────────────────────────────────────────────
+  spodh (cmd zsh -lc "$HOME/.config/rx/focus/podcast-host.sh")
+  sreco (cmd zsh -lc "$HOME/.config/rx/focus/recording-mode.sh")
+
   ;; -------------------------------------------------------
   ;; App switching
   ;; Physical key positions are QWERTY; Dvorak chars shown in comments
@@ -125,5 +139,5 @@
 ;; COLORSCHEME CYCLE
 ;; -------------------------------------------------------
 (defalias
-  acol (cmd zsh -lc "$HOME/.local/bin/colorswitch next")
+  acol (cmd zsh -lc "$LB/colorswitch-next")
 )

@@ -1,0 +1,3 @@
+new_tab 2mini
+cd ~
+launch zsh -c "if [[ $(hostname) == *2mini* ]]; then echo 'Already on 2mini'; exec zsh; else ssh g2mini@2mini.local; fi"

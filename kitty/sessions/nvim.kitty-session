@@ -1,0 +1,3 @@
+new_tab nvim
+cd ~
+launch nvim

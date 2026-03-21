@@ -26,9 +26,13 @@ end tell
 if isRunning then
   tell application "System Events"
     tell process "$APP"
-      set isHidden to (value of attribute "AXHidden") as boolean
-    end tell
-  end tell
+try
+  set isHidden to (value of attribute "AXHidden") as boolean
+on error
+  try
+    set isHidden to not visible
+  end try
+end try
 
   if isHidden then
     -- App is hidden (Cmd+H) → unhide and activate
