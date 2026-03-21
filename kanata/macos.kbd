@@ -107,7 +107,7 @@
   _    XX     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
   grv  1      2     3     4     5     6     7     8     9     @acal _     _     del
   _    _      _     @acsh @apre @afin @afnd @apag @acmt @aspt @adic @anmg _     _
-  _    @obsi  @adis @acol _     @advs @acla _     @anot @asys _     _
+  _    @obsi  @adis @acol _     @advs @acla _     @anot @asys _     _     _
   lsft @amld  @asaf @aned @akit @dots _     @ames @awha _     _     up    rsft  ;; Bottom Row
   fn   lctl   lalt  lmet           spc            rmet  ralt  left  down  rght
 )

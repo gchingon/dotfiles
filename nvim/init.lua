@@ -102,22 +102,6 @@ do
         end
     end
 
-    -- Global on_attach for all LSPs: sets Saga keymaps buffer-locally
-    vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-            local bufnr = args.buf
-            local opts = { noremap = true, silent = true, buffer = bufnr }
-            vim.keymap.set("n", "K",  "<cmd>Lspsaga hover_doc<CR>",            opts)
-            vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>",      opts)
-            vim.keymap.set("n", "gr", "<cmd>Lspsaga finder ref<CR>",           opts)
-            vim.keymap.set("n", "gR", "<cmd>Lspsaga rename<CR>",               opts)
-            vim.keymap.set({ "n", "v" }, "ga", "<cmd>Lspsaga code_action<CR>", opts)
-            vim.keymap.set("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>",opts)
-            vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
-            vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
-        end,
-    })
-
     -- Apply capabilities to all LSP servers via wildcard config
     vim.lsp.config("*", {
         capabilities = capabilities,
@@ -155,13 +139,6 @@ setup_plugin("lspsaga", function(saga)
         lightbulb = { enable = true },
         code_action = { extend_gitsigns = true },
     })
-end)
-
-setup_plugin("orgmode", function(orgmode)
-  orgmode.setup({
-    org_agenda_files = { vim.env.HOME .. "/Documents/org/**/*" },
-    org_default_notes_file = vim.env.HOME .. "/Documents/org/inbox.org",
-  })
 end)
 
 vim.api.nvim_create_autocmd("FileType", {
