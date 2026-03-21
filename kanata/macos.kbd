@@ -5,23 +5,19 @@
 ;; app-switch.sh resolves real user internally via /dev/console.
 ;;
 ;; LAYER MAP:
-;;   main           — daily typing, home row mods
-;;   apps           — app switching (hold caps OR one-shot space)
-;;   raycast        — raycast commands (hold enter)
-;;   kitty-sessions — kitty tab/window jumps (hold tab)
-;;   yabai-manage   — window management (hold rmet)
+;;   main          — daily typing, home row mods
+;;   apps          — app switching (hold lmet via @metsc)
+;;   raycast       — raycast + kitty sessions (hold enter)
+;;   yabai-manage  — window management (hold esc via @myaba)
 ;;----------------------------------------------------
+
+(include alieases.kbd)
 
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold   yes
   danger-enable-cmd     yes
 )
-
-(include aliases.kbd)
-(include apps.kbd)
-(include raycast.kbd)
-(include yabai.kbd)
 
 ;;----------------------------------------------------
 ;; Variables
@@ -45,41 +41,3 @@
   lsft  z     x     c     v     b     n     m     ,     .     /     up    rsft
   fn    lctl  lalt  lmet              spc         rmet  ralt  left  down  rght
 )
-
-;;----------------------------------------------------
-;; MAIN layer
-;;
-;; Physical → Dvorak reference for modified keys:
-;;   caps → esc (tap) / MEH (hold)
-;;   grv  → `/Ctrl+Shift
-;;   a    → a/lctl    s  → o/lalt    d  → e/lalt
-;;   f    → u/lmet    g  → i         h  → d
-;;   j    → h/rmet    k  → t/ralt    l  → n
-;;   ;    → s/rctl    '  → -
-;;   e    → ./HOMEROW  [  → [/YT-search
-;;   tab  → tab/Shift+GUI    ret → ret/raycast layer
-;;   spc  → spc
-;;   del  → del/rsft         btab → alt+tab/alt+GUI
-;;   rght → empty-trash/GUI+Alt+Shift
-;;   lHYP → HYPER (f18 tap, Hyper hold) — physical lmet row
-;;----------------------------------------------------
-(deflayer main
-  @myaba  brdn    brup    f3      f4      f5  f6   prev   pp      next  mute    vold  volu
-  @gcs    1       2       3       4       5   6    7      8       9     0       _     _       _
-  @tabSG  _       _       @mhome  _       _   _    _      _       _     _       @myts _       _
-  @mehsc  @mlctl  _       @mlalt  @mlmet  _   _    @mrmet @mralt  _     @mrctl  _     @enterm
-  _       _       _       _       _       _   _    _      _       _     _       _     @shdel ;; Bottom Row
-  _       @btab   @shalt  @metsc          spc      @lHYP  @rtaplt _     _       _
-)
-
-;;----------------------------------------------------
-;; TEMPLATE — copy this to add new layers
-;; (deflayer template
-;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX
-;;   grv  1     2     3     4     5     6     7     8     9     0     _    _    del
-;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX   XX
-;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX
-;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX
-;;   fn   lctl  lalt  lmet          spc         rmet  ralt  left  down  rght
-;; )
-;;----------------------------------------------------
