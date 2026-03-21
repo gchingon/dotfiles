@@ -1,0 +1,36 @@
+;;----------------------------------------------------
+;; RAYCAST-KITTY-SESSIONS layer — raycast extension shortcuts & jump to named kitty windows
+;; Activated by: hold enter (via @enterm)
+;;
+;; Requires in kitty.conf:
+;;   allow_remote_control yes
+;;   listen_on unix:/tmp/kitty
+;;
+;; Name your kitty tabs/windows to match:
+;;   home, dotfiles, nvim, automation, podcast
+;;
+;; Mapped to physical hjkl (home row) for muscle memory:
+;;   Physical q → Dvorak ' → home session      (@kshom)
+;;   Physical w → Dvorak , → dotfiles session  (@ksdot)
+;;   Physical e → Dvorak . → nvim session      (@ksnvim)
+;;   Physical r → Dvorak p → automation        (@ksaut)
+;;   Physical t → Dvorak y → podcast           (@kspod)
+;; Physical key → Dvorak char → Raycast action
+;; Home row:
+;;   a  → a  → emoji search     (@remoj)
+;;   s  → o  → clipboard hist   (@rclip)
+;;   d  → e  → file search      (@rfile)
+;;   f  → u  → window mgmt      (@rwin)
+;;   '  → -  → zoom toggle mute (@rzoom)  [lmet+lsft+a physical]
+;; QWERTY row:
+;;   i  → c  → Spotify search   (@rspot)
+;;   o  → r  → YouTube search   (@rvide)
+;;----------------------------------------------------
+(deflayer raycast
+  _     XX      XX      XX      XX      XX      XX    XX    XX      XX      XX    XX      XX
+  grv   1       2       3       4       5       6     7     8       9       0     _       _    del
+  _     @kshom  @ksdot  @ksnvim @ksaut  @kspod  XX    XX    XX      XX      XX    XX      XX    XX
+  XX    @remoj  @rclip  @rfile  @rwin   XX      XX    XX    XX      XX      XX    @rzoom  XX
+  XX    XX      XX      @rspot  @rvide  XX      XX    XX    XX      XX      XX    XX      XX ;; Bottom Row
+  fn    lctl    lalt    lmet            spc           rmet  ralt    left    down  rght
+)

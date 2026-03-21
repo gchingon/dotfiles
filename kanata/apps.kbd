@@ -1,0 +1,39 @@
+;;----------------------------------------------------
+;; APPS layer — app switching Activated by: hold caps (via @capsl)
+;; Physical key → Dvorak char → App
+;; QWERTY row:
+;;   q  → '  → Affinity         (@afin)
+;;   e  → .  → CleanShot X      (@aclsh)
+;;   t  → y  → Preview          (@apre)
+;;   y  → f  → Finder           (@afnd)
+;;   u  → g  → Pages            (@apag)
+;;   i  → c  → kitty            (@akitt)
+;;   o  → r  → Comet            (@acmtb)
+;;   p  → l  → Spotify          (@aspti)
+;;   [  → /  → Dictionary       (@adic)
+;;   ]  → =  → Name Mangler     (@anmg)
+;; Home row:
+;;   a  → a  → Obsidian         (@aobsi)
+;;   d  → e  → Discord          (@adis)
+;;   f  → u  → colorscheme next (@acol)
+;;   h  → d  → DaVinci Resolve  (@advs)
+;;   j  → h  → Claude           (@acla)
+;;   ;  → s  → System Settings  (@asys)
+;; Bottom row:
+;;   b  → x  → Calendar         (@acal)
+;;   m  → m  → Notes            (@anot)
+;;   ,  → w  → Messages         (@ames)
+;;   .  → v  → WhatsApp         (@awha)
+;;   n  → b  → dots-sync        (@adots)
+;; Modifier row:
+;;   spc → double-space (@2spc) — safety valve
+;;   left/down/rght → arrow passthrough
+;;----------------------------------------------------
+(deflayer apps
+  _     XX      XX   XX     XX    XX      XX    XX    XX      XX      XX      XX    XX
+  grv   1       2    3      4     5       6     7     8       9       0       _     _     del
+  _     @afin   _    @aclsh _     @apre   @afnd @apag @akitt  @acmtb  @aspti  @adic @anmg _
+  _     @aobsi  _    @adis  @acol _       @advs @acla _       _       @asys   _     _
+  lsft  _       _    _      _     @adots  @acal @anot @ames   @awha   _       up    rsft ;; Bottom Row
+  fn    lctl    lalt lmet         @2spc         rmet  ralt    left    down    rght
+)

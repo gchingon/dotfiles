@@ -1,12 +1,15 @@
 ;;----------------------------------------------------
-;; macos.kbd — Kanata config for macOS (all machines) Dvorak keyboard layout — physical QWERTY positions Runs as LaunchDaemon (root). app-switch.sh resolves real user internally via /dev/console.
+;; macos.kbd — Kanata config for macOS (all machines)
+;; Dvorak keyboard layout — physical QWERTY positions
+;; Runs as LaunchDaemon (root).
+;; app-switch.sh resolves real user internally via /dev/console.
 ;;
 ;; LAYER MAP:
-;;   main          — daily typing, home row mods
-;;   apps          — app switching (hold space)
-;;   raycast       — raycast commands (hold enter)
+;;   main           — daily typing, home row mods
+;;   apps           — app switching (hold caps OR one-shot space)
+;;   raycast        — raycast commands (hold enter)
 ;;   kitty-sessions — kitty tab/window jumps (hold tab)
-;;   yabai-manage  — window management (hold rmet)
+;;   yabai-manage   — window management (hold rmet)
 ;;----------------------------------------------------
 
 (defcfg
@@ -16,6 +19,9 @@
 )
 
 (include aliases.kbd)
+(include apps.kbd)
+(include raycast.kbd)
+(include yabai.kbd)
 
 ;;----------------------------------------------------
 ;; Variables
@@ -27,7 +33,9 @@
 )
 
 ;;----------------------------------------------------
-;; defsrc — 77-key MacBook physical layout Order MUST match all deflayer declarations exactly. These are hardware key positions, not Dvorak chars.
+;; defsrc — 77-key MacBook physical layout
+;; Order MUST match all deflayer declarations exactly.
+;; These are hardware key positions, not Dvorak chars.
 ;;----------------------------------------------------
 (defsrc
   esc   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
@@ -35,153 +43,43 @@
   tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
   caps  a     s     d     f     g     h     j     k     l     ;     '     ret
   lsft  z     x     c     v     b     n     m     ,     .     /     up    rsft
-  fn    lctl  lalt  lmet              spc               rmet  ralt  left  down  rght
+  fn    lctl  lalt  lmet              spc         rmet  ralt  left  down  rght
 )
 
 ;;----------------------------------------------------
 ;; MAIN layer
 ;;
 ;; Physical → Dvorak reference for modified keys:
-;;   caps → esc/MEH    grv  → `/Ctrl+Shift
-;;   a    → a/lctl     s    → o/—         d    → e/lalt
-;;   f    → u/lmet     g    → i           h    → d
-;;   j    → h/rmet     k    → t/ralt      l    → n
-;;   ;    → s/rctl     '    → -
-;;   e    → ./HOMEROW  [    → [/YT-search
-;;   tab  → tab/Shift+GUI   ret → ret/kitty
-;;   spc  → spc/apps layer  (tap-dance via @mappr)
-;;   del  → del/rsft        btab → alt+tab/alt+GUI
+;;   caps → esc (tap) / apps layer (hold)  [MEH removed; HYPER stays on lHYP]
+;;   grv  → `/Ctrl+Shift
+;;   a    → a/lctl    s  → o/lalt    d  → e/lalt
+;;   f    → u/lmet    g  → i         h  → d
+;;   j    → h/rmet    k  → t/ralt    l  → n
+;;   ;    → s/rctl    '  → -
+;;   e    → ./HOMEROW  [  → [/YT-search
+;;   tab  → tab/Shift+GUI    ret → ret/raycast layer
+;;   spc  → spc/apps layer (one-shot tap-dance via @mappr)
+;;   del  → del/rsft         btab → alt+tab/alt+GUI
 ;;   rght → empty-trash/GUI+Alt+Shift
+;;   lHYP → HYPER (f18 tap, Hyper hold) — physical lmet row
 ;;----------------------------------------------------
 (deflayer main
-  _       brdn   brup  f3     f4     f5    f6     prev   pp      next  mute    vold  volu
-  @gcs    1      2     3      4      5     6      7      8       9     0       _     _       _
-  @tabSG  _      _     @mhome _      _     _      _      _       _     _       @myts _    _
-  @mehsc  @mlctl _     @mlalt @mlmet _     _      @mrmet @altgrv _     @mrctl  _     @enterm
-  _       _      _     _      _      _     _      _      _       _     _       _     @shdel      ;; Bottom Row
-  _       @btab   @shalt  @metsc           @mappr                @lHYP @rtaplt _     _       _   ;; Modifier/Arrow Row
-)
-
-;;----------------------------------------------------
-;; APPS layer — app switching
-;; Activated by: hold space (via @mappr tap-dance)
-;;
-;; Physical key → Dvorak char → App
-;;   QWERTY row:
-;;     e → .  → CleanShot X  (@aclsh)
-;;     r → p  → Raycast      (@arayc)  [open the app itself]
-;;     t → y  → Preview      (@apre)
-;;     y → f  → Finder       (@afnd)
-;;     u → g  → Pages        (@apag)
-;;     i → c  → kitty        (@akitt)
-;;     o → r  → Comet        (@acmtb)
-;;     p → l  → Spotify      (@aspti)
-;;   Home row:
-;;     a → a  → Obsidian     (@aobsi)
-;;     s → o  → Cursor       (@acurs)
-;;     d → e  → Discord      (@adis)
-;;     h → d  → DaVinci      (@advs)
-;;     m → m  → Notes        (@anot)
-;;   Bottom row:
-;;     ; → s  → System Settings (@asys)
-;;   Number row:
-;;     grv    → grv (passthrough for terminal escape)
-;;     del    → del
-;;   Modifier row:
-;;     spc    → double-space  (@2spc)  — safety valve
-;;     left/down/rght → arrow passthrough
-;;----------------------------------------------------
-(deflayer apps
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  grv   1     2     3     4     5     6     7     8     9     0     _     _     del
-  _     _     _     @aclsh @arayc @apre @afnd @apag @akitt @acmtb @aspti _     _     _
-  XX    @aobsi @acurs @adis _   @acol @advs  _     _     _     @asys _    _
-  lsft  _     _     _     _     _     @adots @anot _     _     _     up    rsft
-  fn    lctl  lalt  lmet              @2spc             rmet  ralt  left  down  rght
-)
-
-;;----------------------------------------------------
-;; RAYCAST layer — raycast extension shortcuts
-;; Activated by: hold enter (via @mrayc)
-;;
-;; Physical key → Dvorak char → Raycast action
-;;   Home row:
-;;     a → a  → ai chat presets (@rayi)
-;;     s → o  → clipboard hist (@rclip)
-;;     d → e  → emoji search   (@remoj)
-;;     f → u  → file search    (@rfile)
-;;   QWERTY row:
-;;     i → c  → Spotify search (@rspot)
-;;     o → r  → YouTube search (@ryout)
-;;----------------------------------------------------
-(deflayer raycast
-  _     XX    XX      XX      XX      XX    XX    XX    XX    XX    XX    XX    XX
-  grv   1     2       3       4       5     6     7     8     9     0     _     _     del
-  _     XX    XX      @ryout  @rspot  XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    @rayi @remoj  @rclip  @rfile  XX    XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX      XX      XX      XX    XX    XX    XX    XX    XX    XX    XX
-  fn    lctl  lalt    lmet              spc               rmet  ralt  left  down  rght
-)
-
-;;----------------------------------------------------
-;; KITTY-SESSIONS layer — jump to named kitty tabs
-;; Activated by: hold tab (via @mkses)
-;;
-;; Requires in kitty.conf:
-;;   allow_remote_control yes
-;;   listen_on unix:/tmp/kitty
-;;
-;; Name your kitty tabs to match: dotfiles, home,
-;; podcast, automation, nvim
-;;
-;; Physical key → Dvorak char → Session
-;;   Home row:
-;;     j → h  → home session     (@kshom)
-;;     k → t  → dotfiles session (@ksdot)
-;;     l → n  → nvim session     (@ksnvim)
-;;     ; → s  → automation       (@ksaut)
-;;     h → d  → podcast          (@kspod)
-;;----------------------------------------------------
-(deflayer kitty-sessions
-  _     XX    XX    XX    XX    XX    XX      XX     XX     XX      XX      XX    XX
-  grv   1     2     3     4     5     6       7      8      9       0       _     _     del
-  _     XX    XX    XX    XX    XX    XX      XX     XX     XX      XX      XX    XX    XX
-  XX    XX    XX    XX    XX    XX    @kspod  @kshom @ksdot @ksnvim @ksaut  XX    XX
-  XX    XX    XX    XX    XX    XX    XX      XX     XX     XX      XX      XX    XX
-  fn    lctl  lalt  lmet              spc               rmet  ralt  left    down  rght
-)
-
-;;----------------------------------------------------
-;; YABAI-MANAGE layer — window management
-;; Activated by: hold rmet (right command, via @myaba)
-;;
-;; Uses hjkl-style layout (Dvorak: d/h/t/n = left/down/up/right)
-;; Physical h/j/k/l positions map to yabai directions.
-;;
-;; Physical key → action
-;;   h → focus west    j → focus south
-;;   k → focus north   l → focus east
-;;   Shift versions → swap instead of focus
-;;   n → mirror y-axis
-;;   bspc → close window
-;;----------------------------------------------------
-(deflayer yabai-manage
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  grv   1     2     3     4     5     6     7     8     9     0     _     _     del
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    XX    @yfwes @yfsou @yfnor @yfeas XX   XX    XX
-  XX    XX    XX    XX    XX    XX    @ysmir @ywrem @yswes @yssou @ysnor XX  XX
-  fn    lctl  lalt  lmet              spc               rmet  ralt  left  down  rght
+  @myaba  brdn    brup    f3      f4      f5  f6   prev   pp      next  mute    vold  volu
+  @gcs    1       2       3       4       5   6    7      8       9     0       _     _       _
+  @tabSG  _       _       @mhome  _       _   _    _      _       _     _       @myts _       _
+  @mehsc  @mlctl  _       @mlalt  @mlmet  _   _    @mrmet @mralt  _     @mrctl  _     @enterm
+  _       _       _       _       _       _   _    _      _       _     _       _     @shdel ;; Bottom Row
+  _       @btab   @shalt  @metsc          spc      @lHYP  @rtaplt _     _       _
 )
 
 ;;----------------------------------------------------
 ;; TEMPLATE — copy this to add new layers
 ;; (deflayer template
-;;   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-;;   grv   1     2     3     4     5     6     7     8     9     0     _     _     del
-;;   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-;;   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-;;   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-;;   fn    lctl  lalt  lmet              spc               rmet  ralt  left  down  rght
+;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX
+;;   grv  1     2     3     4     5     6     7     8     9     0     _    _    del
+;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX   XX
+;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX
+;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX   XX
+;;   fn   lctl  lalt  lmet          spc         rmet  ralt  left  down  rght
 ;; )
 ;;----------------------------------------------------

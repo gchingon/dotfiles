@@ -1,0 +1,19 @@
+;;----------------------------------------------------
+;; YABAI-MANAGE layer — window management
+;; Activated by: hold esc (via @myaba)
+;;
+;; Physical hjkl → focus/swap directions
+;;   h → focus west    j → focus south
+;;   k → focus north   l → focus east
+;;   Shift+hjkl        → swap versions
+;;   n → mirror y-axis
+;;   bspc → close window
+;;----------------------------------------------------
+(deflayer yabai-manage
+  _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  grv   1     2     3     4     5     6     7     8     9     0     _    _    del
+  _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    @yfwes @yfsou @yfnor @yfeas XX   XX    XX
+  XX    XX    XX    XX    XX    @ysmir @yswes @yssou @ysnor @yseas XX   XX    XX  ;; Bottom Row
+  fn    lctl  lalt  lmet          spc         rmet  ralt  left  down  rght
+)
