@@ -108,7 +108,7 @@
   lHYP (tap-hold $tt $ht f18 (multi lsft lctl lalt lmet))
   mehc (tap-hold $tt $ht esc (multi lsft lctl lalt))
   mhom (tap-hold 150 180 e @scam6)
-  myts (tap-hold $tt $ht \[ @yt/)
+  myts (tap-hold $tt $ht [ @yt/)
   mets (tap-hold $tt $ht (multi lmet lalt esc) (layer-while-held apps))
   btab (tap-hold $tt $ht (multi lalt tab) (multi lalt lmet))
   tams (tap-hold $tt 240 @trsh (multi rmet ralt lsft))

@@ -60,12 +60,12 @@
 ;;   lHYP → HYPER (f18 tap, Hyper hold)
 ;;----------------------------------------------------
 (deflayer main
-  @myba brdn  brup  f3    f4    f5   f6  prev  pp    next  mute  vold volu
-  @gcs  1     2     3     4     5    6   7     8     9     0     _    _     _
-  @tbSG _     _     @mhom _     _    _   _     _     _     @myts _    _
-  @mehc @mlct _     @mlal @mlme _    _   @mrme @mral _     @mrct _    @entm
-  _     _     _     _     _     _    _   _     _     _     _     _    @shdel   ;; Bottom Row
-  fn    @btab @shal @mets          spc         @lHYP @tams _     _    _
+  @myba brdn  brup  f3    f4    f5   f6  prev  pp    next  mute  vold  volu
+  @gcs  1     2     3     4     5    6   7     8     9     0     _     _     _
+  @tbSG _     _     @mhom _     _    _   _     _     _     _     @myts _     _
+  @mehc @mlct _     @mlal @mlme _    _   @mrme @mral _     @mrct _     @entm
+  _     _     _     _     _     _    _   _     _     _     _     _     @shdl   ;; Bottom Row
+  fn    @btab @shal @mets          spc         @lHYP @tams _     _     _
 )
 
 ;;----------------------------------------------------
@@ -161,7 +161,8 @@
 (deflayer yabai-manage
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
   grv   1     2     3     4     5     6     7     8     9     0     _     _     @ywnx
-  _     XX    XX    XX    XX    XX    @yfws @yfso @yfno @yfea XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    @yfws @yfso @yfno @yfea XX    XX    XX
   XX    XX    XX    XX    XX    @ymir @ysws @ysso @ysno @ysea XX    XX    XX    ;; Bottom Row
   fn    lctl  lalt  lmet           spc            rmet  ralt  left  down  rght
 )
