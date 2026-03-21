@@ -1,5 +1,5 @@
 ;;----------------------------------------------------
-;; APPS layer — app switching Activated by: hold caps (via @capsl)
+;; APPS layer — app switching Activated by: hold lmet (via @metsc)
 ;; Physical key → Dvorak char → App
 ;;   0  → 0  → Calendar         (@acal)
 ;; QWERTY row:
@@ -26,7 +26,6 @@
 ;;   ,  → w  → WhatsApp         (@awha)
 ;;   n  → b  → dots-sync        (@dots)
 ;; Modifier row:
-;;   spc → double-space (@2spc) — safety valve
 ;;   left/down/rght → arrow passthrough
 ;;----------------------------------------------------
 (deflayer apps
@@ -34,6 +33,6 @@
   grv   1    2     3     4      5      6     7     8     9     @acal _     _     del
   _     _    _     @acsh @apre  @afin  @afnd @apag @acmt @aspt @adic @anmg _     _
   _     _    @obsi @adis @acol  _      @advs @acla _     @anot @asys _     _
-  lsft  _    _     _     @akit  @dots  _     @ames @awha _     up    rsft ;; Bottom Row
-  fn    lctl lalt  lmet         @2spc        rmet  ralt  left  down  rght
+  lsft  _    _     _     @akit  @dots  _     @ames @awha _     _     up    rsft         ;; Bottom Row
+  fn    lctl lalt  lmet         spc        rmet  ralt  left  down  rght
 )

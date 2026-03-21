@@ -50,7 +50,7 @@
 ;; MAIN layer
 ;;
 ;; Physical → Dvorak reference for modified keys:
-;;   caps → esc (tap) / apps layer (hold)  [MEH removed; HYPER stays on lHYP]
+;;   caps → esc (tap) / MEH (hold)
 ;;   grv  → `/Ctrl+Shift
 ;;   a    → a/lctl    s  → o/lalt    d  → e/lalt
 ;;   f    → u/lmet    g  → i         h  → d
@@ -58,7 +58,7 @@
 ;;   ;    → s/rctl    '  → -
 ;;   e    → ./HOMEROW  [  → [/YT-search
 ;;   tab  → tab/Shift+GUI    ret → ret/raycast layer
-;;   spc  → spc/apps layer (one-shot tap-dance via @mappr)
+;;   spc  → spc
 ;;   del  → del/rsft         btab → alt+tab/alt+GUI
 ;;   rght → empty-trash/GUI+Alt+Shift
 ;;   lHYP → HYPER (f18 tap, Hyper hold) — physical lmet row

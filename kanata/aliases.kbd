@@ -28,11 +28,6 @@
   ysmir (cmd zsh -lc "yabai -m space --mirror y-axis")
 
   ;; -------------------------------------------------------
-  ;; Key replacements
-  ;; -------------------------------------------------------
-  2spc (macro spc spc)  ;; double-space when accidentally in apps layer
-
-  ;; -------------------------------------------------------
   ;; App switching
   ;; Physical key positions are QWERTY; Dvorak chars shown in comments
   ;; -------------------------------------------------------
