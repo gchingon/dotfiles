@@ -23,9 +23,11 @@
 ;; Variables
 ;;----------------------------------------------------
 (defvar
-  tt        175  ;; tap-time  — max ms for a tap
-  ht        200  ;; hold-time — min ms to register hold
-  subl-time 300  ;; sublayer hold — longer = fewer accidents
+ tap-higher 400
+ tt 300
+ ht 300
+ chord-time 60
+ subl-time 300  ;; sublayer hold — longer = fewer accidents
 )
 
 ;;----------------------------------------------------
@@ -60,12 +62,22 @@
 ;;   lHYP → HYPER (f18 tap, Hyper hold)
 ;;----------------------------------------------------
 (deflayer main
-  @myba brdn  brup  f3    f4    f5   f6  prev  pp    next  mute  vold  volu
-  @gcs  1     2     3     4     5    6   7     8     9     0     _     _     _
-  @tbSG _     _     @mhom _     _    _   _     _     _     _     @myts _     _
-  @mehc @mlct _     @mlal @mlme _    _   @mrme @mral _     @mrct _     @entm
-  _     _     _     _     _     _    _   _     _     _     _     _     @shdl   ;; Bottom Row
-  fn    @btab @shal @mets          spc         @lHYP @tams _     _     _
+  @myba  brdn   brup   f3     f4     f5     f6     prev   pp     next   mute   vold   volu          ;; EscFn
+  @gcs   1      2      3      4      5      6      7      8      9      0      _      _      _      ;; 1-0
+  @tbSG  _      _      @mhom  _      _      _      _      _      _      _      @myts  _      _      ;; Q\  
+  @mehc  @mlct  _      @mlal  @mlme  _      _      @mrme  @mral  _      @mrct  _      @subl         ;; A'  
+  _      _      _      _      _      _      _      _      _      _      _      _      @shdl         ;; Z/  
+  fn     @btab  @shal  @mets          spc          @lHYP  @tams  _      _      _                    ;; MOD 
+)
+
+(deflayer sublayers
+  ;;     a      s      d      f      g      h      j      k      l      ;      '
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; EscFn
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     @lapp  ;; 1-0
+  XX     XX     @lwor  XX     @lray  @less  XX     XX     XX     @meld  XX     XX     XX     XX     ;; Q\
+  XX     XX     @lets  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; A'
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; Z/
+  XX     XX     XX     @mapps         XX                  XX     XX     XX     XX     XX            ;; MOD
 )
 
 ;;----------------------------------------------------
@@ -95,7 +107,6 @@
 ;; Bottom row:
 ;;   z  →   → Meld Studio     (@amld)
 ;;   x  → q → Safari          (@asaf)
-;;   c  → j → Neovide         (@aned)   (was unused)
 ;;   v  → k → kitty           (@akit)
 ;;   m  → m → Messages        (@ames)
 ;;   ,  → w → WhatsApp        (@awha)
@@ -103,12 +114,12 @@
 ;; Modifier row:
 ;;   left/down/rght → arrow passthrough
 ;;----------------------------------------------------
-(deflayer apps
+(deflayer applications
   _    XX     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
   grv  1      2     3     4     5     6     7     8     9     @acal _     _     del
   _    _      _     @acsh @apre @afin @afnd @apag @acmt @aspt @adic @anmg _     _
   _    @obsi  @adis @acol _     @advs @acla _     @anot @asys _     _     _
-  lsft @amld  @asaf @aned @akit @dots _     @ames @awha _     _     up    rsft  ;; Bottom Row
+  lsft @amld  @asaf _     @akit @dots _     @ames @awha _     _     up    rsft  ;; Bottom Row
   fn   lctl   lalt  lmet           spc            rmet  ralt  left  down  rght
 )
 
