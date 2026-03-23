@@ -53,5 +53,5 @@ cache/
 transcoding/
 
 # Secrets and environment files
-.env
+*.env
 secrets/

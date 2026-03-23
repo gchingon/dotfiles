@@ -1,0 +1,197 @@
+  ;;----------------------------------------------------
+  ;; macos.kbd — Kanata config for macOS (all machines) Dvorak keyboard layout — physical QWERTY positions
+  ;; Runs as LaunchDaemon (root). app-switch.sh resolves real user internally via /dev/console.
+  ;;
+  ;; LAYER MAP:
+  ;;   main         — daily typing, home row mods
+  ;;   apps         — app switching (hold enter → cap)
+  ;;   raycast      — raycast + kitty session jumps (hold enter → p)
+  ;;   yabai-manage — window management (hold enter → esc)
+  ;;----------------------------------------------------
+
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold   yes
+  danger-enable-cmd     yes
+)
+
+(include aliasubs.kbd)
+
+  ;;----------------------------------------------------
+  ;; Variables
+  ;;----------------------------------------------------
+(defvar
+ tap-higher 400
+ tt 300
+ ht 300
+ kord-t 60
+ subl-t 300  ;; sublayer hold — longer = fewer accidents
+)
+
+  ;;----------------------------------------------------
+  ;; defsrc — 77-key MacBook physical layout
+  ;; Order MUST match all deflayer declarations exactly.
+  ;; These are hardware key positions, not Dvorak chars.
+  ;;----------------------------------------------------
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    up   rsft
+  fn   lctl lalt lmet           spc            rmet ralt left down rght
+)
+
+  ;;----------------------------------------------------
+  ;; MAIN layer
+  ;;
+  ;; Physical → Dvorak reference for modified keys:
+  ;;   caps → esc (tap) / MEH (hold)
+  ;;   grv  → `/Ctrl+Shift
+  ;;   a → a/lctl    s → o/lalt    d → e/lalt
+  ;;   f → u/lmet    g → i         h → d
+  ;;   j → h/rmet    k → t/ralt    l → n
+  ;;   ; → s/rctl    ' → -
+  ;;   e → ./HOMEROW  [ → [/YT-search
+  ;;   tab → tab/Shift+GUI    ret → ret/raycast layer
+  ;;   spc → spc
+  ;;   del → del/rsft         btab → alt+tab/alt+GUI
+  ;;   rght → empty-trash/GUI+Alt+Shift
+  ;;   lHYP → HYPER (f18 tap, Hyper hold)
+  ;;----------------------------------------------------
+(deflayer main
+  @yabam brdn    brup   f3     f4     f5     f6     prev   pp     next   mute   vold   volu         ;; EscFn
+  @grasc 1       2      3      4      5      6      7      8      9      0      _      _      _     ;; 1-0
+  @tabSG _       _      @mhome _      _      _      _      @rycst _      _      @myts  _      _     ;; Q\  
+  @mehcs @Hlctl  _      @Hlalt @Hlmet _      _      @Hrmet @Hralt _      @Hrctl _      @subly       ;; A'  
+  _      _       _      _      _      _      _      _      _      _      _      _      @shdel       ;; Z/  
+  fn     @tabal @shal  @mets          spc          @hyper @tams  _      _      _                   ;; MOD 
+)
+
+(deflayer sublayers
+  ;;     a      s      d      f      g      h      j      k      l      ;      '
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; EscFn
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     ;; 1-0
+  XX     XX     @lwor  XX     @rycst @less  XX     XX     XX     @meld  XX     XX     XX     XX     ;; Q\
+  @capp  XX     @lets  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; A'
+  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; Z/
+  XX     XX     XX     @mapps         XX                  XX     XX     XX     XX     XX            ;; MOD
+)
+
+  ;;----------------------------------------------------
+  ;; APPS layer/switching Activated by: (hold enter → cap)
+  ;;
+  ;; Physical key → Dvorak char → App
+  ;;   0  → 0 → Calendar        (@calen)
+  ;; QWERTY row:
+  ;;   e  → . → CleanShot X     (@cshot)
+  ;;   r  → p → Preview         (@prevu)
+  ;;   t  → y → Affinity        (@affin)
+  ;;   y  → f → Finder          (@afind)
+  ;;   u  → g → Pages           (@apage)
+  ;;   i  → c → Comet           (@comet)
+  ;;   p  → l → Spotify         (@aspot)
+  ;;   [  → / → Dictionary      (@dkshn)
+  ;;   ]  → = → Name Mangler    (@rnmgr)
+  ;; Home row:
+  ;;   a  → a → Obsidian        (@obsid)
+  ;;   d  → e → Discord         (@disco)
+  ;;   f  → u → colorscheme next(@csnxt)
+  ;;   h  → d → DaVinci Resolve (@dvstu)
+  ;;   j  → h → Claude          (@claud)
+  ;;   l  → n → Notes           (@notes)
+  ;;   ;  → s → System Settings (@syset)
+  ;; Bottom row:
+  ;;   z  →   → Meld Studio     (@mldst)
+  ;;   x  → q → Safari          (@safri)
+  ;;   v  → k → kitty           (@kitty)
+  ;;   m  → m → Messages        (@mesgs)
+  ;;   ,  → w → WhatsApp        (@wtsap)
+  ;; Modifier row:
+  ;;   left/down/rght → arrow passthrough
+  ;;----------------------------------------------------
+(deflayer applications
+  _    XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX
+  grv  1      2      3      4      5      6      7      8      9      @calen _      _     del
+  _    _      _      @cshot @prevu @affin @afind @apage @comet @aspot @dkshn @rnmgr _     _
+  _    @obsid @disco @csnxt _      @dvstu @claud _      @notes @syset _      _      _
+  lsft @mldst @safri _      @kitty _      _      @mesgs @wtsap _      _      up     rsft  ;; Bottom Row
+  fn   lctl   lalt   lmet           spc          rmet   ralt   left   down   rght
+)
+
+  ;;----------------------------------------------------
+  ;; RAYCAST + KITTY-SESSIONS layer Activated by: hold enter (via @rycst)
+  ;;
+  ;; Requires in kitty.conf:
+  ;;   allow_remote_control yes
+  ;;   listen_on unix:/tmp/kitty
+  ;;
+  ;; Kitty session jumps (physical hjkl area — upper row):
+  ;;   Physical w → Dvorak , → dotfiles  (@kdotsh)
+  ;;   Physical e → Dvorak . → nvim      (@knvim)
+  ;;   Physical r → Dvorak p → docker    (@kdock)
+  ;;   Physical t → Dvorak y → podcast   (@kpodc)
+  ;;   Physical i → Dvorak c → home      (@khome)
+  ;;
+  ;; Raycast — Home row:
+  ;;   a → a → ai chat    (@rayai)
+  ;;   s → o → emoji      (@remoj)
+  ;;   d → e → clipboard  (@rclip)
+  ;;   f → u → file search(@rfile)
+  ;;   ' → - → zoom mute  (@zmute)
+  ;;
+  ;; Bottom row:
+  ;;   c → j → Spotify search   (@rspot)
+  ;;   v → k → YouTube search   (@rvide)
+  ;;----------------------------------------------------
+(deflayer raycast
+  _     XX     XX     XX     XX     XX     XX    XX    XX     XX    XX    XX    XX
+  grv   1      2      3      4      5      6     7     8      9     0     _     _     del
+  _     _      @kdotsh @knvim @kdock @kpods XX    XX    @khome XX    XX    XX    XX    XX
+  XX    @rayai @remoj @rclip @rfile XX     _     XX    XX     XX    XX    @rmut XX
+  XX    XX     XX     @rspot @rvid/ XX     XX    XX    XX     XX    XX    XX    XX    ;; Bottom Row
+  fn    lctl   lalt   lmet           spc               rmet   ralt  left  down  rght
+)
+
+  ;;----------------------------------------------------
+  ;; YABAI layer — window Activated by: hold esc (via @yabam)
+  ;;
+  ;; Physical hjkl → focus/swap directions:
+  ;;   h → focus west    j → focus south
+  ;;   k → focus north   l → focus east
+  ;;   Shift+hjkl        → swap versions
+  ;;   b → mirror y-axis
+  ;;   bspc → close window
+  ;;----------------------------------------------------
+(deflayer yabai
+  _     XX    XX    XX    XX    XX     XX     XX     XX     XX     XX    XX    XX
+  grv   1     2     3     4     5      6      7      8      9      0     _     _     @ywinx
+  _     XX    XX    XX    XX    XX     XX     XX     XX     XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX     @yfwes @yfsth @yfnth @yfeas XX    XX    XX
+  XX    XX    XX    XX    XX    @ymirr @yswes @yssth @ysnth @yseas XX    XX    XX    ;; Bottom Row
+  fn    lctl  lalt  lmet           spc               rmet   ralt   left  down  rght
+)
+
+  ;;----------------------------------------------------
+  ;; TEMPLATE — copy this to add new layers
+  ;; (deflayer template
+  ;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   grv  1     2     3     4     5     6     7     8     9     0     _     _     del
+  ;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   fn   lctl lalt   lmet  spc   rmet  ralt  left  down  rght
+  ;; )
+  ;;----------------------------------------------------
+
+  ;;----------------------------------------------------
+  ;; TEMPLATE — copy this to add new layers
+  ;; (deflayer template
+  ;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   grv  1     2     3     4     5     6     7     8     9     0     _     _     del
+  ;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  ;;   fn   lctl lalt   lmet  spc   rmet  ralt  left  down  rght
+  ;; )
+  ;;----------------------------------------------------

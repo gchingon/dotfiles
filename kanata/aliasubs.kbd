@@ -1,0 +1,149 @@
+  ;;----------------------------------------------------
+  ;; aliases.kbd — included by macos.kbd
+  ;; All (cmd ...) calls run as root when kanata is a LaunchDaemon.
+  ;; app-switch.sh resolves the real console user internally via /dev/console,
+  ;; so no sudo -u needed here.
+  ;;----------------------------------------------------
+
+(defalias
+  ;;-------------------------------------------------------
+  ;; HOME ROW MODS    (physical keys)
+  ;; a=lctl  d=lalt  f=lmet  |  j=rmet  k=ralt  ;=rctl      
+  ;; {l,r}ctl might need to exist on ring finger keys  (physical) {s,l} depending on sub-layer testing 
+  ;;-------------------------------------------------------
+  Hlctl (tap-hold $tt $ht a lctl)
+  Hlalt (tap-hold $tt $ht d lalt)
+  Hlmet (tap-hold $tt $ht f lmet)
+  Hrmet (tap-hold $tt $ht j rmet)
+  Hralt (tap-hold $tt $ht k ralt)
+  Hrctl (tap-hold $tt $ht ; lctl)
+
+  ;;-----------------------------------
+  ;;  sublayer definitions              
+  ;;  Will have to test sub-layer keys as this would work best on an ortho keeb, but on staggered who knows
+  ;;-----------------------------------
+  subly (tap-hold-press $subl-t $subl-t ret (layer-while-held sublayers))         ;;  return --duh
+  capps (tap-hold-press $subl-t $subl-t caps (layer-while-held applications))     ;;  caps --hopefully this doesn't trigger esc or MEH on hold
+  rycst (tap-hold-press $subl-t $subl-t p (layer-while-held raycast))             ;;  `p`   (raycast layer)
+  yabam (tap-hold-press $subl-t $subl-t lsft (layer-while-held yabai))            ;;  `left Shift` yabai layer
+  ;; melds (tap-hold-press $subl-t $subl-t <key> (layer-while-held meld))         ;;  need to develop this as i don't want to use OBS
+
+  ;;-------------------------------------------------------
+  ;; shortcuts (used by other apps & aliases)
+  ;;-------------------------------------------------------
+  hypur A-C-M-S             ;; HYPER base
+  scam6 S-C-A-M-6           ;; homerow trigger (maybe reconfig to @hypur-6) ?
+  scam0 S-C-A-M-3           ;; cleanshot capture area
+  scamt S-C-A-M-4           ;; cleanshot capture full screen
+  scamt S-C-A-M-h           ;; cleanshot capture history
+  scamw S-C-A-M-w           ;; cleanshot capture window
+  scamw S-C-A-M-s           ;; cleanshot capture scroll
+  grvSC S-C                 ;; test if Shift+Ctrl can be defined without key, a lot of apps have a Shift+Ctrl default keybind prefix
+  tabal A-tab               ;; test if Alt+Meta …
+  tabAM A-M                 ;; test
+  force A-M-esc             ;; test if force quit can be aliased
+  stram A-M-S               ;; test if …
+  mulMS M-S                 ;; multi Meta+Shift
+  muMSa M-S-a               ;; multi Meta+Shift+a
+  capeh A-C-S               ;; …
+
+  ;;-------------------------------------------------------
+  ;; Yabai window management
+  ;;-------------------------------------------------------
+  yfwes (cmd sudo -u $(whoami) zsh -lc "yabai -m window --focus west")
+  yfsth (cmd sudo -u $(whoami) zsh -lc "yabai -m window --focus south")
+  yfnth (cmd sudo -u $(whoami) zsh -lc "yabai -m window --focus north")
+  yfeas (cmd sudo -u $(whoami) zsh -lc "yabai -m window --focus east")
+  yswes (cmd sudo -u $(whoami) zsh -lc "yabai -m window --swap west")
+  yssth (cmd sudo -u $(whoami) zsh -lc "yabai -m window --swap south")
+  ysnth (cmd sudo -u $(whoami) zsh -lc "yabai -m window --swap north")
+  yseas (cmd sudo -u $(whoami) zsh -lc "yabai -m window --swap east")
+  ywinx (cmd sudo -u $(whoami) zsh -lc "yabai -m window --close")
+  ymirr (cmd sudo -u $(whoami) zsh -lc "yabai -m space --mirror y-axis")
+  
+  ;;-------------------------------------------------------
+  ;; System actions
+  ;;-------------------------------------------------------
+  smute (cmd sudo -u $(whoami) zsh -lc "$RX/mic-mute.sh")                ;; bash script to mute mic
+  ktald (macro (cmd sudo -u $(whoami) zsh -lc "osascript -e 'display notification \"Reloading kanata\" with title \"Kanata\"'") 500 lrld)
+  calnx  (cmd sudo -u $(whoami) zsh -lc "$HOME/.config/rx/calendar-next-meeting.sh")  ;; open calendar + open video meeting
+  csnxt (cmd sudo -u $(whoami) zsh -lc "$LB/colorswitch-next")                        ;; cycle through terminal colorschemes
+
+  ;;----------------------------------------
+  ;; DOUBLE-ACTION KEYS                     These should ALL exist on MAIN layer
+  ;;----------------------------------------     TAP      →   HOLD        →   Dvorak
+  altab (tap-hold $tt $ht @tabal @tabAM)    ;;  alt+tab   →   A+M         →   `lctl`
+  grasc (tap-hold $tt $ht grv @grvSC)       ;;  grave     →   S+C         →   `~`       grave on tap | Shift+Ctrl hold
+  hyper (tap-hold $tt $ht f18 @hypur)       ;;  f18       →   A+C+M+S     →   `rmet`
+  mehsc (tap-hold $tt $ht esc @capeh)       ;;  esc       →   A+C+S       →   'caps'
+  mhome (tap-hold $tt $ht e @hypur-6)       ;;  e         →   A+C+M+S+6   →   `.`
+  shalt (tap-hold $tt $ht lsft lalt)        ;;  (???)     →   A+S         →   `lalt`
+  shdel (tap-hold $tt $ht del rsft)         ;;  del       →   S           →   `rsft`
+  suX22 (tap-hold $tt $ht @force )          ;;  @force    →   (???)       →   `lmet`    (??? = dunno what i should set this to)
+  trams (tap-hold $tt $ht @trsh @stram)     ;;  @trsh     →   A+M+S       →   `ralt`
+  tabSG (tap-hold $tt $ht tab @mulMS)       ;;  tab       →   S+M         →   `tab`
+  youb/ (tap-hold $tt $ht [ @rvid/)         ;;  [         →   @rvid       →   `/`
+  zmute (tap-hold $tt $ht ' @muMSa)         ;;  q         →   M+S+a       →   `'`       zoom mute toggle on applications layer
+)
+
+(defalias
+  ;;-------------------------------------------------------
+  ;; RAYCAST COMMANDS                   these and kitty sessions should be on the same layer. 
+  ;;-------------------------------------------------------
+  mtrsh (cmd open "raycast://extensions/raycast/system/empty-trash")            ;; would prefer a bash/zsh command to empty trash
+  rayai (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
+  rclip (cmd open "raycast://extensions/raycast/clipboard-history/clipboard-history")   ;; need to see if there's a way to make a clipboard item/paste that's been reused >3 times then make it a snippet
+  remoj (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+  rfile (cmd open "raycast://extensions/raycast/file-search/search-files")
+  spot/ (cmd open "raycast://extensions/mattisssa/spotify-player/search")
+  utbe/ (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+
+  ;;-------------------------------------------------------
+  ;; KITTY SESSION JUMPS                still need to figure out how i want these sessions to be set up, and what files/dirs each session should be open to
+  ;;-------------------------------------------------------
+  kdock (cmd sudo -u $(whoami) zsh -lc "kitten @ focus-window --match title:docker 2>/dev/null || open -a kitty")
+  kdots (cmd sudo -u $(whoami) zsh -lc "kitten @ focus-window --match title:dotfiles 2>/dev/null || open -a kitty")
+  khome (cmd sudo -u $(whoami) zsh -lc "kitten @ focus-window --match title:home 2>/dev/null || open -a kitty")
+  knvim (cmd sudo -u $(whoami) zsh -lc "kitten @ focus-window --match title:nvim 2>/dev/null || open -a kitty")
+  kpodc (cmd sudo -u $(whoami) zsh -lc "kitten @ focus-window --match title:podcast 2>/dev/null || open -a kitty")
+  kssh2 (cmd sudo -u $(whoami) zsh -lc "kitten @ focus-window --match title:ssh-2mini 2>/dev/null || open -a kitty")
+
+  ;;-------------------------------------------------------
+  ;; Focus modes                        need to come up w/ app list for each focus mode and window position
+  ;;-------------------------------------------------------
+  fopod (cmd sudo -u $(whoami) zsh -lc "$HOME/.config/rx/focus/podcast-host.sh")
+  forec (cmd sudo -u $(whoami) zsh -lc "$HOME/.config/rx/focus/recording-mode.sh")
+
+  ;;-------------------------------------------------------
+  ;; App switching          map aliases to QWERTY/Physical position
+  ;; Physical key positions are QWERTY; Dvorak chars shown in comments
+  ;;-------------------------------------------------------
+  calen (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Calendar")          ;; physical `0` = Dvorak `0` (num row)
+
+  cshot (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh 'CleanShot X'")     ;; physical `e` = Dvorak `.` (top row)
+  prevu (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Preview")           ;; physical `r` = Dvorak `p` (top row)
+  affin (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh 'Affinity'")        ;; physical `t` = Dvorak `y` (top row)
+  findr (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Finder")            ;; physical `y` = Dvorak `f` (top row)
+  pages (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Pages")             ;; physical `u` = Dvorak `g` (top row)
+  comet (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Comet")             ;; physical `i` = Dvorak `c` (top row)
+  dvstu (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh 'DaVinci Resolve'") ;; physical `o` = Dvorak `r` (top row)
+  rnmgr (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh 'Name Mangler'")    ;; physical `[` = Dvorak `/` (top row)
+  dkshn (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Dictionary")        ;; physical `]` = Dvorak `=` (top row)
+
+  obsid (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Obsidian")          ;; physical `s` = Dvorak `o` (home row)
+  disco (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Discord")           ;; physical `d` = Dvorak `e` (home row)
+  claud (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Claude")            ;; physical `h` = Dvorak `d` (home row)
+  spoti (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Spotify")           ;; physical `k` = Dvorak `t` (home row)
+  notes (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Notes")             ;; physical `l` = Dvorak `n` (home row)
+  syset (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh 'System Settings'") ;; physical `;` = Dvorak `s` (home row)
+
+  mldst (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh 'Meld Studio'")     ;; physical `z` = Dvorak `;` (bottom row)
+  safri (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Safari")            ;; physical `x` = Dvorak `q` (bottom row)
+  kitty (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh kitty")             ;; physical `v` = Dvorak `k` (bottom row)
+  wtsap (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh WhatsApp")          ;; physical `,` = Dvorak `w` (bottom row)
+  mesgs (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh Messages")          ;; physical `m` = Dvorak `m` (top row)
+
+
+  ;; Dotfiles sync
+  dotsh (cmd sudo -u $(whoami) zsh -lc "$RX/dots-sync.sh")
+)

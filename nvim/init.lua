@@ -132,15 +132,6 @@ setup_plugin("luasnip.loaders.from_lua", function(p)
   p.load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
 end)
 
-setup_plugin("lspsaga", function(saga)
-    saga.setup({
-        ui = { border = "rounded" },
-        symbol_in_winbar = { enable = false },
-        lightbulb = { enable = true },
-        code_action = { extend_gitsigns = true },
-    })
-end)
-
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()

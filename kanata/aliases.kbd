@@ -34,8 +34,8 @@
   ;;-------------------------------------------------------
 
   ;; going to test/try sublayers to not have to map multiple layer keys
-  subl (tap-hold-press $subl-time $subl-time ret (layer-while-held sublayers))
-  lapp (tap-hold-press $subl-time $subl-time bspc (layer-while-held applications))
+  ;; subl (tap-hold-press $subl-time $subl-time ret (layer-while-held sublayers))
+  ;; lapp (tap-hold-press $subl-time $subl-time bspc (layer-while-held applications))
 
   ;; Terminal / dev
   akit (cmd sudo -u $(whoami) zsh -lc "$RX/app-switch.sh kitty")          ;; physical `i` = Dvorak `c` (top row)
@@ -105,18 +105,18 @@
   ;;-------------------------------------------------------
   ;; DOUBLE-ACTION KEYS
   ;;-------------------------------------------------------
-  entm (tap-hold $tt $ht ret (layer-while-held raycast))
-  myba (tap-hold $subl-time $subl-time rmet (layer-while-held yabai-manage))
+  ;; entm (tap-hold $tt $ht ret (layer-while-held raycast))
+  ;; myba (tap-hold $subl-time $subl-time rmet (layer-while-held yabai-manage))
   gcs  (tap-hold $tt $ht grv (multi lctl lsft))
   lHYP (tap-hold $tt $ht f18 (multi lsft lctl lalt lmet))
   mehc (tap-hold $tt $ht esc (multi lsft lctl lalt))
   mhom (tap-hold $tt $ht e @scam6)
-  myts (tap-hold $tt $ht \[ @yt/)
-  mets (tap-hold $tt $ht (multi lmet lalt esc) (layer-while-held apps))
+  myts (tap-hold $tt $ht [ @yt/)
+  mets (tap-hold $tt $ht (multi lmet lalt esc) (multi lalt lctl lmet))
   btab (tap-hold $tt $ht (multi lalt tab) (multi lalt lmet))
   tams (tap-hold $tt $ht @trsh (multi rmet ralt lsft))
   shdl (tap-hold $tt $ht del rsft)
-  shal (tap-hold $tt $ht lsft lalt)
+  shal (tap-hold $tt $ht f13 (multi lsft lalt))
   tbSG (tap-hold $tt $ht tab (multi lsft lmet))
 )
 
