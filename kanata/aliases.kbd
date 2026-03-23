@@ -7,12 +7,14 @@
 
 (defalias
   ;;-------------------------------------------------------
-  ;; Hyper / SCAM shortcuts (used by other apps)
-  ;;-------------------------------------------------------
-  scam6 S-C-A-M-6           ;; homerow trigger
-  scam0 S-C-A-M-s           ;; cleanshot capture area
-  scamt S-C-A-M-tab         ;; cleanshot capture history
-  scamw S-C-A-M-w           ;; cleanshot capture window
+  hypur A-C-M-S
+  ;; Scam aliases using @hypur prefix pattern (explicit combos for reliability)
+  scam6 (multi @hypur 6)      ;;  homerow trigger
+  scam0 (multi @hypur 3)      ;;  cleanshot area 
+  scamt (multi @hypur 4)      ;;  cleanshot fullscreen
+  scamh (multi @hypur h)      ;;  
+  scamw (multi @hypur w)      ;;  cleanshot window
+  scams (multi @hypur s)      ;;  cleanshot scrolling window
 
   ;;-------------------------------------------------------
   ;; Yabai window management

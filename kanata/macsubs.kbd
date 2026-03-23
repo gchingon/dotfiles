@@ -21,11 +21,11 @@
   ;; Variables
   ;;----------------------------------------------------
 (defvar
- tap-higher 400
- tt 300
- ht 300
- kord-t 60
- subl-t 300  ;; sublayer hold — longer = fewer accidents
+  tap-higher 400
+  tt 300
+  ht 300
+  kord-t 60
+  subl-t 300  ;; sublayer hold — longer = fewer accidents
 )
 
   ;;----------------------------------------------------
@@ -43,39 +43,33 @@
 )
 
   ;;----------------------------------------------------
-  ;; MAIN layer
-  ;;
-  ;; Physical → Dvorak reference for modified keys:
-  ;;   caps → esc (tap) / MEH (hold)
-  ;;   grv  → `/Ctrl+Shift
-  ;;   a → a/lctl    s → o/lalt    d → e/lalt
-  ;;   f → u/lmet    g → i         h → d
-  ;;   j → h/rmet    k → t/ralt    l → n
-  ;;   ; → s/rctl    ' → -
-  ;;   e → ./HOMEROW  [ → [/YT-search
-  ;;   tab → tab/Shift+GUI    ret → ret/raycast layer
-  ;;   spc → spc
-  ;;   del → del/rsft         btab → alt+tab/alt+GUI
-  ;;   rght → empty-trash/GUI+Alt+Shift
-  ;;   lHYP → HYPER (f18 tap, Hyper hold)
+  ;; MAIN layer       
+  ;; Physical →   Dvorak(tap)/alias(hold):
+  ;;   grv    →   `/C+S     e → ./HOMEROW  [ → //YT-search
+  ;;   caps   →   esc/MEH   hyper  →   f18/Hyper
+  ;;   a      →   a/lctl    d → e/lalt     f → u/lmet    
+  ;;   j      →   h/rmet    k → t/ralt     ; → s/rctl
+  ;;   tab    →   tab/S+M   ret → ret/sub-layer
+  ;;   rsft   →   del/S     caltab → alt+tab/A+C
+  ;;   ralt   →   empty-trash/A+M+S
   ;;----------------------------------------------------
 (deflayer main
   @yabam brdn    brup   f3     f4     f5     f6     prev   pp     next   mute   vold   volu         ;; EscFn
   @grasc 1       2      3      4      5      6      7      8      9      0      _      _      _     ;; 1-0
-  @tabSG _       _      @mhome _      _      _      _      @rycst _      _      @myts  _      _     ;; Q\  
+  @tabSG _       _      @mhome _      _      _      _      @rycst _      _      @ytfnd _      _     ;; Q\  
   @mehcs @Hlctl  _      @Hlalt @Hlmet _      _      @Hrmet @Hralt _      @Hrctl _      @subly       ;; A'  
   _      _       _      _      _      _      _      _      _      _      _      _      @shdel       ;; Z/  
-  fn     @tabal @shal  @mets          spc          @hyper @tams  _      _      _                   ;; MOD 
+  fn     @caltb @shalt  @suXMS          spc         @hyper @trams _      _      _                   ;; MOD 
 )
 
 (deflayer sublayers
   ;;     a      s      d      f      g      h      j      k      l      ;      '
   XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; EscFn
   XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     ;; 1-0
-  XX     XX     @lwor  XX     @rycst @less  XX     XX     XX     @meld  XX     XX     XX     XX     ;; Q\
-  @capp  XX     @lets  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; A'
+  XX     XX     XX     XX     @rycst XX     XX     XX     XX     @lemld XX     XX     XX     XX     ;; Q\
+  @capp  XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; A'
   XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX            ;; Z/
-  XX     XX     XX     @mapps         XX                  XX     XX     XX     XX     XX            ;; MOD
+  XX     XX     XX     XX             XX                  XX     XX     XX     XX     XX            ;; MOD
 )
 
   ;;----------------------------------------------------
@@ -87,18 +81,18 @@
   ;;   e  → . → CleanShot X     (@cshot)
   ;;   r  → p → Preview         (@prevu)
   ;;   t  → y → Affinity        (@affin)
-  ;;   y  → f → Finder          (@afind)
-  ;;   u  → g → Pages           (@apage)
+  ;;   y  → f → Finder          (@findr)
+  ;;   u  → g → Pages           (@pages)
   ;;   i  → c → Comet           (@comet)
-  ;;   p  → l → Spotify         (@aspot)
+  ;;   p  → l → Spotify         (@spoti)
   ;;   [  → / → Dictionary      (@dkshn)
   ;;   ]  → = → Name Mangler    (@rnmgr)
   ;; Home row:
   ;;   a  → a → Obsidian        (@obsid)
   ;;   d  → e → Discord         (@disco)
+  ;;   j  → h → Claude          (@claud)
   ;;   f  → u → colorscheme next(@csnxt)
   ;;   h  → d → DaVinci Resolve (@dvstu)
-  ;;   j  → h → Claude          (@claud)
   ;;   l  → n → Notes           (@notes)
   ;;   ;  → s → System Settings (@syset)
   ;; Bottom row:
@@ -113,7 +107,7 @@
 (deflayer applications
   _    XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX     XX
   grv  1      2      3      4      5      6      7      8      9      @calen _      _     del
-  _    _      _      @cshot @prevu @affin @afind @apage @comet @aspot @dkshn @rnmgr _     _
+  _    _      _      @cshot @prevu @affin @afind @apage @comet @spoti @dkshn @rnmgr _     _
   _    @obsid @disco @csnxt _      @dvstu @claud _      @notes @syset _      _      _
   lsft @mldst @safri _      @kitty _      _      @mesgs @wtsap _      _      up     rsft  ;; Bottom Row
   fn   lctl   lalt   lmet           spc          rmet   ralt   left   down   rght
@@ -123,34 +117,32 @@
   ;; RAYCAST + KITTY-SESSIONS layer Activated by: hold enter (via @rycst)
   ;;
   ;; Requires in kitty.conf:
-  ;;   allow_remote_control yes
-  ;;   listen_on unix:/tmp/kitty
-  ;;
+  ;;   allow_remote_control yes, listen_on unix:/tmp/kitty
   ;; Kitty session jumps (physical hjkl area — upper row):
-  ;;   Physical w → Dvorak , → dotfiles  (@kdotsh)
-  ;;   Physical e → Dvorak . → nvim      (@knvim)
-  ;;   Physical r → Dvorak p → docker    (@kdock)
-  ;;   Physical t → Dvorak y → podcast   (@kpodc)
-  ;;   Physical i → Dvorak c → home      (@khome)
   ;;
-  ;; Raycast — Home row:
-  ;;   a → a → ai chat    (@rayai)
-  ;;   s → o → emoji      (@remoj)
-  ;;   d → e → clipboard  (@rclip)
-  ;;   f → u → file search(@rfile)
-  ;;   ' → - → zoom mute  (@zmute)
-  ;;
-  ;; Bottom row:
-  ;;   c → j → Spotify search   (@rspot)
-  ;;   v → k → YouTube search   (@rvide)
+  ;;         Physical →    Dvorak    →    APP         (@alias)
+  ;;            w     →       ,      →    dotfiles    (@dotsh)
+  ;;            e     →       .      →    nvim        (@knvim)
+  ;;            r     →       p      →    docker      (@kdock)
+  ;;            t     →       y      →    podcast     (@kpodc)
+  ;;            i     →       c      →    home        (@khome)
+  ;;            ]     →       =      → Spotify search (@spot/)
+  ;;            x     →       x      →    ssh2mini    (@kssh2)
+  ;; Raycast
+  ;;            a     →       a      →    ai chat     (@rayai)
+  ;;            s     →       o      →    emoji       (@remoj)
+  ;;            d     →       e      →    clipboard   (@rclip)
+  ;;            f     →       u      →    file search (@rfile)
+  ;;            '     →       -      →    zoom mute   (@zmute)
+  ;;            v     →       k      → YouTube search (@utbe/)
   ;;----------------------------------------------------
 (deflayer raycast
-  _     XX     XX     XX     XX     XX     XX    XX    XX     XX    XX    XX    XX
-  grv   1      2      3      4      5      6     7     8      9     0     _     _     del
-  _     _      @kdotsh @knvim @kdock @kpods XX    XX    @khome XX    XX    XX    XX    XX
-  XX    @rayai @remoj @rclip @rfile XX     _     XX    XX     XX    XX    @rmut XX
-  XX    XX     XX     @rspot @rvid/ XX     XX    XX    XX     XX    XX    XX    XX    ;; Bottom Row
-  fn    lctl   lalt   lmet           spc               rmet   ralt  left  down  rght
+  _     XX     XX     XX     XX     XX     XX    XX    XX     XX    XX    XX     XX
+  grv   1      2      3      4      5      6     7     8      9     0     _      _      del
+  _     _      @dotsh @knvim @kdock @kpodc XX    XX    @khome XX    XX    @utbe/ @spot/ XX
+  XX    @rayai @remoj @rclip @rfile XX     _     XX    XX     XX    XX    @zmute XX
+  XX    XX     XX     XX     XX     XX     XX    XX    XX     XX    XX    XX     XX     ;; Bottom Row
+  fn    lctl   lalt   lmet           spc               rmet   ralt  left  down   rght
 )
 
   ;;----------------------------------------------------
