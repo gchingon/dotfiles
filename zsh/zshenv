@@ -8,15 +8,17 @@ export CAPTURE_FOLDER="$HOME/Pictures"
 export DN="$HOME/Downloads"
 export DX="$HOME/Documents"
 export LB="$HOME/.local/bin"
-export NT="$DX/notes"     # git repo for notes
 export NT_INBOX="$NT/inbox.md"
 export PJ="$NT/projects"
 export CT="$NT/content"
-export PD="$PJ/podcast"   # podcast stuff
+export PD="$RP/podcast"   # podcast stuff
 export DZ="$CF/zsh"         # zsh config stuff
 export NV="$CF/nvim"        # Real Neovim repo
 export RX="$CF/rx"          # shortcut to global scripts
-export RP="$HOME/repos"    # podcast ideas, topics & published content
+export RP="$DX/repos"    # podcast ideas, topics & published content
+export NT="$RP/notes"     # git repo for notes
+export KN="$CF/kanata"
+export KT="$CF/kitty"
 
 case "$(hostname)" in
   2mini*)

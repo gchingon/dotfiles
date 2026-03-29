@@ -44,7 +44,8 @@ create_post() {
   local embed_code
   local post_name
 
-  cd "$WORK_DIR" || exit
+  local target_dir="${2:-$WORK_DIR}"
+  cd "$target_dir" || exit
 
   read -ep "Did you copy the show description? (y/n): " answer
   [[ $answer == "y" ]] || {
@@ -163,8 +164,8 @@ if [ "$#" -ne 1 ]; then
 fi
 
 case "$1" in
-"epi") create_post "Episode" "$EPISODE_DIR" ;;
-"feat") create_post "Featured" "$FEATURED_DIR" ;;
-"blog") create_post "Blog" "$BLOG_DIR" ;;
+"epi") create_post "Episode" "$SCS/$EPISODE_DIR" ;;
+"feat") create_post "Featured" "$SCS/$FEATURED_DIR" ;;
+"blog") create_post "Blog" "$SCS/$BLOG_DIR" ;;
 *) echo "Invalid post type. Please use 'epi', 'feat', or 'blog'." && exit 1 ;;
 esac

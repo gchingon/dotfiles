@@ -1,8 +1,0 @@
-includePaths:
-    -   /Users/schingon/Library/Application Support/SuperCollider/downloaded-quarks/Vowel
-    -   /Users/schingon/Library/Application Support/SuperCollider/downloaded-quarks/Dirt-Samples
-    -   /Users/schingon/Library/Application Support/SuperCollider/downloaded-quarks/SuperDirt
-excludePaths:
-    []
-postInlineWarnings: false
-excludeDefaultPaths: false

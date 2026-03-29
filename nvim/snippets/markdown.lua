@@ -24,22 +24,6 @@ return {
     t("\" >}}")
   }),
 
-  -- Blog post frontmatter
-  s({ trig = "head", name = "blog post frontmatter" }, {
-    t({ "---", "layout: post", "title: " }),
-    i(1, "title"),
-    t({ "", "categories: " }),
-    i(2, "category"),
-    t({ "", "image: assets/" }),
-    i(3, "image_name.ext"),
-    t({ "", "created: " }),
-    f(function() return os.date("%Y-%m-%d_%H:%M:%S-0600") end),
-    t({ "", "description: " }),
-    i(4, "a paragraph about the post"),
-    t({ "", "---", "" }),
-    i(0)
-  }),
-
   -- Rated blog post frontmatter
   s({ trig = "rating", name = "rated blog post frontmatter" }, {
     t({ "---", "layout: post", "title: " }),
@@ -163,6 +147,15 @@ return {
       return clip or ""
     end),
     t('" >}}'),
+  }),
+
+  -- bypass_shorts boolean flags
+  s({ trig = "bst", name = "bypass_shorts: true" }, {
+    t("bypass_shorts: true"),
+  }),
+
+  s({ trig = "bsf", name = "bypass_shorts: false" }, {
+    t("bypass_shorts: false"),
   }),
 
 }

@@ -32,6 +32,9 @@ blink.setup({
         ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<C-e>"]     = { "hide", "fallback" },
 
+        -- NOTE: <C-l> for LuaSnip choice cycling is handled globally in keymaps.lua.
+        --       No need to duplicate it here inside blink's keymap table.
+
         -- Accept completion with <C-y> (removes semicolon for snippets)
         ["<C-y>"] = {
             function(cmp)
@@ -62,16 +65,6 @@ blink.setup({
                 return result
             end,
             "fallback",
-        },
-
-        -- LuaSnip choice node navigation
-        ["<C-l>"] = {
-            function()
-                local ls = require("luasnip")
-                if ls.choice_active() then
-                    ls.change_choice(1)
-                end
-            end,
         },
     },
     sources = {

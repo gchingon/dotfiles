@@ -45,3 +45,12 @@ opt.wrap = false            -- Do not wrap lines
 -- -----------------------------------------------------------------------------
 opt.updatetime = 250        -- Time in ms to wait for trigger autocommands
 opt.timeoutlen = 300        -- Time in ms to wait for a mapped sequence to complete
+
+-- -----------------------------------------------------------------------------
+-- Filetype Overrides
+-- -----------------------------------------------------------------------------
+vim.filetype.add({
+  extension = {
+    kbd = "lisp",   -- Kanata/KMonad keyboard config files → lisp syntax
+  },
+})

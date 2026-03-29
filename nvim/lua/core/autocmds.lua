@@ -26,11 +26,14 @@ autocmd("VimEnter", {
   end,
 })
 
--- Set .kbd files to lisp filetype
-autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = "*.kbd",
+-- Markdown local options (wrap, linebreak, visual indent)
+autocmd("FileType", {
+  pattern = "markdown",
   callback = function()
-    vim.bo.filetype = "lisp"
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.breakindent = true
+    vim.opt_local.showbreak = "↪ "
   end,
 })
 

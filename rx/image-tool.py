@@ -527,6 +527,12 @@ def setup_argparse() -> argparse.ArgumentParser:
     
     return parser
 
+def cmd_convert(args: argparse.Namespace) -> int:
+    """Convert image format using Pillow."""
+    success = convert_image(args.input, args.output, args.format, args.quality)
+    return 0 if success else 1
+
+
 def main() -> int:
     """Main function."""
     parser = setup_argparse()

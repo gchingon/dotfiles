@@ -23,11 +23,13 @@ map({ "n", "v", "x" }, "<S-l>", "$", { desc = "Go to Line End" })
 map({ "n", "v", "x" }, "<S-h>", "^", { desc = "Go to Line Start" })
 
 -- LSP & Diagnostics (Direct, non-leader mappings)
+-- NOTE: <C-k> is reserved for vim-kitty-navigator (KittyNavigateUp), set in init.lua.
+--       Signature help lives on gK (natural pair to K=hover).
 map("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
 map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
-map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+map("n", "K",  vim.lsp.buf.hover, { desc = "Hover" })
+map("n", "gK", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 map("n", "gi", vim.lsp.buf.implementation, { desc = "Goto Implementation" })
-map("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 
 -- Gitsigns (Direct, non-leader mappings)
 map("n", "]c",

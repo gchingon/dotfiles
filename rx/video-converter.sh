@@ -71,14 +71,14 @@ _transcode_video() {
     fi
 
     echo "Transcoding '$input_file'..."
-    "$FFMPEG_BIN" -i "$input_file" \\
-        "${encoder_opts[@]}" \\
-        -pix_fmt yuv420p \\
-        -tag:v hvc1 \\
-        -c:a aac -b:a 192k \\
-        -c:s copy \\
-        -movflags +faststart \\
-        $scale_filter \\
+    "$FFMPEG_BIN" -i "$input_file" \
+        "${encoder_opts[@]}" \
+        -pix_fmt yuv420p \
+        -tag:v hvc1 \
+        -c:a aac -b:a 192k \
+        -c:s copy \
+        -movflags +faststart \
+        $scale_filter \
         -y "$output_file"
 
     [[ $? -eq 0 ]] && echo "Success: $output_file" || echo "Failure: $input_file"

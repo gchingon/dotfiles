@@ -217,4 +217,4 @@ sort_by = "none"
 sort_sensitive = false
 sort_reverse = false
 sort_translit = false
-theme = "nightowl"
+theme = "tokyonight"

@@ -171,8 +171,8 @@ local TEMPLATES = {}
 -- ── Notes (simple) ──────────────────────────────────
 TEMPLATES.notes = {
     { "id",      nil },
-    { "created", nil },
     { "author",  "Gallo Chingon" },
+    { "created", nil },
     { "source",  "" },
     { "status",  "" },
     { "tags",    "[]" },
@@ -183,83 +183,79 @@ TEMPLATES.notes = {
 -- ── Podcast ─────────────────────────────────────────
 TEMPLATES.podcast = {
     { "id",             nil },
-    { "title",          '""' },
-    { "created",        nil },
-    { "updated",        "" },
-    { "type",           "" },       -- segment | outline | script
-    { "style",          "" },       -- riff | script | hybrid
-    { "series",         '""' },     -- e.g. "WhoAmI", "Deep Dive", standalone
-    { "pillar",         "" },       -- CT | DA | DS | ET | KI | NO
-    { "episode_number", "null" },
     { "author",         "Gallo" },
-    { "status",         "draft" },
-    { "source",         '""' },
+    { "bypass_shorts",  "" },       -- true | false
+    { "created",        nil },
+    { "episode_number", "null" },
+    { "pillar",         "" },       -- CT | DA | DS | ET | KI | NO
     { "tags",           "[]" },
+    { "title",          '""' },
+    { "updated",        "" },
 }
 
 -- ── Hugo: featured ──────────────────────────────────
 TEMPLATES["hugo:featured"] = {
-    { "title",              '""' },
     { "created",            nil },
-    { "updated",            '""' },
+    { "description",        '""' },
     { "draft",              "false" },
-    { "type",               '""' },
-    { "podcastName",        '""' },
-    { "hosts",              "[]" },
-    { "guests",             "[]" },
     { "externalUrl",        '""' },
     { "featuredImage",      '""' },
-    { "tags",               "[]" },
-    { "summary",            '""' },
-    { "description",        '""' },
+    { "guests",             "[]" },
+    { "hosts",              "[]" },
+    { "lightgallery",       "true" },
     { "overlayMetadata",    "true" },
     { "overlayPosition",    '"lower-left"' },
+    { "podcastName",        '""' },
+    { "summary",            '""' },
+    { "tags",               "[]" },
+    { "title",              '""' },
+    { "toc",                "false" },
+    { "topicsOn",           "true" },
     { "transparency",       "true" },
     { "transparencyAmount", "0.7" },
-    { "topicsOn",           "true" },
-    { "toc",                "false" },
-    { "lightgallery",       "true" },
+    { "type",               '""' },
+    { "updated",            '""' },
 }
 
 -- ── Hugo: episodes ──────────────────────────────────
 TEMPLATES["hugo:episodes"] = {
-    { "title",              '""' },
     { "created",            nil },
-    { "updated",            '""' },
-    { "draft",              "false" },
-    { "episodeNumber",      '""' },
-    { "season",             '""' },
-    { "episodeType",        '"full"' },
-    { "podcast",            '""' },
-    { "host",               '""' },
-    { "guests",             "[]" },
-    { "featuredImage",      '""' },
-    { "duration",           '""' },
-    { "tags",               "[]" },
-    { "summary",            '""' },
     { "description",        '""' },
+    { "draft",              "false" },
+    { "duration",           '""' },
     { "embedPlayers",       "[]" },
+    { "episodeNumber",      '""' },
+    { "episodeType",        '"full"' },
+    { "featuredImage",      '""' },
+    { "guests",             "[]" },
+    { "host",               '""' },
+    { "lightgallery",       "true" },
     { "overlayMetadata",    "true" },
     { "overlayPosition",    '"lower-center"' },
+    { "podcast",            '""' },
+    { "season",             '""' },
+    { "summary",            '""' },
+    { "tags",               "[]" },
+    { "title",              '""' },
+    { "toc",                "true" },
+    { "topicsOn",           "true" },
     { "transparency",       "true" },
     { "transparencyAmount", "0.7" },
-    { "topicsOn",           "true" },
-    { "toc",                "true" },
-    { "lightgallery",       "true" },
+    { "updated",            '""' },
 }
 
 -- ── Hugo: blog ──────────────────────────────────────
 TEMPLATES["hugo:blog"] = {
-    { "title",         '""' },
     { "created",       nil },
-    { "updated",       '""' },
+    { "description",   '""' },
     { "draft",         "false" },
     { "featuredImage",  '""' },
-    { "tags",          "[]" },
-    { "summary",       '""' },
-    { "description",   '""' },
-    { "toc",           "true" },
     { "lightgallery",  "true" },
+    { "summary",       '""' },
+    { "tags",          "[]" },
+    { "title",         '""' },
+    { "toc",           "true" },
+    { "updated",       '""' },
 }
 
 -- Resolve the right template key from context + subtype

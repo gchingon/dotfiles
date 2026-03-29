@@ -1,17 +1,6 @@
 -- ~/.config/nvim/lua/plugins/markview.lua
 
--- Helper function for safe plugin loading
-local function setup_plugin(name, config_func)
-  local ok, plugin = pcall(require, name)
-  if ok then
-    config_func(plugin)
-  else
-    vim.notify("Plugin not found: " .. name, vim.log.levels.WARN)
-  end
-end
-
--- Ensure our markdown core is set up (snippets/commands)
-pcall(function() require("core.markdown").setup() end)
+local setup_plugin = require("core.util").setup_plugin
 
 -- Start treesitter for markdown buffers if available
 vim.api.nvim_create_autocmd("FileType", {
