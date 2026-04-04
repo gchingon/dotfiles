@@ -1,16 +1,19 @@
 # ~/.config/zsh/modules/git.zsh
-# Git functions
+# Unified Git workflow — merges git-tool.sh and previous git.zsh
 
-is-apple-silicon() { [ "$(uname -m)" = "arm64" ] && return 0 || return 1; }
+# Repositories for multi-repo operations
+GIT_REPOS=("$HOME/.dotfiles" "$HOME/.lua-is-the-devil" "$HOME/.noktados" "$HOME/notes" "$DX/widclub")
+
+# ── SSH Agent Management ────────────────────────────────────────────────
 
 setup-ssh() {
-  if [ -z "$SSH_AGENT_PID" ] || ! ps -p "$SSH_AGENT_PID" >/dev/null; then
-    eval "$(ssh-agent -s)"
-    ssh-add --apple-use-keychain "$HOME/.ssh/id_ed25519"
-  else
-    echo "Using SSH agent PID $SSH_AGENT_PID"
+  if [[ -z "$SSH_AGENT_PID" ]] || ! ps -p "$SSH_AGENT_PID" >/dev/null 2>&1; then
+    eval "$(ssh-agent -s)" >/dev/null
+    ssh-add --apple-use-keychain "$HOME/.ssh/id_ed25519" 2>/dev/null || true
   fi
 }
+
+# ── Single Repo Operations ─────────────────────────────────────────────
 
 git-pull() {
   setup-ssh
@@ -24,52 +27,50 @@ git-push() {
   git push -q "$remote" "$branch"
 }
 
-git-add() { git add .; }
-
-git-commit-message() {
-  local message="$1"
-  [ -z "$message" ] && message="$(date +%Y-%m-%d)\nChanged files:\n$(git status --short | awk '{print $2}')"
-  git commit -m "$message" || { echo "(X︿x ) Commit failed."; return 1; }
+git-add-commit-push() {
+  setup-ssh
+  # Pull first to avoid conflicts
+  git pull --rebase -q origin "$(git rev-parse --abbrev-ref HEAD)" || {
+    echo "Pull failed — resolve conflicts before pushing."
+    return 1
+  }
+  git add .
+  local msg="${1:-$(date +%Y-%m-%d) — $(git status --short | head -5 | tr '\n' ', ')}"
+  git commit -m "$msg" || return 1
+  git-push
 }
+
+# ── Multi-Repo Operations ──────────────────────────────────────────────
 
 git-fetch-all() {
-  local dirs=("$HOME/.dotfiles" "$HOME/.lua-is-the-devil" "$HOME/.noktados" "$HOME/notes" "$DX/widclub")
   setup-ssh
-  for dir in "${dirs[@]}"; do
-    [ -d "$dir" ] || { echo "(눈︿눈) Skipping: $dir not found."; continue; }
-    echo "Processing: $dir"
-    (cd "$dir" && [ -d .git ] && git fetch || echo "(눈︿눈) Not a git repo or fetch failed: $dir")
-  done
-}
-
-check-git-status() {
-  for repo in "${REPOS[@]}"; do  # REPOS defined in torrent.zsh, assumes global access
-    [ -d "$repo" ] || { echo "Directory $repo does not exist"; continue; }
-    cd "$repo" || continue
-    echo "Checking git status for $repo"
-    git status "$repo"
-    cd - >/dev/null || continue
+  for dir in "${GIT_REPOS[@]}"; do
+    [[ -d "$dir/.git" ]] || continue
+    echo "→ $dir"
+    (cd "$dir" && git fetch -q)
   done
 }
 
 git-pull-all() {
-  local dirs=("$HOME/.dotfiles" "$HOME/.lua-is-the-devil" "$HOME/.noktados" "$HOME/notes" "$DX/widclub")
   setup-ssh
-  for dir in "${dirs[@]}"; do
-    [ -d "$dir" ] || { echo "(눈︿눈) Skipping: $dir not found."; continue; }
-    echo "Processing: $dir"
-    (cd "$dir" && [ -d .git ] && git-pull || echo "(눈︿눈) Not a git repo or pull failed: $dir")
+  for dir in "${GIT_REPOS[@]}"; do
+    [[ -d "$dir/.git" ]] || continue
+    echo "→ $dir"
+    (cd "$dir" && git pull --rebase -q 2>/dev/null || echo "  (failed)")
   done
 }
 
-git-add-commit-push() {
-  setup-ssh
-  # Pull with rebase first — aborts cleanly if conflicts exist
-  git pull --rebase -q origin "$(git rev-parse --abbrev-ref HEAD)" || {
-    echo "(X︿x) Pull failed — resolve conflicts before pushing."
-    return 1
-  }
-  git-add "$@"
-  git-commit-message "$@"
-  git-push "$@"
+git-status-all() {
+  for dir in "${GIT_REPOS[@]}"; do
+    [[ -d "$dir/.git" ]] || continue
+    local status=$(cd "$dir" && git status --short)
+    [[ -n "$status" ]] && echo "→ $dir" && echo "$status"
+  done
 }
+
+# ── Legacy Compatibility ───────────────────────────────────────────────
+# Keep aliases that depend on these functions
+alias gac='git-add-commit-push'
+alias gpl='git-pull'
+alias gph='git-push'
+alias gfh='git fetch'

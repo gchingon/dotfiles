@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
-# Finds files larger than a specified size and moves them to a target directory,
-# preserving the directory structure.
+# move-large-files — Find and move large files preserving directory structure
+# Usage: move-large-files [SIZE]  # default: 99M
 
-TARGET_DIR="$HOME/jackpot"
-SIZE=${1:-99M} # Default to 99M if no size is provided
+source "$(dirname "$0")/lib/common.sh"
+check_deps fd
 
-echo "Finding files larger than $SIZE..."
+TARGET_DIR="${TARGET_DIR:-$HOME/jackpot}"
+SIZE="${1:-99M}"
+
+log "Finding files larger than $SIZE..."
 fd -tf -S "+$SIZE" . | while read -r file; do
     relative_path=${file#./}
-    filename=$(basename "$relative_path")
     dir_path=$(dirname "$relative_path")
-
-    echo "Moving '$relative_path'..."
+    
+    log "Moving '$relative_path'..."
     mkdir -p "$TARGET_DIR/$dir_path"
-    mv "$file" "$TARGET_DIR/$dir_path/"
+    safe-move "$file" "$TARGET_DIR/$relative_path"
 done
 
-echo "Operation complete."
+log "Operation complete."

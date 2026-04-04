@@ -1,0 +1,27 @@
+#!/bin/bash
+# move-files — Unified file moving by pattern
+# Usage: move-files <ext|pattern> <source-dir> <dest-dir>
+#   move-files mp3 ~/Downloads /Volumes/armor/music
+#   move-files "*.torrent" ~/Downloads /Volumes/kalisma/torrent
+
+source "$(dirname "$0")/lib/common.sh"
+
+PATTERN="${1:-}"
+SRC="${2:-$HOME/Downloads}"
+DST="${3:-}"
+
+[[ -n "$DST" ]] || die "Usage: move-files <pattern> <src> <dst>"
+[[ -d "$SRC" ]] || die "Source dir not found: $SRC"
+[[ -d "$DST" ]] || die "Dest dir not found: $DST"
+
+check_deps fd
+
+# Handle extension vs glob
+if [[ "$PATTERN" == *\** ]]; then
+  GLOB="$PATTERN"
+else
+  GLOB="*.${PATTERN}"
+fi
+
+log "Moving $GLOB from $SRC to $DST..."
+fd -tf -g "$GLOB" "$SRC" -x mv -v {} "$DST" 2>/dev/null || log "No matches found"

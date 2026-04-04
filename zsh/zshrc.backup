@@ -33,9 +33,14 @@ bindkey '^[w' kill-region               # Alt+w
 
 eval "$(/opt/homebrew/bin/starship init zsh)"
 
+export PATH="/opt/homebrew/opt/ffmpeg-full/bin:$PATH"
 
+# bun completions
 [ -s "/Users/schingon/.bun/_bun" ] && source "/Users/schingon/.bun/_bun"
 
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 # FZF keybindings and completions This needs to be sourced before compinit
 if [[ -f "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh" ]]; then

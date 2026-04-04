@@ -88,7 +88,7 @@
   _     XX     XX     XX     XX     XX     XX    XX     XX     XX    XX     XX     XX            ;; EscFn
   grv   1      2      3      4      5      6     7      8      9     0      _      _      del    ;; NUM
   _     _      @dotsh @knvim @kdock @kpodc XX    XX     XX     XX    @tbefd XX    XX     XX     ;; QWERTY
-  XX    @rayai @remoj @rclip @rfile XX     _     XX     @khome XX    @sptfd XX    XX            ;; HOME
+  XX    _      _      _      _      XX     _     XX     @khome XX    @sptfd XX    XX            ;; HOME
   XX    XX     XX     XX     XX     XX     XX    @zmute XX     XX    XX     XX     XX            ;; BOTTOM
   fn    lctl   lalt   lmet           spc         rmet   ralt  left   down   rght                 ;; MOD
 )

@@ -1,0 +1,250 @@
+;;----------------------------------------------------
+;; alt-dvorak-chord.kbd — Chord-based leader with your muscle memory preserved
+;;
+;; TIMING:
+;;   - Leader chord (Return+Tab): 1.5s to select sublayer
+;;   - Sublayers (apps/sessions/nav/raycast): 2s to select action
+;;   - Esc exits any layer back to main
+;;
+;; YOUR MUSCLE MEMORY (preserved exactly):
+;;   Caps: Esc (tap), Meh (hold)
+;;   f: lmet (hold) — NOT hyper
+;;   j: rmet (hold)
+;;   Left Shift: will become Esc (tap), Shift (hold) for leader
+;;----------------------------------------------------
+
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold   yes
+  danger-enable-cmd     yes
+  chords-v2-min-idle    80
+  log-layer-changes     no
+)
+
+;;----------------------------------------------------
+;; Variables — Timing
+;;----------------------------------------------------
+(defvar
+  ;; Your current tap/hold timing
+  tt 200   ;; tap timeout
+  ht 300   ;; hold timeout
+  kt 60    ;; chord time
+  
+  ;; NEW: Leader and layer timeouts
+  leader-timeout 1500    ;; 1.5s to pick sublayer after chord
+  sublayer-timeout 2000  ;; 2s to pick action in sublayer
+)
+
+;;----------------------------------------------------
+;; defsrc — 77-key MacBook
+;;----------------------------------------------------
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    up   rsft
+  fn   lctl lalt lmet           spc            rmet ralt left down rght
+)
+
+;;----------------------------------------------------
+;; Aliases — Your exact home row mods + Leader on Left Shift
+;;----------------------------------------------------
+(defalias
+  ;; Mod combos
+  meh  (multi lalt lctl lsft)
+  hyp  (multi lalt lctl lmet lsft)
+  
+  ;; Leader: Left Shift — Esc on tap, leader layer on hold
+  ;; This frees up Caps to stay as Esc/Meh
+  ldr (tap-hold $tt $leader-timeout esc (layer-while-held leader))
+  
+  ;; Your EXACT home row mods (from aliases.kbd)
+  Hlctl (tap-hold $tt $ht a lctl)
+  Hlalt (tap-hold $tt $ht d lalt)
+  Hlmet (tap-hold $tt $ht f lmet)  ;; f = lmet (unchanged!)
+  Hrmet (tap-hold $tt $ht j rmet)  ;; j = rmet (unchanged!)
+  Hralt (tap-hold $tt $ht k ralt)
+  Hrctl (tap-hold $tt $ht ; lctl)
+  
+  ;; Right shift: Esc on tap, Shift on hold
+  rse (tap-hold $tt $ht rsft esc)
+  
+  ;; Sublayer entries with 2s timeout
+  s-app (one-shot-press $sublayer-timeout (layer-while-held apps))
+  s-ses (one-shot-press $sublayer-timeout (layer-while-held sessions))
+  s-nav (one-shot-press $sublayer-timeout (layer-while-held nav))
+  s-ray (one-shot-press $sublayer-timeout (layer-while-held raycast))
+)
+
+;;----------------------------------------------------
+;; Optional: Chord alternative for leader (if shift-as-leader feels weird)
+;; Return+Tab chord also works as leader entry
+;;----------------------------------------------------
+(defchordsv2
+  (ret tab) ldr $kt all-released ()
+)
+
+;;----------------------------------------------------
+;; Yabai — App switching only (no sizing)
+;;----------------------------------------------------
+(defalias
+  ;; Row 1 (number row): System/Utility apps
+  y-thi   (cmd zsh -lc "$RX/app-switch.sh Things")         ;; 1
+  y-what  (cmd zsh -lc "$RX/app-switch.sh WhatsApp")       ;; 2
+  y-air   (cmd zsh -lc "$RX/app-switch.sh AirDrop")        ;; 3
+  y-pass  (cmd zsh -lc "$RX/app-switch.sh Passwords")      ;; 4
+  y-note  (cmd zsh -lc "$RX/app-switch.sh Notes")          ;; 5
+  y-dic   (cmd zsh -lc "$RX/app-switch.sh Dictionary")     ;; 6
+  y-drop  (cmd zsh -lc "$RX/app-switch.sh Dropshare")      ;; 7
+  y-down  (cmd zsh -lc "$RX/app-switch.sh Downie")         ;; 8
+  y-share (cmd zsh -lc "$RX/app-switch.sh Screen Sharing") ;; 9
+  y-man   (cmd zsh -lc "$RX/app-switch.sh Name Mangler")   ;; 0
+  
+  ;; Row 2 (QWERTY Q-P): Browser/Dev/Media
+  y-kit  (cmd zsh -lc "$RX/app-switch.sh kitty")           ;; q/q → q (.
+  y-obs  (cmd zsh -lc "$RX/app-switch.sh Obsidian")        ;; w/w → r (p)
+  y-saf  (cmd zsh -lc "$RX/app-switch.sh Safari")          ;; e/e → t (y)
+  y-ray  (cmd zsh -lc "$RX/app-switch.sh Raycast")         ;; r/r → y (f)
+  y-dis  (cmd zsh -lc "$RX/app-switch.sh Discord")         ;; t/t → u (g)
+  y-cld  (cmd zsh -lc "$RX/app-switch.sh Claude")          ;; y/y → i (c)
+  y-spt  (cmd zsh -lc "$RX/app-switch.sh Spotify")         ;; u/u → o (r)
+  y-dav  (cmd zsh -lc "$RX/app-switch.sh DaVinci Resolve") ;; i/i → p (l)
+  y-pxm  (cmd zsh -lc "$RX/app-switch.sh Pixelmator Pro")  ;; o/o → e (.)
+  y-aff  (cmd zsh -lc "$RX/app-switch.sh Affinity")        ;; p/p → r (p)
+  
+  ;; Row 3 (home row): More apps on alternative keys
+  y-cal  (cmd zsh -lc "$RX/app-switch.sh Calendar")        ;; h/h → n (t)
+  y-fnd  (cmd zsh -lc "$RX/app-switch.sh Finder")          ;; n/n → m (m)
+  y-mes  (cmd zsh -lc "$RX/app-switch.sh Messages")        ;; m/m → h (d)
+  y-pre  (cmd zsh -lc "$RX/app-switch.sh Preview")         ;; ;/; → ; (;)
+  y-page (cmd zsh -lc "$RX/app-switch.sh Pages")           ;; '/' → '/' (/)
+  
+  ;; Bottom row: Window actions
+  y-min (cmd zsh -lc "yabai -m window --minimize")         ;; m/m → minimize
+)
+
+;;----------------------------------------------------
+;; Kitty Sessions
+;;----------------------------------------------------
+(defalias
+  k-doc (cmd zsh -lc "kitty-session docs")
+  k-cfg (cmd zsh -lc "kitty-session config") 
+  k-2mi (cmd zsh -lc "kitty-session 2mini")
+  k-4mi (cmd zsh -lc "kitty-session 4mini")
+  k-new (cmd zsh -lc "open -a kitty")
+)
+
+;;----------------------------------------------------
+;; Navigation — Vim arrows on home row
+;;----------------------------------------------------
+(defalias
+  n-l (macro left)
+  n-d (macro down)
+  n-u (macro up)
+  n-r (macro right)
+)
+
+;;----------------------------------------------------
+;; Raycast Commands
+;;----------------------------------------------------
+(defalias
+  r-ai   (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
+  r-clip (cmd open "raycast://extensions/raycast/clipboard-history/clipboard-history")
+  r-file (cmd open "raycast://extensions/raycast/file-search/search-files")
+  r-calc (cmd open "raycast://extensions/raycast/math/calculate")
+  r-win  (cmd open "raycast://extensions/raycast/window-management/left-half")
+)
+
+;;----------------------------------------------------
+;; MAIN Layer — YOUR muscle memory preserved
+;;----------------------------------------------------
+(deflayer main
+  esc    brdn   brup    _      _      _      _      prev   pp     next    mute   vold   volu
+  grv    1      2       3      4      5      6      7      8      9       0      -      =      bspc
+  tab    q      w       e      r      t      y      u      i      o       p      [      ]      \
+  caps   @Hlctl @Hlalt  @Hlmet g      h      @Hrmet @Hralt @Hrctl _       _      _      ret
+  @ldr   z      x       c      v      b      n      m      ,      .       /      up     @rse
+  fn     lctl   lalt    lmet          spc            rmet   ralt   left    down   rght
+)
+
+;;----------------------------------------------------
+;; LEADER Layer — 1.5s timeout
+;;
+;; Dvorak home row:
+;;   a (a) = apps      o (s) = sessions
+;;   e (d) = nav       h (h) = raycast
+;;----------------------------------------------------
+(deflayer leader
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     @s-ray   XX     XX     XX     XX
+  XX     @s-app @s-ses  @s-nav XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX            XX             XX     XX     XX     XX      XX
+)
+
+;;----------------------------------------------------
+;; APPS Layer — 2s timeout
+;;
+;; Dvorak positions:
+;;   e (.) = kitty       r (p) = obsidian
+;;   t (y) = arc         y (f) = raycast
+;;   u (g) = discord     i (c) = spotify
+;;   o (r) = claude      p (l) = safari
+;;   h (d) = calendar    n (t) = finder
+;;   m (m) = minimize
+;;----------------------------------------------------
+(deflayer apps
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      @y-kit @y-obs @y-arc @y-ray XX     XX     XX      XX     XX     XX     XX
+  XX     XX     XX      XX     XX     @y-dis @y-cld @y-spt @y-saf XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     @y-cal XX     XX     @y-fnd  XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     @y-min XX      XX     XX     XX
+  XX     XX     XX      XX            XX             XX     XX     XX     XX      XX
+)
+
+;;----------------------------------------------------
+;; SESSIONS Layer — 2s timeout
+;;
+;; Dvorak: e (.) = docs, r (p) = config
+;;         t (y) = 2mini, y (f) = 4mini
+;;         n (t) = new kitty
+;;----------------------------------------------------
+(deflayer sessions
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      @k-doc @k-cfg @k-2mi @k-4mi XX     XX     XX      XX     XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     @k-new XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX            XX             XX     XX     XX     XX      XX
+)
+
+;;----------------------------------------------------
+;; NAV Layer — 2s timeout
+;;
+;; Dvorak: h/j/k/l = d/h/t/n = left/down/up/right
+;;----------------------------------------------------
+(deflayer nav
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX     XX
+  XX     @n-l   XX      @n-d   @n-u   @n-r   XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX            XX             XX     XX     XX     XX      XX
+)
+
+;;----------------------------------------------------
+;; RAYCAST Layer — 2s timeout
+;;
+;; Dvorak home row: a=ai, c=clipboard, f=file, g=calc
+;;                  semicolon=window position
+;;----------------------------------------------------
+(deflayer raycast
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     XX      XX     XX     XX     XX
+  @r-ai  XX     XX      XX     @r-clip @r-file @r-calc XX   XX     XX      XX     XX     XX
+  XX     XX     XX      XX     XX     XX     XX     XX     XX     @r-win  XX     XX     XX
+  XX     XX     XX      XX            XX             XX     XX     XX     XX      XX
+)

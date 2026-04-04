@@ -37,6 +37,10 @@ local function now_iso()
     return os.date("%Y-%m-%dT%H:%M:%S-0600")
 end
 
+local function now_podcast()
+    return os.date("%Y-%m-%d_%H:%M:%S")
+end
+
 local function now_date()
     return os.date("%Y-%m-%d")
 end
@@ -44,7 +48,7 @@ end
 function M.get_example_date()
     local now = os.date("*t")
     return string.format(
-        "%04d-%02d-%02d_%02d:%02d:%02d-0600",
+        "%04d-%02d-%02d_%02d:%02d:%02d",
         now.year, now.month, now.day, now.hour, now.min, now.sec
     )
 end
@@ -171,91 +175,84 @@ local TEMPLATES = {}
 -- ── Notes (simple) ──────────────────────────────────
 TEMPLATES.notes = {
     { "id",      nil },
-    { "author",  "Gallo Chingon" },
     { "created", nil },
-    { "source",  "" },
-    { "status",  "" },
-    { "tags",    "[]" },
-    { "topic",   "" },
+    { "author",  "Gallo Chingon" },
     { "type",    "" },
 }
 
 -- ── Podcast ─────────────────────────────────────────
 TEMPLATES.podcast = {
-    { "id",             nil },
-    { "author",         "Gallo" },
-    { "bypass_shorts",  "" },       -- true | false
-    { "created",        nil },
-    { "episode_number", "null" },
-    { "pillar",         "" },       -- CT | DA | DS | ET | KI | NO
-    { "tags",           "[]" },
-    { "title",          '""' },
-    { "updated",        "" },
+    { "id",            nil },
+    { "title",         '""' },
+    { "created",       nil },
+    { "tags",          "[]" },
+    { "concepts",      "[]" },
+    { "bypass_shorts", "false" },
 }
 
 -- ── Hugo: featured ──────────────────────────────────
 TEMPLATES["hugo:featured"] = {
+    { "title",              '""' },
     { "created",            nil },
-    { "description",        '""' },
+    { "updated",            '""' },
     { "draft",              "false" },
+    { "type",               '""' },
+    { "podcastName",        '""' },
+    { "hosts",              "[]" },
+    { "guests",             "[]" },
     { "externalUrl",        '""' },
     { "featuredImage",      '""' },
-    { "guests",             "[]" },
-    { "hosts",              "[]" },
-    { "lightgallery",       "true" },
+    { "tags",               "[]" },
+    { "summary",            '""' },
+    { "description",        '""' },
     { "overlayMetadata",    "true" },
     { "overlayPosition",    '"lower-left"' },
-    { "podcastName",        '""' },
-    { "summary",            '""' },
-    { "tags",               "[]" },
-    { "title",              '""' },
-    { "toc",                "false" },
-    { "topicsOn",           "true" },
     { "transparency",       "true" },
     { "transparencyAmount", "0.7" },
-    { "type",               '""' },
-    { "updated",            '""' },
+    { "topicsOn",           "true" },
+    { "toc",                "false" },
+    { "lightgallery",       "true" },
 }
 
 -- ── Hugo: episodes ──────────────────────────────────
 TEMPLATES["hugo:episodes"] = {
+    { "title",              '""' },
     { "created",            nil },
-    { "description",        '""' },
+    { "updated",            '""' },
     { "draft",              "false" },
-    { "duration",           '""' },
-    { "embedPlayers",       "[]" },
     { "episodeNumber",      '""' },
+    { "season",             '""' },
     { "episodeType",        '"full"' },
-    { "featuredImage",      '""' },
-    { "guests",             "[]" },
+    { "podcast",            '""' },
     { "host",               '""' },
-    { "lightgallery",       "true" },
+    { "guests",             "[]" },
+    { "featuredImage",      '""' },
+    { "duration",           '""' },
+    { "tags",               "[]" },
+    { "summary",            '""' },
+    { "description",        '""' },
+    { "embedPlayers",       "[]" },
     { "overlayMetadata",    "true" },
     { "overlayPosition",    '"lower-center"' },
-    { "podcast",            '""' },
-    { "season",             '""' },
-    { "summary",            '""' },
-    { "tags",               "[]" },
-    { "title",              '""' },
-    { "toc",                "true" },
-    { "topicsOn",           "true" },
     { "transparency",       "true" },
     { "transparencyAmount", "0.7" },
-    { "updated",            '""' },
+    { "topicsOn",           "true" },
+    { "toc",                "true" },
+    { "lightgallery",       "true" },
 }
 
 -- ── Hugo: blog ──────────────────────────────────────
 TEMPLATES["hugo:blog"] = {
+    { "title",         '""' },
     { "created",       nil },
-    { "description",   '""' },
+    { "updated",       '""' },
     { "draft",         "false" },
     { "featuredImage",  '""' },
-    { "lightgallery",  "true" },
-    { "summary",       '""' },
     { "tags",          "[]" },
-    { "title",         '""' },
+    { "summary",       '""' },
+    { "description",   '""' },
     { "toc",           "true" },
-    { "updated",       '""' },
+    { "lightgallery",  "true" },
 }
 
 -- Resolve the right template key from context + subtype
@@ -312,8 +309,11 @@ local function merge_frontmatter(existing, context, subtype)
         local fname, default = field[1], field[2]
 
         if fname == "created" and is_blank(fm.created) then
-            -- Hugo uses full ISO, podcast/notes use full ISO too
-            fm.created = now_iso()
+            if context == "podcast" then
+                fm.created = now_podcast()
+            else
+                fm.created = now_iso()
+            end
         elseif fname == "updated" then
             -- Don't overwrite updated with empty on every save;
             -- only ensure the key exists

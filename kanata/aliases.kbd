@@ -79,6 +79,7 @@
   ;; Kitty session jumps
   ;; -----------------------------
   kdock (cmd zsh -lc "kitten @ focus-window --match title:docker 2>/dev/null || open -a kitty")
+  kssh4 (cmd zsh -lc "kitten @ focus-window --match title:ssh-4mini 2>/dev/null || open -a kitty")
   dotsh (cmd zsh -lc "kitten @ focus-window --match title:dotfiles 2>/dev/null || open -a kitty")
   khome (cmd zsh -lc "kitten @ focus-window --match title:home 2>/dev/null || open -a kitty")
   knvim (cmd zsh -lc "kitten @ focus-window --match title:nvim 2>/dev/null || open -a kitty")

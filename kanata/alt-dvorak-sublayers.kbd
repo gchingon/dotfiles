@@ -1,0 +1,244 @@
+;;----------------------------------------------------
+;; alt-dvorak-sublayers.kbd — Alternative Kanata config with Dvorak + Sublayer navigation
+;; Concept: Leader-key style sublayers instead of concurrent-tap-hold for app switching
+;; 
+;; LAYOUT:
+;;   main          — daily typing, home row mods
+;;   nav           — navigation sublayer (hold `n` or tap leader+nav)
+;;   apps          — app switching sublayer (hold `a` or tap leader+apps)
+;;   sessions      — kitty session switching (hold `s` or tap leader+sessions)
+;;   yabai         — window management (hold `w` or tap leader+yabai)
+;;
+;; LEADER: tap `caps` quickly (200ms) then another key to activate sublayer
+;;         hold `caps` for meh modifier
+;;----------------------------------------------------
+
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold   yes
+  danger-enable-cmd     yes
+  sequence-timeout      800    ;; longer for leader sequences
+  sequence-input-mode   hidden ;; keys not echoed, feels like sublayer
+)
+
+;;----------------------------------------------------
+;; Variables
+;;----------------------------------------------------
+(defvar
+  tap-time   200
+  hold-time  300
+  chord-time 60
+  subl-time  400
+  seq-time   200  ;; leader sequence timeout
+)
+
+;;----------------------------------------------------
+;; defsrc — 77-key MacBook physical layout 
+;; (QWERTY positions, kanata outputs Dvorak)
+;;----------------------------------------------------
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    up   rsft
+  fn   lctl lalt lmet           spc            rmet ralt left down rght
+)
+
+;;----------------------------------------------------
+;; Aliases
+;;----------------------------------------------------
+(defalias
+  ;; ---------- Modifiers & Combos ----------
+  hypur (multi lalt lctl lmet lsft)
+  meh   (multi lalt lctl lsft)
+  AC    (multi lalt lctl)
+  AS    (multi lalt lsft)
+  CMS   (multi lctl lmet lsft)
+  
+  ;; Leader key: tap to start sequence, hold for meh
+  ldr (tap-hold $tap-time $subl-time (switch
+    ((key-timing 1 less-than $seq-time)) (layer-while-held leader) break
+    () tp break
+  ) @meh)
+  
+  ;; Home row mods (Dvorak positions on QWERTY keys)
+  ;; Physical: a  s  d  f      j  k  l  ;
+  ;; Dvorak:   a  o  e  u      h  t  n  s
+  a-lctl (tap-hold $tap-time $hold-time a lctl)
+  o-lalt (tap-hold $tap-time $hold-time s lalt)
+  e-lmet (tap-hold $tap-time $hold-time d lmet)
+  u-hmet (tap-hold $tap-time $hold-time f lmet)  ;; hyper modifier in home row
+  
+  h-rmet (tap-hold $tap-time $hold-time j rmet)
+  t-ralt (tap-hold $tap-time $hold-time k ralt)
+  n-rctl (tap-hold $tap-time $hold-time l rctrl)
+  s-rcmd (tap-hold $tap-time $hold-time ; rmet)  ;; right cmd
+)
+
+(defalias
+  ;; ---------- Layer Switchers ----------
+  ;; One-shot layer switches for sequences
+  l-nav  (one-shot-press $subl-time (layer-while-held nav))
+  l-apps (one-shot-press $subl-time (layer-while-held apps))
+  l-sess (one-shot-press $subl-time (layer-while-held sessions))
+  l-yab  (one-shot-press $subl-time (layer-while-held yabai))
+  l-ra   (one-shot-press $subl-time (layer-while-held raycast))
+  
+  ;; Tap-hold variants for direct access
+  tl-nav  (tap-hold $tap-time $subl-time n (layer-while-held nav))
+  tl-apps (tap-hold $tap-time $subl-time a (layer-while-held apps))
+  tl-sess (tap-hold $tap-time $subl-time s (layer-while-held sessions))
+  tl-yab  (tap-hold $tap-time $subl-time w (layer-while-held yabai))
+)
+
+(defalias
+  ;; ---------- Yabai Window Management ----------
+  y-fcs (cmd zsh -lc "yabai -m window --focus")
+  y-nxt (cmd zsh -lc "yabai -m window --focus next || yabai -m window --focus first")
+  y-prv (cmd zsh -lc "yabai -m window --focus prev || yabai -m window --focus last")
+  y-sw  (cmd zsh -lc "yabai -m window --swap recent")
+)
+
+(defalias
+  ;; ---------- Kitty Session Management ----------
+  kt-doc  (cmd zsh -lc "kitten @ launch --type=tab --tab-title=Documents --cwd=$HOME/Documents zsh")
+  kt-cfg  (cmd zsh -lc "kitten @ launch --type=tab --tab-title=Config --cwd=$HOME/.config zsh")
+  kt-2m   (cmd zsh -lc "kitten @ launch --type=tab --tab-title=2mini ssh prescient@2mini")
+  kt-4m   (cmd zsh -lc "kitten @ launch --type=tab --tab-title=4mini ssh prescient@4mini")
+  kt-fcs  (cmd zsh -lc "kitten @ focus-window --match")
+  kt-kit  (cmd zsh -lc "kitten @ focus-window --match app:kitty || open -a kitty")
+  
+  ;; Focus existing or create new
+  kf-doc  (cmd zsh -lc "kitten @ focus-window --match title:Documents 2>/dev/null || kitten @ launch --type=tab --tab-title=Documents --cwd=$HOME/Documents zsh")
+  kf-cfg  (cmd zsh -lc "kitten @ focus-window --match title:Config 2>/dev/null || kitten @ launch --type=tab --tab-title=Config --cwd=$HOME/.config zsh")
+  kf-2m   (cmd zsh -lc "kitten @ focus-window --match title:2mini 2>/dev/null || kitten @ launch --type=tab --tab-title=2mini ssh prescient@2mini")
+  kf-4m   (cmd zsh -lc "kitten @ focus-window --match title:4mini 2>/dev/null || kitten @ launch --type=tab --tab-title=4mini ssh prescient@4mini")
+)
+
+(defalias
+  ;; ---------- App Switching (via yabai) ----------
+  app-kit  (cmd zsh -lc "$RX/app-switch.sh kitty")
+  app-obs  (cmd zsh -lc "$RX/app-switch.sh Obsidian")
+  app-arc  (cmd zsh -lc "$RX/app-switch.sh Comet")
+  app-ray  (cmd zsh -lc "$RX/app-switch.sh Raycast")
+  app-dis  (cmd zsh -lc "$RX/app-switch.sh Discord")
+  app-spt  (cmd zsh -lc "$RX/app-switch.sh Spotify")
+  app-cld  (cmd zsh -lc "$RX/app-switch.sh Claude")
+  app-cal  (cmd zsh -lc "$RX/app-switch.sh Calendar")
+  app-zoo  (cmd zsh -lc "$RX/app-switch.sh zoom.us")
+  app-saf  (cmd zsh -lc "$RX/app-switch.sh Safari")
+  app-pre  (cmd zsh -lc "$RX/app-switch.sh Preview")
+  app-fin  (cmd zsh -lc "$RX/app-switch.sh Finder")
+  app-mes  (cmd zsh -lc "$RX/app-switch.sh Messages") ;; add Things, Whatsapp, screen sharing, name mangler, pixelmator pro, affinity, passwords, pages, notes, dictionary, dropshare, downie, davinci resolve, airdrop
+)
+
+(defalias
+  ;; ---------- Raycast Commands ----------
+  ray-ai   (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
+  ray-calc (cmd open "raycast://extensions/raycast/math/calculate")
+  ray-clip (cmd open "raycast://extensions/raycast/clipboard-history/clipboard-history")
+  ray-emj  (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+  ray-file (cmd open "raycast://extensions/raycast/file-search/search-files")
+  ray-spt  (cmd open "raycast://extensions/mattisssa/spotify-player/search")
+  ray-ctr  (cmd open "raycast://extensions/raycast/window-management/center-half")            ;; set to physical ``
+  ray-blq  (cmd open "raycast://extensions/raycast/window-management/bottom-left-quarter")    ;; set to physical `k`
+  ray-brq  (cmd open "raycast://extensions/raycast/window-management/bottom-right-quarter")   ;; set to physical `l` 
+  ray-lft  (cmd open "raycast://extensions/raycast/window-management/left-half")              ;; set to physical `j`
+  ray-ryt  (cmd open "raycast://extensions/raycast/window-management/right-half")             ;; set to physical `p`
+  ray-tlq  (cmd open "raycast://extensions/raycast/window-management/top-left-quarter")       ;; set to physical `i`
+  ray-trq  (cmd open "raycast://extensions/raycast/window-management/top-right-quarter")      ;; set to physical `o`
+  ray-ytb  (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+)
+
+;;----------------------------------------------------
+;; MAIN Layer — Home row mods, leader key
+;;----------------------------------------------------
+(deflayer main
+  esc    brdn    brup   f3     f4     f5     f6     prev   pp     next   mute   vold   volu
+  grv    1       2      3      4      5      6      7      8      9      0      _      _      del
+  tab    q       w      e      r      t      y      u      i      o      p      [      ]      \
+  @ldr   @a-lctl @o-lalt @e-lmet @u-hmet g      h      @h-rmet @t-ralt @n-rctl @s-rcmd _      ret
+  lsft   z       x      c      v      b      @tl-nav n      m      ,      .      up     rsft
+  fn     lctl    lalt   lmet            spc           rmet   ralt   left   down   rght
+)
+
+;;----------------------------------------------------
+;; LEADER Layer — Sequence entry point
+;; Press leader then: n=nav, a=apps, s=sessions, w=yabai, r=raycast
+;;----------------------------------------------------
+(deflayer leader
+  _      _       _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      _      _      _      l      _      _      _      _      _      _
+  _      _       _      _             _             _      _      _      _      _
+)
+
+
+;;----------------------------------------------------
+;; APPS Layer — App switching via yabai
+;; Activated by: hold `a` or leader+`a`
+;; Layout (Dvorak positions on physical keys):
+;;   e/. = kitty, r/p = obsidian, t/y = arc, y/f = raycast
+;;   u/g = discord, i/c = spotify, o/r = claude, p/l = calendar
+;;   j/h = safari, l/n = zoom, m/m = preview, k/t = finder
+;;   w/, = setapp
+;;----------------------------------------------------
+(deflayer apps
+  _      _       _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      @app-kit @app-obs @app-arc @app-ray _      _      _      _      _      _      _
+  _      _       _      @app-dis @app-spt @app-cld @app-cal _      _      _      _      _      _
+  _      _       _      _      _      _      _      _      @app-saf @app-zoo @app-pre rsft
+  _      _       _      _             _             _      _      _      _      _
+)
+
+;;----------------------------------------------------
+;; SESSIONS Layer — Kitty tab/window management
+;; Activated by: hold `s` or leader+`s`
+;; Layout:
+;;   e/. = Documents tab, r/p = Config tab
+;;   y/f = 2mini ssh, u/g = 4mini ssh
+;;   i/c = focus Obsidian (in kitty), o/r = focus kitty app
+;;----------------------------------------------------
+(deflayer sessions
+  _      _       _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      @kf-doc @kf-cfg _      _      _      _      _      _      _      _      _
+  _      _       _      _      _      @kf-2m @kf-4m _      _      _      _      _      _
+  _      _       _      @kt-obs _      _      _      _      _      _      _      _      _
+  _      _       _      _             _             _      _      _      _      _
+)
+
+;;----------------------------------------------------
+;; YABAI Layer — Window management
+;; Activated by: hold `w` or leader+`w`
+;; Layout (vim-style on middle row):
+;;   h/d = focus left, j/h = focus down, k/t = focus up, l/n = focus right
+;;   u/g = next window, i/c = prev window, o/r = swap recent
+;;   b/x = toggle float, n/m = fullscreen
+;;   top row: 7/7 = display 1, 8/8 = display 2, 9/9 = display 3
+;;----------------------------------------------------
+(deflayer yabai
+  _      _       _      _      _      _      _      @y-d1 @y-d2 @y-d3 _      _      _
+  _      _       _      _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      @y-lft @y-rgt @y-rst @y-fl _      _      _      _      _      _      _
+  _      _       @y-prv @y-nxt @y-sw @y-fs _      _      _      _      _      _      _
+  _      _       _      _      _      _      _      _      _      _      _      _      _
+  _      _       _      _             _             _      _      _      _      _
+)
+
+;;----------------------------------------------------
+;; RAYCAST Layer — Quick commands
+;; Activated by: leader+`r`
+;;----------------------------------------------------
+(deflayer raycast
+  _      _       _      _      _      _      _      _      _      _      _      _      _
+  _       _       _      _      _      _      _      _      _      _      _      _      _      _
+  _      @ray-ai _      _      _      _      @ray-spt _      _      _      _      _      _      _
+  _      _       _      @ray-clip @ray-file @ray-calc _      _      _      _      _      _      _
+  _      _       @ray-emj _      _      _      _      _      _      _      _      _      _
+  _      _       _      _             _             _      _      _      _      _
+)
