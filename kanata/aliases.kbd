@@ -63,9 +63,9 @@
   ;; -----------------------------
   ;; Layer entry aliases
   ;; -----------------------------
-  capps (tap-hold-press $subl-t $subl-t s (layer-while-held applications))
-  rycst (tap-hold-press $subl-t $subl-t i (layer-while-held raycast))
-  yabam (tap-hold-press $subl-t $subl-t ret (layer-while-held yabai))
+  ;; capps (tap-hold-press $subl-t $subl-t s (layer-while-held applications))
+  ;; rycst (tap-hold-press $subl-t $subl-t i (layer-while-held raycast))
+  ;; yabam (tap-hold-press $subl-t $subl-t ret (layer-while-held yabai))
   ;;  lemld (tap-hold-press $subl-t $subl-t lsft (layer-while-held meld))
 
   ;; -----------------------------
@@ -92,3 +92,4 @@
   fopod (cmd zsh -lc "$HOME/.config/rx/focus/podcast-host.sh")
   forec (cmd zsh -lc "$HOME/.config/rx/focus/recording-mode.sh")
   dotsy (cmd zsh -lc "$RX/dots-sync.sh")
+)  

@@ -1,0 +1,32 @@
+;;----------------------------------------------------
+;; Emoji aliases — cross-platform unicode output
+;; Used by: deflayer emoji
+;; Entry: double-tap Left Shift (tap-dance in aliases-shared)
+;; NOTE: multi-codepoint emojis use U+XXXX hex format
+;;       single-codepoint emojis can use the char directly
+;;----------------------------------------------------
+
+(defalias
+  em-sml (unicode U+1F604)
+  em-cry (unicode U+1F602)
+  em-lov (unicode U+1F60D)
+  em-hrt (unicode U+2764)
+  em-yes (unicode U+1F44D)
+  em-no  (unicode U+1F44E)
+  em-flp (unicode U+1F595)
+  em-pry (unicode U+1F64F)
+  em-mny (unicode U+1F4B0)
+  em-cel (unicode U+1F389)
+  em-100 (unicode U+1F4AF)
+  em-ok  (unicode U+1F44C)
+  em-wav (unicode U+1F44B)
+  em-flx (unicode U+1F4AA)
+  em-kis (unicode U+1F618)
+  em-eye (unicode U+1F644)
+  em-rck (unicode U+1F918)
+  em-wsh (unicode U+1F91E)
+  em-drl (unicode U+1F924)
+  em-tst (unicode U+1F942)
+  em-blo (unicode U+1F92F)
+  em-vic (unicode U+270C)
+)

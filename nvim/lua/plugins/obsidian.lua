@@ -1,6 +1,10 @@
 -- ~/.config/nvim/lua/plugins/obsidian.lua
 -- obsidian.nvim — note navigation, link following, search inside vault.
 -- frontmatter is disabled here: frontmatter.lua is the source of truth.
+--
+-- Vaults are discovered dynamically so this config works across machines
+-- with different directory layouts (e.g. ~/Documents/notes,
+-- ~/Documents/repos/notes, ~/Documents/2mepo/notes).
 
 local ok, obsidian = pcall(require, "obsidian")
 if not ok then
@@ -8,11 +12,38 @@ if not ok then
   return
 end
 
+-- ── Dynamic vault discovery ───────────────────────────────────────────────
+-- Scan ~/Documents (up to 3 levels) for dirs containing .obsidian/.
+-- Returns a list of { name = <basename>, path = <abs_path> } specs.
+local function find_vaults()
+  local base = vim.fn.expand("~/Documents")
+  if vim.fn.isdirectory(base) == 0 then return {} end
+
+  local hits = vim.fs.find(".obsidian", {
+    path = base,
+    limit = 10,
+    type = "directory",
+  })
+
+  local vaults = {}
+  for _, hit in ipairs(hits) do
+    local vault_path = vim.fn.fnamemodify(hit, ":h")
+    local name = vim.fn.fnamemodify(vault_path, ":t")
+    table.insert(vaults, { name = name, path = vault_path })
+  end
+  return vaults
+end
+
+local vaults = find_vaults()
+
+if #vaults == 0 then
+  vim.notify("obsidian.nvim: no vaults found under ~/Documents", vim.log.levels.WARN)
+  return
+end
+
 obsidian.setup({
   -- ── Workspaces ────────────────────────────────────────────────────────────
-  workspaces = {
-    { name = "notes", path = "~/Documents/repos/notes" },
-  },
+  workspaces = vaults,
 
   -- ── Frontmatter ───────────────────────────────────────────────────────────
   -- frontmatter.lua (BufWritePre) is the source of truth.
@@ -47,11 +78,15 @@ obsidian.setup({
 })
 
 -- ── Buffer-local keymaps (vault files only) ───────────────────────────────
--- The `mappings` config key is deprecated in obsidian.nvim 3.x+.
--- Set keymaps manually via autocmd instead.
+-- Build patterns from discovered vaults so keymaps apply to all of them.
+local md_patterns = {}
+for _, v in ipairs(vaults) do
+  table.insert(md_patterns, v.path .. "/**/*.md")
+end
+
 vim.api.nvim_create_autocmd("BufEnter", {
   group = vim.api.nvim_create_augroup("ObsidianKeymaps", { clear = true }),
-  pattern = vim.fn.expand("~/Documents/repos/notes") .. "/**/*.md",
+  pattern = md_patterns,
   callback = function(ev)
     local map = function(mode, lhs, rhs, desc)
       vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, silent = true, desc = desc })

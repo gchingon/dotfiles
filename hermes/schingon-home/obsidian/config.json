@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "hermes_obsidian": {
+    "vault_path": "/Users/schingon/Library/Mobile Documents/iCloud~md~obsidian/Documents/Second Brain",
+    "sessions_folder": "Sessions",
+    "topics_folder": "Topics",
+    "archive_folder": "Archive",
+    "auto_save_sessions": true,
+    "auto_link_topics": true,
+    "session_min_words": 100,
+    "topic_threshold": 3
+  },
+  "backup": {
+    "enabled": true,
+    "backup_dir": "/Users/schingon/.config/hermes/schingon-home",
+    "patterns": [
+      "~/.hermes/**/*.md",
+      "~/.hermes/**/*.json",
+      "~/.hermes/**/*.yaml",
+      "~/.hermes/context/*",
+      "~/.hermes/skills/*"
+    ],
+    "exclude": [
+      "*.log",
+      "*.tmp",
+      "__pycache__",
+      ".DS_Store"
+    ]
+  },
+  "commands": {
+    "session_save": "obsidian_session_save",
+    "search": "obsidian_search",
+    "topic_add": "obsidian_topic_add",
+    "link_update": "obsidian_link_update"
+  }
+}

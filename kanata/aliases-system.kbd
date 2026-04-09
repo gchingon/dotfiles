@@ -1,0 +1,36 @@
+;;----------------------------------------------------
+;; System control aliases — platform-conditional
+;; Used by: deflayer system (hold physical `g`)
+;;----------------------------------------------------
+
+(platform (macos)
+  (defalias
+    sys-aud (cmd zsh -lc "open -a 'Audio MIDI Setup'")
+    sys-wfi (cmd zsh -lc "open 'x-apple.systempreferences:com.apple.wifi-settings'")
+    sys-blu (cmd zsh -lc "open 'x-apple.systempreferences:com.apple.BluetoothSettings'")
+    sys-cap (cmd zsh -lc "screencapture -ic")
+    sys-act (cmd zsh -lc "open -a 'Activity Monitor'")
+    sys-shr (cmd open -a AirDrop)
+    sys-mic (cmd zsh -lc "$RX/mic-mute.sh")
+    sys-lok (cmd zsh -lc "pmset displaysleepnow")
+    sys-cal (cmd zsh -lc "$HOME/.config/rx/calendar-next-meeting.sh")
+    sys-dot (cmd zsh -lc "$RX/dots-sync.sh")
+    sys-col (cmd zsh -lc "$LB/colorswitch-next")
+  )
+)
+
+(platform (linux)
+  (defalias
+    sys-aud (cmd bash -c "pavucontrol &")
+    sys-wfi (cmd bash -c "nmtui &")
+    sys-blu (cmd bash -c "bluetui &")
+    sys-cap (cmd bash -c "flameshot gui &")
+    sys-act (cmd bash -c "kitty btop &")
+    sys-shr (cmd bash -c "localsend &")
+    sys-mic (cmd bash -c "pactl set-source-mute @DEFAULT_SOURCE@ toggle")
+    sys-lok (cmd bash -c "loginctl lock-session")
+    sys-cal (cmd bash -c "echo 'no calendar script configured'")
+    sys-dot (cmd bash -c "$RX/dots-sync.sh")
+    sys-col (cmd bash -c "echo 'no colorswitch configured'")
+  )
+)

@@ -1,0 +1,178 @@
+;;----------------------------------------------------
+;; kanata.kbd — Cross-platform Kanata config
+;; Dvorak keyboard layout on physical QWERTY positions
+;; Runs as LaunchDaemon (macOS) or systemd unit (Linux)
+;;
+;; LAYER MAP:
+;;   main    — daily typing, home row mods
+;;   apps    — app switching (hold physical `s`)
+;;   raycast — raycast utils + kitty sessions (hold physical `c`)
+;;   system  — system controls (hold physical `g`)
+;;   emoji   — quick emoji (double-tap Left Shift)
+;;----------------------------------------------------
+
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold   yes
+  danger-enable-cmd     yes
+)
+
+;;----------------------------------------------------
+;; Variables
+;;----------------------------------------------------
+(defvar
+  tap-higher 400
+  tt 300
+  ht 300
+  kord-t 60
+  subl-t 500
+)
+
+;;----------------------------------------------------
+;; Includes — alias files with platform blocks inside
+;;----------------------------------------------------
+(include aliases-shared.kbd)
+(include aliases-apps.kbd)
+(include aliases-kitty.kbd)
+(include aliases-system.kbd)
+(include aliases-raycast.kbd)
+(include aliases-emoji.kbd)
+
+;;----------------------------------------------------
+;; Sublayers -
+;;----------------------------------------------------
+sapps (tap-hold $tt $subl-t s (layer-while-held apps))
+gystm (tap-hold $tt $subl-t g (layer-while-held system))
+rycst (tap-hold $tt $subl-t l (layer-while-held raycast))
+
+
+;;----------------------------------------------------
+;; defsrc — 77-key MacBook physical layout
+;; Order MUST match all deflayer declarations exactly.
+;; These are hardware key positions, not Dvorak chars.
+;;----------------------------------------------------
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    up   rsft
+  fn   lctl lalt lmet           spc            rmet ralt left down rght
+)
+
+;;----------------------------------------------------
+;; MAIN layer — daily typing, home row mods
+;; Physical positions → Dvorak output via process-unmapped-keys
+;;
+;; Physical `s` = hold for apps layer
+;; Physical `l` = hold for raycast layer
+;; Physical `g` = hold for system layer
+;;----------------------------------------------------
+(deflayer main
+  esc    brdn   brup   f3     f4     f5      f6     prev   pp     next   mute   vold   volu         ;; Fn row
+  @grasc 1      2      3      4      5       6      7      8      9      0      _      _      _     ;; NUM
+  @tabSG _      _      @mhome _      _       _      _      _      _      _      _      _      _     ;; QWERTY
+  @mehsc @Hlctl @sapps @Hlalt @Hlmet @gystm  _      @Hrmet @Hralt @rycst @Hrctl _      _            ;; HOME
+  @lsfem _      _      _      _      _       _      _      _      _      _      _      @shdel       ;; BOTTOM
+  fn     @caltb @shalt @suXMS          spc          @hyper @trams _      _      _                   ;; MOD
+)
+
+;;----------------------------------------------------
+;; APPS layer — app switching
+;; Activated by: hold physical `s`
+;;
+;; Physical → App
+;;   q = kitty        w = Browser (Comet/Firefox)
+;;   e = Obsidian     r = Neovim (kitty session)
+;;   t = Claude       y = Finder/Files
+;;   u = Discord      i = Spotify
+;;   o = Calendar     p = WhatsApp
+;;   h = Messages     j = Preview
+;;   k = DaVinci      l = Notes
+;;   ; = Sys Settings m = Passwords
+;;   6 = Meld Studio  7 = Colorscheme next
+;;----------------------------------------------------
+(deflayer apps
+  _      _       _       _       _       _       _       _        _       _       _       _       _             ;; Fn
+  _      _       _       _       _       _       @a-meld @sys-col _       _       _       _       _       _     ;; NUM
+  _      @a-term @a-brws @a-obsi @k-nvim @a-clau @a-find @a-disc  @a-spot @a-cale @a-what _       _       _     ;; QWERTY
+  _      _       _       _       _       _       @a-msgs @a-prev  @a-davr @a-note @a-sset _       _             ;; HOME
+  _      _       _       _       _       _       _       @a-pass  _       _       _       _       _             ;; BOTTOM
+  _      _       _       _             _         _       _        _       _       _                             ;; MOD
+)
+
+;;----------------------------------------------------
+;; RAYCAST layer — utilities + kitty session jumps
+;; Activated by: hold physical `l`
+;;
+;; Kitty sessions (top row):
+;;   w = dotfiles   e = nvim      r = docker
+;;   t = podcast    i = home      x = ssh-2mini
+;;
+;; Raycast / utilities (home row):
+;;   a = AI chat        s = emoji       d = clipboard
+;;   f = file search    m = zoom mute   v = YouTube search
+;;   c = Spotify search
+;;----------------------------------------------------
+(deflayer raycast
+  _      XX     XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
+  grv    1      2       3       4       5       6       7       8       9       0       _       _      del   ;; NUM
+  _      _      @k-dotf @k-nvim @k-dock @k-podc XX      XX      @k-home XX      XX      XX      XX     XX    ;; QWERTY
+  XX     @rayai @remoj  @rclip  @rfile  XX      _       XX      XX      XX      XX      XX      XX           ;; HOME
+  XX     XX     @k-ssh2 @sptfd  @tbefd  XX      XX      @zmute  XX      XX      XX      XX      XX           ;; BOTTOM
+  fn     lctl   lalt    lmet          spc               rmet    ralt    left    down    rght                  ;; MOD
+)
+
+;;----------------------------------------------------
+;; SYSTEM layer — system controls
+;; Activated by: hold physical `g`
+;;
+;;   a = audio       w = wifi       b = bluetooth
+;;   c = screenshot  t = activity   s = share/airdrop
+;;   m = mic mute    l = lock       n = next meeting
+;;   d = dots sync   7 = colorswitch
+;;----------------------------------------------------
+(deflayer system
+  _      XX       XX       XX       XX     XX       XX       XX       XX       XX       XX       XX       XX          ;; Fn
+  _      _        _        _        _      _        _        @sys-col _        _        _        _        _        _  ;; NUM
+  _      XX       @sys-wfi XX       XX     @sys-act XX       XX       XX       XX       XX       XX       XX       XX ;; QWERTY
+  XX     @sys-aud @sys-shr @sys-dot XX     _        XX       XX       XX       @sys-lok XX       XX       XX          ;; HOME
+  XX     XX       XX       @sys-cap XX     @sys-blu @sys-cal @sys-mic XX       XX       XX       XX       XX          ;; BOTTOM
+  fn     lctl     lalt     lmet          spc                 rmet     ralt     left     down     rght                 ;; MOD
+)
+
+;;----------------------------------------------------
+;; EMOJI layer — quick emoji output
+;; Activated by: double-tap Left Shift
+;; One-shot: type one emoji then return to main
+;;
+;; Physical key → emoji:
+;;   s/o = smile     c/j = cry/laugh  l/l = love
+;;   h/j = heart     y/t = yes        n/b = no
+;;   f/y = flip      p/r = pray       m/m = money
+;;   x/b = celebrate 1   = 100        o/s = ok
+;;   g/i = greeting  a/a = flex       k/v = kiss
+;;   e/. = eyeroll   r/p = rock       w/, = wish
+;;   d/e = drool     t/y = toast      q/' = blow mind
+;;   v/k = victory
+;;----------------------------------------------------
+(deflayer emoji
+  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
+  _      @em-100 _       _       _       _       _       _       _       _       _       _       _       _    ;; NUM
+  _      @em-blo @em-wsh @em-eye @em-rck @em-tst @em-flp XX XX   @em-ok  XX      XX      XX      XX           ;; QWERTY
+  XX     @em-flx @em-sml @em-drl @em-pry XX      @em-hrt @em-cry @em-kis @em-lov XX      XX      XX           ;; HOME
+  XX     XX      XX      @em-cel XX      XX      @em-no  @em-mny XX      XX      XX      XX      XX           ;; BOTTOM
+  _      _       _       _             _             _      _      _      _      _                            ;; MOD
+)
+
+;;----------------------------------------------------
+;; TEMPLATE — copy this to add new layers
+;; (deflayer template
+;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX               ;; Fn
+;;   _    _     _     _     _     _     _     _     _     _     _     _     _     _          ;; NUM
+;;   _    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX         ;; QWERTY
+;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX               ;; HOME
+;;   XX   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX               ;; BOTTOM
+;;   fn   lctl  lalt  lmet        spc        rmet  ralt  left  down  rght                   ;; MOD
+;; )
+;;----------------------------------------------------

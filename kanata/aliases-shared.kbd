@@ -1,0 +1,63 @@
+(defalias
+  ;; -----------------------------
+  ;; Base modifier combos
+  ;; -----------------------------
+  hypur (multi lalt lctl lmet lsft)
+  meh   (multi lalt lctl lsft)
+  AC    (multi lalt lctl)
+  AS    (multi lalt lsft)
+  AMS   (multi lalt lmet lsft)
+  CS    (multi lctl lsft)
+  CMS   (multi lctl lmet lsft)
+  MS    (multi lmet lsft)
+  MSa   (multi @MS a)
+  tabal (multi lalt tab)
+  force (multi lalt lmet esc)
+
+  ;; -----------------------------
+  ;; Scam aliases (must be before double-action keys that reference them)
+  ;; -----------------------------
+  scam6 (multi @hypur 6)
+  scam0 (multi @hypur 3)
+  scamt (multi @hypur 4)
+  scamh (multi @hypur h)
+  scamw (multi @hypur w)
+  scams (multi @hypur s)
+
+  ;; -----------------------------
+  ;; Home row mods
+  ;; -----------------------------
+  Hlctl (tap-hold $tt $ht a lctl)
+  Hlalt (tap-hold $tt $ht d lalt)
+  Hlmet (tap-hold $tt $ht f lmet)
+  Hrmet (tap-hold $tt $ht j rmet)
+  Hralt (tap-hold $tt $ht k ralt)
+  Hrctl (tap-hold $tt $ht ; lctl)
+
+  ;; -----------------------------
+  ;; Double-action keys
+  ;; -----------------------------
+  caltb (tap-hold $tt $ht @tabal @AC)
+  grasc (tap-hold $tt $ht grv @CS)
+  hyper (tap-hold $tt $ht f18 @hypur)
+  mehsc (tap-hold $tt $ht esc @meh)
+  mhome (tap-hold $tt $ht e @scam6)
+  shalt (tap-hold $tt $ht @scam0 @AS)
+  shdel (tap-hold $tt $ht del rsft)
+  suXMS (tap-hold $tt $ht @force @CMS)
+  tabSG (tap-hold $tt $ht tab @MS)
+  zmute (tap-hold $tt $ht ' @MSa)
+
+  ;; -----------------------------
+  ;; Left Shift: tap-dance — single = shift, double = emoji layer
+  ;; -----------------------------
+  lsfem (tap-dance 300 (lsft (one-shot 2000 (layer-while-held emoji))))
+
+  ;; -----------------------------
+  ;; Layer entry aliases (sublayer holds)
+  ;; Hold physical key → activate layer while held
+  ;; -----------------------------
+  ;; apps layer: triggered by tapping into it from main via dedicated key
+  ;; raycast layer: hold physical `c` area — defined on main layer
+  ;; system layer: hold physical `g` — defined on main layer
+)

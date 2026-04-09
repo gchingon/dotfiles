@@ -1,0 +1,31 @@
+;;----------------------------------------------------
+;; Raycast utility deeplinks (macOS) / Linux alternatives
+;; Used by: deflayer raycast
+;; NOTE: Raycast is for utilities only, not app launching
+;;----------------------------------------------------
+
+(platform (macos)
+  (defalias
+    rayai (cmd open "raycast://extensions/raycast/raycast-ai/ai-chat")
+    rclip (cmd open "raycast://extensions/raycast/clipboard-history/clipboard-history")
+    remoj (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+    rfile (cmd open "raycast://extensions/raycast/file-search/search-files")
+    sptfd (cmd open "raycast://extensions/mattisssa/spotify-player/search")
+    tbefd (cmd zsh -lc "open 'raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D'")
+    mtrsh (cmd open "raycast://extensions/raycast/system/empty-trash")
+    trams (tap-hold 300 300 @mtrsh (multi lalt lmet lsft))
+  )
+)
+
+(platform (linux)
+  (defalias
+    rayai (cmd bash -c "echo 'no AI chat configured'")
+    rclip (cmd bash -c "clipman pick -t rofi || cliphist list | rofi -dmenu | cliphist decode | wl-copy")
+    remoj (cmd bash -c "rofi -show emoji || rofimoji &")
+    rfile (cmd bash -c "rofi -show filebrowser &")
+    sptfd (cmd bash -c "echo 'no spotify search configured'")
+    tbefd (cmd bash -c "echo 'no youtube search configured'")
+    mtrsh (cmd bash -c "trash-empty 2>/dev/null || rm -rf ~/.local/share/Trash/files/*")
+    trams (tap-hold 300 300 @mtrsh (multi lalt lmet lsft))
+  )
+)

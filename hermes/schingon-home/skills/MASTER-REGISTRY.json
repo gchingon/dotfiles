@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "description": "Master skills registry for Hermes agent coordination",
+  "discovery_rules": {
+    "search_path": [
+      "~/.hermes/skills/",
+      "./.hermes/skills/"
+    ],
+    "priority": [
+      "local",
+      "master"
+    ],
+    "fallback_to_master": true
+  },
+  "adoption_policy": {
+    "exact_match": "symlink",
+    "needs_adaptation": "rewrite_local",
+    "conflict_resolution": "local_wins"
+  },
+  "skill_categories": {
+    "keyboard": {
+      "description": "Keyboard remapping and layer management",
+      "examples": [
+        "kanata",
+        "karabiner",
+        "keyd"
+      ],
+      "platform_specific": true
+    },
+    "window_management": {
+      "description": "Tiling WMs and window operations",
+      "examples": [
+        "yabai",
+        "aerospace",
+        "sway"
+      ],
+      "platform_specific": true
+    },
+    "dotfiles": {
+      "description": "Configuration file management",
+      "examples": [
+        "stow",
+        "chezmoi",
+        "git-bare"
+      ],
+      "platform_specific": false
+    },
+    "dev_tools": {
+      "description": "Development environment setup",
+      "examples": [
+        "lsp",
+        "formatters",
+        "linters"
+      ],
+      "platform_specific": false
+    },
+    "knowledge": {
+      "description": "Note-taking and second brain",
+      "examples": [
+        "obsidian",
+        "zk",
+        "org-mode"
+      ],
+      "platform_specific": false
+    },
+    "shell": {
+      "description": "Shell customization and scripting",
+      "examples": [
+        "zsh",
+        "fish",
+        "bash"
+      ],
+      "platform_specific": false
+    }
+  },
+  "indexed_skills": [
+    {
+      "name": "obsidian",
+      "file": "SKILL--obsidian.md",
+      "category": "knowledge",
+      "universal": true,
+      "location": "~/.hermes/skills/SKILL--obsidian.md",
+      "dependencies": [
+        "zsh"
+      ],
+      "adoption_notes": "Works as-is for any project. Requires HERMES_OBSIDIAN_VAULT env var."
+    },
+    {
+      "name": "kanata-keyboard",
+      "file": "SKILL--kanata.md",
+      "category": "keyboard",
+      "universal": false,
+      "location": "~/.config/kanata/kanata-skill.md",
+      "dependencies": [
+        "kanata"
+      ],
+      "adoption_notes": "Platform-specific (macOS). Dvorak-specific config at ~/.config/kanata/alt-dvorak-chord.kbd"
+    },
+    {
+      "name": "workflow-conventions",
+      "file": "SKILL.md",
+      "category": "meta",
+      "universal": true,
+      "location": "~/.hermes/skills/meta/workflow-conventions/SKILL.md",
+      "dependencies": [],
+      "adoption_notes": "Meta-rules for all Hermes agents. Always load first."
+    },
+    {
+      "name": "backup-strategy",
+      "file": "SKILL.md",
+      "category": "meta",
+      "universal": true,
+      "location": "~/.hermes/skills/meta/backup-strategy/SKILL.md",
+      "dependencies": [
+        "workflow-conventions"
+      ],
+      "adoption_notes": "Backup ~/.hermes/ to ~/.config/hermes/<dirname>/"
+    },
+    {
+      "name": "skill-registry-system",
+      "file": "SKILL--skill-registry-system.md",
+      "category": "meta",
+      "universal": true,
+      "location": "~/.hermes/skills/SKILL--skill-registry-system.md",
+      "dependencies": [],
+      "adoption_notes": "Setup master registry, skill discovery, and agent coordination. Run this first on new machines."
+    }
+  ],
+  "environment_signature": {
+    "home_dir": "/Users/schingon",
+    "hostname": "mbp.local",
+    "platform": "Darwin",
+    "key_tools": [
+      "kanata",
+      "yabai",
+      "raycast",
+      "kitty",
+      "obsidian",
+      "brew"
+    ],
+    "shell": "zsh",
+    "keyboard_layout": "dvorak",
+    "preferences": {
+      "leader_style": "chord_or_hold",
+      "config_management": "alternatives_not_overwrite",
+      "backups": "git_to_dotconfig"
+    }
+  }
+}

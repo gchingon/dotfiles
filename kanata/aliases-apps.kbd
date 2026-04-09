@@ -1,0 +1,49 @@
+;;----------------------------------------------------
+;; App-switching aliases — platform-conditional
+;; Used by: deflayer apps
+;; Pattern: hold sublayer key, tap target → focus or launch app
+;;----------------------------------------------------
+
+(platform (macos)
+  (defalias
+    a-term (cmd open -a kitty)
+    a-brws (cmd open -a Comet)
+    a-obsi (cmd open -a Obsidian)
+    a-clau (cmd open -a Claude)
+    a-find (cmd open -a Finder)
+    a-disc (cmd open -a Discord)
+    a-spot (cmd open -a Spotify)
+    a-cale (cmd open -a Calendar)
+    a-sfri (cmd open -a Safari)
+    a-comt (cmd open -a Comet)
+    a-what (cmd open -a WhatsApp)
+    a-msgs (cmd open -a Messages)
+    a-prev (cmd open -a Preview)
+    a-davr (cmd open -a 'DaVinci Resolve')
+    a-note (cmd open -a Notes)
+    a-sset (cmd open -a 'System Settings')
+    a-meld (cmd open -a 'Meld Studio')
+    a-pass (cmd open -a Passwords)
+  )
+)
+
+(platform (linux)
+  (defalias
+    a-term (cmd bash -c "wmctrl -xa kitty || kitty &")
+    a-brws (cmd bash -c "wmctrl -xa firefox || firefox &")
+    a-obsi (cmd bash -c "wmctrl -xa obsidian || obsidian &")
+    a-clau (cmd bash -c "wmctrl -xa claude || claude &")
+    a-find (cmd bash -c "wmctrl -xa thunar || thunar &")
+    a-disc (cmd bash -c "wmctrl -xa discord || discord &")
+    a-spot (cmd bash -c "wmctrl -xa spotify || spotify &")
+    a-cale (cmd bash -c "wmctrl -xa gnome-calendar || gnome-calendar &")
+    a-what (cmd bash -c "wmctrl -xa whatsapp || xdg-open 'https://web.whatsapp.com' &")
+    a-msgs (cmd bash -c "echo 'no messages client configured'")
+    a-prev (cmd bash -c "echo 'no preview client configured'")
+    a-davr (cmd bash -c "wmctrl -xa resolve || /opt/resolve/bin/resolve &")
+    a-note (cmd bash -c "wmctrl -xa notes || xdg-open 'https://keep.google.com' &")
+    a-sset (cmd bash -c "wmctrl -xa gnome-control-center || gnome-control-center &")
+    a-meld (cmd bash -c "echo 'Meld Studio macOS only'")
+    a-pass (cmd bash -c "wmctrl -xa 1password || 1password &")
+  )
+)

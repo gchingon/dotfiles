@@ -39,6 +39,13 @@ alias gpl='git-pull'                     # Pull changes from remote
 alias gph='git-push'                     # Push changes to remote
 alias gst='git status'                   # Show git status
 
+#====== Hermes Agent ====
+alias hsl='hermes sessions list'
+alias hsb='hermes sessions browse'
+alias hu='hermes update'
+alias hrm='hermes sessions delete'
+
+
 # ===== File Management Aliases =====
 alias d='fd -H -t f .DS_Store -X rm -frv'  # Remove .DS_Store files (macOS)
 alias f='fzf '                           # Fuzzy finder with space for args

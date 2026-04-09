@@ -1,0 +1,29 @@
+;;----------------------------------------------------
+;; Kitty session jumps — platform-conditional
+;; Used by: deflayer raycast
+;; Requires: allow_remote_control yes, listen_on unix:/tmp/kitty
+;;----------------------------------------------------
+
+(platform (macos)
+  (defalias
+    k-dotf (cmd zsh -lc "kitten @ focus-window --match title:dotfiles 2>/dev/null || open -a kitty")
+    k-nvim (cmd zsh -lc "kitten @ focus-window --match title:nvim 2>/dev/null || open -a kitty")
+    k-dock (cmd zsh -lc "kitten @ focus-window --match title:docker 2>/dev/null || open -a kitty")
+    k-podc (cmd zsh -lc "kitten @ focus-window --match title:podcast 2>/dev/null || open -a kitty")
+    k-home (cmd zsh -lc "kitten @ focus-window --match title:home 2>/dev/null || open -a kitty")
+    k-ssh2 (cmd zsh -lc "kitten @ focus-window --match title:ssh-2mini 2>/dev/null || open -a kitty")
+    k-ssh4 (cmd zsh -lc "kitten @ focus-window --match title:ssh-4mini 2>/dev/null || open -a kitty")
+  )
+)
+
+(platform (linux)
+  (defalias
+    k-dotf (cmd bash -c "kitten @ focus-window --match title:dotfiles 2>/dev/null || kitty &")
+    k-nvim (cmd bash -c "kitten @ focus-window --match title:nvim 2>/dev/null || kitty &")
+    k-dock (cmd bash -c "kitten @ focus-window --match title:docker 2>/dev/null || kitty &")
+    k-podc (cmd bash -c "kitten @ focus-window --match title:podcast 2>/dev/null || kitty &")
+    k-home (cmd bash -c "kitten @ focus-window --match title:home 2>/dev/null || kitty &")
+    k-ssh2 (cmd bash -c "kitten @ focus-window --match title:ssh-2mini 2>/dev/null || kitty &")
+    k-ssh4 (cmd bash -c "kitten @ focus-window --match title:ssh-4mini 2>/dev/null || kitty &")
+  )
+)

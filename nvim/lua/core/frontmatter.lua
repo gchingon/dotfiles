@@ -4,29 +4,32 @@
 local M = {}
 
 -- =============================
--- Base36 ID
+-- Base58 ID
 -- =============================
+local BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-local BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+local function to_base58(n, width)
+    if n == 0 then
+        return string.rep(BASE58:sub(1, 1), width)
+    end
 
-local function to_base36(n, width)
-    if n == 0 then return string.rep("0", width) end
     local chars = {}
     while n > 0 do
-        local rem = n % 36
-        table.insert(chars, 1, BASE36:sub(rem + 1, rem + 1))
-        n = math.floor(n / 36)
+        local rem = n % 58
+        table.insert(chars, 1, BASE58:sub(rem + 1, rem + 1))
+        n = math.floor(n / 58)
     end
+
     while #chars < width do
-        table.insert(chars, 1, "0")
+        table.insert(chars, 1, BASE58:sub(1, 1))
     end
+
     return table.concat(chars)
 end
 
 function M.generate_id(epoch_s)
     local ts = epoch_s or os.time()
-    local jitter = math.random(0, 35)
-    return to_base36(ts, 7) .. BASE36:sub(jitter + 1, jitter + 1)
+    return to_base58(ts, 6)
 end
 
 -- =============================
@@ -177,7 +180,6 @@ TEMPLATES.notes = {
     { "id",      nil },
     { "created", nil },
     { "author",  "Gallo Chingon" },
-    { "type",    "" },
 }
 
 -- ── Podcast ─────────────────────────────────────────
