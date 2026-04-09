@@ -1,32 +1,32 @@
 ;;----------------------------------------------------
 ;; Emoji aliases — cross-platform unicode output
 ;; Used by: deflayer emoji
-;; Entry: double-tap Left Shift (tap-dance in aliases-shared)
-;; NOTE: multi-codepoint emojis use U+XXXX hex format
-;;       single-codepoint emojis can use the char directly
+;; Entry: double-tap Right Shift (see @rshem in aliases-shared.kbd)
+;; NOTE: multi-codepoint emojis (❤️ etc.) require U+XXXX hex format
+;;       because kanata's `unicode` action rejects combined sequences.
 ;;----------------------------------------------------
 
 (defalias
-  em-sml (unicode U+1F604)
-  em-cry (unicode U+1F602)
-  em-lov (unicode U+1F60D)
-  em-hrt (unicode U+2764)
-  em-yes (unicode U+1F44D)
-  em-no  (unicode U+1F44E)
-  em-flp (unicode U+1F595)
-  em-pry (unicode U+1F64F)
-  em-mny (unicode U+1F4B0)
-  em-cel (unicode U+1F389)
-  em-100 (unicode U+1F4AF)
-  em-ok  (unicode U+1F44C)
-  em-wav (unicode U+1F44B)
-  em-flx (unicode U+1F4AA)
-  em-kis (unicode U+1F618)
-  em-eye (unicode U+1F644)
-  em-rck (unicode U+1F918)
-  em-wsh (unicode U+1F91E)
-  em-drl (unicode U+1F924)
-  em-tst (unicode U+1F942)
-  em-blo (unicode U+1F92F)
-  em-vic (unicode U+270C)
+  em-sml (unicode U+1F604)  ;; 😄 smile
+  em-cry (unicode U+1F602)  ;; 😂 cry/laugh
+  em-lov (unicode U+1F60D)  ;; 😍 love
+  em-hrt (unicode U+2764)   ;; ❤  heart  (U+2764 — base char, no VS16)
+  em-yes (unicode U+1F44D)  ;; 👍 yes / thumbs up
+  em-no  (unicode U+1F44E)  ;; 👎 no  / thumbs down
+  em-flp (unicode U+1F595)  ;; 🖕 middle finger
+  em-pry (unicode U+1F64F)  ;; 🙏 pray
+  em-mny (unicode U+1F4B0)  ;; 💰 money bag
+  em-cel (unicode U+1F389)  ;; 🎉 celebrate
+  em-100 (unicode U+1F4AF)  ;; 💯 hundred
+  em-ok  (unicode U+1F44C)  ;; 👌 ok hand
+  em-wav (unicode U+1F44B)  ;; 👋 waving hand
+  em-flx (unicode U+1F4AA)  ;; 💪 flex / arm
+  em-kis (unicode U+1F618)  ;; 😘 kiss
+  em-eye (unicode U+1F644)  ;; 🙄 eye roll
+  em-rck (unicode U+1F918)  ;; 🤘 rock on
+  em-wsh (unicode U+1F91E)  ;; 🤞 fingers crossed / wish
+  em-drl (unicode U+1F924)  ;; 🤤 drooling
+  em-tst (unicode U+1F942)  ;; 🥂 toast / clinking glasses
+  em-blo (unicode U+1F92F)  ;; 🤯 mind blown
+  em-vic (unicode U+270C)   ;; ✌  victory  (U+270C — base char, no VS16)
 )

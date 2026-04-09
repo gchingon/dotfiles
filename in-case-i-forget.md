@@ -1,8 +1,6 @@
-I have multiple repos for my config because I just **have** to be *extra*.the purpose is to keep the private repo from being viewed in my dotfiles repo. and to keep the nvim config repo separate so it can one day be showcased on dotfyle.com.
+~I have multiple repos for my config because I just **have** to be *extra*. The purpose is to keep the private repo from being viewed in my dotfiles repo, and to keep the nvim config repo separate so it can one day be showcased on dotfyle.com.~
 
-so it's the private repo, this one daught-fylz (AKA dotfiles) and lua-is-the-devil (nvim)
-
-So, in case i forget how i linked everything to dot config
+In case I forget how I linked everything to dot config
 
 1. jump into dot config, you might have to create it
 

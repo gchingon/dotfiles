@@ -1,29 +1,39 @@
 ;;----------------------------------------------------
 ;; Kitty session jumps — platform-conditional
 ;; Used by: deflayer raycast
-;; Requires: allow_remote_control yes, listen_on unix:/tmp/kitty
+;;
+;; Uses ~/.config/rx/kitty-session.sh which:
+;;   1. focuses an existing tab by title,
+;;   2. creates a new tab from the session file if kitty is running,
+;;   3. launches kitty with --session if kitty is not running.
+;;
+;; Requires in kitty.conf:
+;;   allow_remote_control yes
+;;   listen_on unix:/tmp/kitty
+;;
+;; Session files live in ~/.config/kitty/sessions/<name>.kitty-session
 ;;----------------------------------------------------
 
 (platform (macos)
   (defalias
-    k-dotf (cmd zsh -lc "kitten @ focus-window --match title:dotfiles 2>/dev/null || open -a kitty")
-    k-nvim (cmd zsh -lc "kitten @ focus-window --match title:nvim 2>/dev/null || open -a kitty")
-    k-dock (cmd zsh -lc "kitten @ focus-window --match title:docker 2>/dev/null || open -a kitty")
-    k-podc (cmd zsh -lc "kitten @ focus-window --match title:podcast 2>/dev/null || open -a kitty")
-    k-home (cmd zsh -lc "kitten @ focus-window --match title:home 2>/dev/null || open -a kitty")
-    k-ssh2 (cmd zsh -lc "kitten @ focus-window --match title:ssh-2mini 2>/dev/null || open -a kitty")
-    k-ssh4 (cmd zsh -lc "kitten @ focus-window --match title:ssh-4mini 2>/dev/null || open -a kitty")
+    k-dotf (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh dotfiles")
+    k-nvim (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh nvim")
+    k-dock (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh automation")
+    k-podc (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh podcast")
+    k-home (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh home")
+    k-ssh2 (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh ssh-2mini")
+    k-ssh4 (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh ssh-4mini")
   )
 )
 
 (platform (linux)
   (defalias
-    k-dotf (cmd bash -c "kitten @ focus-window --match title:dotfiles 2>/dev/null || kitty &")
-    k-nvim (cmd bash -c "kitten @ focus-window --match title:nvim 2>/dev/null || kitty &")
-    k-dock (cmd bash -c "kitten @ focus-window --match title:docker 2>/dev/null || kitty &")
-    k-podc (cmd bash -c "kitten @ focus-window --match title:podcast 2>/dev/null || kitty &")
-    k-home (cmd bash -c "kitten @ focus-window --match title:home 2>/dev/null || kitty &")
-    k-ssh2 (cmd bash -c "kitten @ focus-window --match title:ssh-2mini 2>/dev/null || kitty &")
-    k-ssh4 (cmd bash -c "kitten @ focus-window --match title:ssh-4mini 2>/dev/null || kitty &")
+    k-dotf (cmd bash -c "$HOME/.config/rx/kitty-session.sh dotfiles")
+    k-nvim (cmd bash -c "$HOME/.config/rx/kitty-session.sh nvim")
+    k-dock (cmd bash -c "$HOME/.config/rx/kitty-session.sh automation")
+    k-podc (cmd bash -c "$HOME/.config/rx/kitty-session.sh podcast")
+    k-home (cmd bash -c "$HOME/.config/rx/kitty-session.sh home")
+    k-ssh2 (cmd bash -c "$HOME/.config/rx/kitty-session.sh ssh-2mini")
+    k-ssh4 (cmd bash -c "$HOME/.config/rx/kitty-session.sh ssh-4mini")
   )
 )

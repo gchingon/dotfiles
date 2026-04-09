@@ -43,15 +43,19 @@
   mehsc (tap-hold $tt $ht esc @meh)
   mhome (tap-hold $tt $ht e @scam6)
   shalt (tap-hold $tt $ht @scam0 @AS)
-  shdel (tap-hold $tt $ht del rsft)
   suXMS (tap-hold $tt $ht @force @CMS)
   tabSG (tap-hold $tt $ht tab @MS)
   zmute (tap-hold $tt $ht ' @MSa)
 
   ;; -----------------------------
-  ;; Left Shift: tap-dance — single = shift, double = emoji layer
+  ;; Right Shift: tap-dance + tap-hold
+  ;;   tap           → del   (preserves current @shdel behaviour)
+  ;;   hold          → rsft  (shift while held)
+  ;;   double-tap    → one-shot emoji layer
   ;; -----------------------------
-  lsfem (tap-dance 300 (lsft (one-shot 2000 (layer-while-held emoji))))
+  rshem (tap-hold $tt $ht
+          (tap-dance 300 (del (one-shot 2000 (layer-while-held emoji))))
+          rsft)
 
   ;; -----------------------------
   ;; Layer entry aliases (sublayer holds)
