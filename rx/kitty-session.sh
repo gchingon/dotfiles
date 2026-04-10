@@ -6,16 +6,33 @@
 #        e.g. kitty-session.sh nvim
 #
 # Behaviour:
-#   1. If a tab with matching title exists in any running kitty instance,
-#      focus it and bring kitty to the foreground.
-#   2. If kitty is running but no matching tab exists, parse the session
-#      file and create a new tab with the same title/cwd/command.
-#   3. If kitty isn't running at all, launch it with --session.
+#   1. Parse the session file for the ACTUAL tab title (may differ from filename).
+#   2. If a tab with that title exists → focus it, bring kitty forward.
+#   3. If kitty is running but no matching tab → create a new tab from
+#      the session file's directives (title, cwd, command).
+#   4. If kitty isn't running at all → launch kitty with --session.
+#
+# NOTE: kanata runs as root (LaunchDaemon). This script resolves the real
+#       console user's home so paths work regardless of $HOME.
 
 set -eu
 
 SESSION="${1:?usage: kitty-session.sh <session-name>}"
-SESSION_FILE="$HOME/.config/kitty/sessions/${SESSION}.kitty-session"
+
+# ---------------------------------------------------------------------------
+# Resolve real user's home — kanata LaunchDaemon runs as root so $HOME is
+# /var/root, but kitty/sessions live under the console user's home.
+# ---------------------------------------------------------------------------
+if [[ "$(uname)" == "Darwin" ]]; then
+  REAL_USER="$(stat -f '%Su' /dev/console 2>/dev/null || echo "$USER")"
+  REAL_HOME="$(dscl . -read "/Users/$REAL_USER" NFSHomeDirectory 2>/dev/null | awk '{print $2}')"
+  [[ -z "$REAL_HOME" ]] && REAL_HOME="/Users/$REAL_USER"
+else
+  REAL_HOME="${HOME}"
+fi
+
+SESSION_DIR="${REAL_HOME}/.config/kitty/sessions"
+SESSION_FILE="${SESSION_DIR}/${SESSION}.kitty-session"
 
 if [[ ! -f "$SESSION_FILE" ]]; then
   echo "kitty-session: no such session file: $SESSION_FILE" >&2
@@ -23,7 +40,22 @@ if [[ ! -f "$SESSION_FILE" ]]; then
 fi
 
 # The kitty remote-control socket must match listen_on in kitty.conf.
-export KITTY_LISTEN_ON="${KITTY_LISTEN_ON:-unix:/tmp/kitty}"
+KITTY_SOCK="unix:/tmp/kitty"
+
+# ---------------------------------------------------------------------------
+# Parse the session file for tab title, working directory, and launch command.
+# The tab title in the session file is the REAL title kitty uses (may differ
+# from the filename, e.g. podcast.kitty-session → tab "GCpod").
+# ---------------------------------------------------------------------------
+TAB_TITLE="$(grep -m1 '^new_tab' "$SESSION_FILE" 2>/dev/null | sed 's/^new_tab[[:space:]]*//')"
+[[ -z "$TAB_TITLE" ]] && TAB_TITLE="$SESSION"
+
+CWD="$(grep -m1 '^cd ' "$SESSION_FILE" 2>/dev/null | sed 's/^cd[[:space:]]*//')"
+CWD="${CWD/#\~/$REAL_HOME}"
+[[ -z "$CWD" ]] && CWD="$REAL_HOME"
+
+LAUNCH_CMD="$(grep -m1 '^launch' "$SESSION_FILE" 2>/dev/null | sed 's/^launch[[:space:]]*//')"
+[[ -z "$LAUNCH_CMD" ]] && LAUNCH_CMD="zsh"
 
 bring_kitty_forward() {
   if [[ "$(uname)" == "Darwin" ]]; then
@@ -33,41 +65,31 @@ bring_kitty_forward() {
   fi
 }
 
-# Parse a single directive from the session file.
-session_get() {
-  local key="$1"
-  grep -m1 "^${key}" "$SESSION_FILE" 2>/dev/null | sed "s|^${key}[[:space:]]*||" || true
-}
-
-# --- Case 1: tab with matching title exists → focus it ------------------------
-if kitten @ --to "$KITTY_LISTEN_ON" focus-tab --match "title:^${SESSION}$" >/dev/null 2>&1; then
+# ---------------------------------------------------------------------------
+# Case 1: tab with matching title exists → focus it
+# ---------------------------------------------------------------------------
+if kitten @ --to "$KITTY_SOCK" focus-tab --match "title:^${TAB_TITLE}$" >/dev/null 2>&1; then
   bring_kitty_forward
   exit 0
 fi
 
-# --- Case 2: kitty is running but the tab doesn't exist → create new tab ------
-if kitten @ --to "$KITTY_LISTEN_ON" ls >/dev/null 2>&1; then
-  tab_title=$(session_get new_tab)
-  [[ -z "$tab_title" ]] && tab_title="$SESSION"
-
-  cwd=$(session_get cd)
-  cwd="${cwd/#\~/$HOME}"
-  [[ -z "$cwd" ]] && cwd="$HOME"
-
-  launch_cmd=$(session_get launch)
-  [[ -z "$launch_cmd" ]] && launch_cmd="zsh"
-
+# ---------------------------------------------------------------------------
+# Case 2: kitty running but tab doesn't exist → create new tab
+# ---------------------------------------------------------------------------
+if kitten @ --to "$KITTY_SOCK" ls >/dev/null 2>&1; then
   # shellcheck disable=SC2086
-  kitten @ --to "$KITTY_LISTEN_ON" launch \
+  kitten @ --to "$KITTY_SOCK" launch \
     --type=tab \
-    --tab-title "$tab_title" \
-    --cwd "$cwd" \
-    $launch_cmd
+    --tab-title "$TAB_TITLE" \
+    --cwd "$CWD" \
+    $LAUNCH_CMD
   bring_kitty_forward
   exit 0
 fi
 
-# --- Case 3: kitty not running → launch with session file ---------------------
+# ---------------------------------------------------------------------------
+# Case 3: kitty not running → launch with session file
+# ---------------------------------------------------------------------------
 if [[ "$(uname)" == "Darwin" ]]; then
   open -a kitty --args --session "$SESSION_FILE"
 else

@@ -1,6 +1,6 @@
 ;;----------------------------------------------------
 ;; Raycast utility deeplinks (macOS) / Linux alternatives
-;; Used by: deflayer raycast
+;; Used by: deflayer raycast triggered by physical `l` key
 ;; NOTE: Raycast is for utilities only, not app launching
 ;;----------------------------------------------------
 

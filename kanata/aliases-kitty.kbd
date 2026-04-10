@@ -2,38 +2,44 @@
 ;; Kitty session jumps — platform-conditional
 ;; Used by: deflayer raycast
 ;;
-;; Uses ~/.config/rx/kitty-session.sh which:
-;;   1. focuses an existing tab by title,
-;;   2. creates a new tab from the session file if kitty is running,
-;;   3. launches kitty with --session if kitty is not running.
+;; Uses kitty-session.sh which:
+;;   1. Parses session file for the ACTUAL tab title (may differ from filename).
+;;   2. Focuses an existing tab by that title via kitten @ focus-tab.
+;;   3. Creates a new tab from the session file if kitty is running.
+;;   4. Launches kitty with --session if kitty is not running.
 ;;
 ;; Requires in kitty.conf:
 ;;   allow_remote_control yes
 ;;   listen_on unix:/tmp/kitty
 ;;
 ;; Session files live in ~/.config/kitty/sessions/<name>.kitty-session
+;; NOTE: $rx is a kanata defvar = /Users/schingon/.config/rx
+;;       This is needed because kanata runs as root (LaunchDaemon)
+;;       where shell $HOME = /var/root.
 ;;----------------------------------------------------
 
 (platform (macos)
   (defalias
-    k-dotf (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh dotfiles")
-    k-nvim (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh nvim")
-    k-dock (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh automation")
-    k-podc (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh podcast")
-    k-home (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh home")
-    k-ssh2 (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh ssh-2mini")
-    k-ssh4 (cmd zsh -lc "$HOME/.config/rx/kitty-session.sh ssh-4mini")
+    k-dots (cmd zsh -lc "$rx/kitty-session.sh dotfiles")
+    k-nots (cmd zsh -lc "$rx/kitty-session.sh docs")
+    k-nvim (cmd zsh -lc "$rx/kitty-session.sh nvim")
+    k-dckr (cmd zsh -lc "$rx/kitty-session.sh automation")
+    k-podc (cmd zsh -lc "$rx/kitty-session.sh podcast")
+    k-home (cmd zsh -lc "$rx/kitty-session.sh home")
+    k-ssh2 (cmd zsh -lc "$rx/kitty-session.sh ssh-2mini")
+    k-ssh4 (cmd zsh -lc "$rx/kitty-session.sh ssh-4mini")
   )
 )
 
 (platform (linux)
   (defalias
-    k-dotf (cmd bash -c "$HOME/.config/rx/kitty-session.sh dotfiles")
-    k-nvim (cmd bash -c "$HOME/.config/rx/kitty-session.sh nvim")
-    k-dock (cmd bash -c "$HOME/.config/rx/kitty-session.sh automation")
-    k-podc (cmd bash -c "$HOME/.config/rx/kitty-session.sh podcast")
-    k-home (cmd bash -c "$HOME/.config/rx/kitty-session.sh home")
-    k-ssh2 (cmd bash -c "$HOME/.config/rx/kitty-session.sh ssh-2mini")
-    k-ssh4 (cmd bash -c "$HOME/.config/rx/kitty-session.sh ssh-4mini")
+    k-dots (cmd bash -c "$rx/kitty-session.sh dotfiles")
+    k-nots (cmd bash -c "$rx/kitty-session.sh docs")
+    k-nvim (cmd bash -c "$rx/kitty-session.sh nvim")
+    k-dckr (cmd bash -c "$rx/kitty-session.sh automation")
+    k-podc (cmd bash -c "$rx/kitty-session.sh podcast")
+    k-home (cmd bash -c "$rx/kitty-session.sh home")
+    k-ssh2 (cmd bash -c "$rx/kitty-session.sh ssh-2mini")
+    k-ssh4 (cmd bash -c "$rx/kitty-session.sh ssh-4mini")
   )
 )

@@ -26,6 +26,13 @@
   ht 300
   kord-t 60
   subl-t 500
+
+  ;; Absolute paths — kanata runs as root LaunchDaemon so $HOME = /var/root.
+  ;; These defvar values are substituted at parse time, before cmd reaches the shell.
+  uh /Users/schingon
+  cf (concat $uh /.config)
+  rx (concat $cf /rx)
+  lb (concat $uh /.local/bin)
 )
 
 ;;----------------------------------------------------
@@ -84,22 +91,18 @@
 ;; Activated by: hold physical `s`
 ;;
 ;; Physical → App (a-* aliases in aliases-apps.kbd)
-;;   4 = Meld Studio    6 = Dictionary    7 = Name Mangler
-;;   8 = Passwords      9 = Sys Settings  0 = CleanShot X
-;;   r = DaVinci        y = Finder        u = Discord
-;;   i = Spotify        o = Calendar      p = WhatsApp
-;;   [ = Pages          
-;;   f = Safari         h = kitty         j = Preview
-;;   k = Notes          l = Obsidian      ; = Claude
-;;   v = Affinity       n = Messages      m = Comet (browser)
+;;   6 = Dictionary     9 = System Settings
+;;   y = Finder         i = Spotify         [ = Passwords
+;;   f = Safari         j = Notes           ; = Claude     ret = kitty
+;;   n = Messages       , = Comet (browser)
 ;;----------------------------------------------------
 (deflayer apps
-  _      _       _       _       _       _       _        _       _       _       _       _       _             ;; Fn
-  _      _       _       _       @a-meld _       @a-dict  @a-nmgr @a-pass @a-sset @a-csht _       _       _     ;; NUM
-  _      _       _       _       @a-davr _       @a-find  @a-disc @a-spot @a-cale @a-what @a-page _       _     ;; QWERTY
-  _      _       _       _       @a-sfri _       @a-term  @a-prev @a-note @a-obsi @a-clau _       _             ;; HOME
-  _      _       _       _       @a-affn _       @a-msgs  @a-brws @a-comt _       _       _       _             ;; BOTTOM
-  _      _       _       _             _         _        _       _       _       _                             ;; MOD
+  _      _       _       _       _       _       _       _       _       _       _       _       _             ;; Fn
+  _      _       _       _       _       _       @a-dict _       _       @a-sset _       _       _       _     ;; NUM
+  _      _       _       _       _       _       @a-find _       @a-spot _       _       @a-pass _       _     ;; QWERTY
+  _      _       _       _       @a-sfri _       _       @a-note _       _       @a-clau _       @a-term       ;; HOME
+  _      _       _       _       _       _       @a-msgs _       @a-comt _       _       _       _             ;; BOTTOM
+  _      _       _       _             _         _       _       _       _       _                             ;; MOD
 )
 
 ;;----------------------------------------------------
@@ -107,20 +110,20 @@
 ;; Activated by: hold physical `l`
 ;;
 ;; Physical → Action
-;;   1 = AI chat        2 = Clipboard     3 = File search
+;;   1 = ssh-2mini      2 = Clipboard     3 = File search
 ;;   4 = Emoji picker   5 = Empty trash
 ;;   q = dotfiles       w = nvim          e = automation(docker)
 ;;   r = podcast        t = home
-;;   a = ssh-2mini      s = ssh-4mini     d = Spotify search
+;;   a = AI chat        s = Spotify search  d = ssh-4mini
 ;;   f = YouTube search g = zoom mute
 ;;----------------------------------------------------
 (deflayer raycast
   _      XX      XX      XX      XX      XX      XX      XX       XX       XX       XX       XX     XX           ;; Fn
-  grv    @rayai  @rclip  @rfile  @remoj  @mtrsh  XX      XX       XX       XX       XX       _      _      _     ;; NUM
-  _      @k-dotf @k-nvim @k-dock @k-podc @k-home XX      XX       XX       XX       XX       _      _      _     ;; QWERTY
-  _      @k-ssh2 @k-ssh4 @sptfd  @tbefd  @zmute  XX      XX       XX       _        XX       _      _             ;; HOME
+  grv    @k-ssh2 @rclip  @rfile  @remoj  @mtrsh  6       7        8        9        0        _      _      _     ;; NUM
+  _      @k-dots @k-nvim @k-dckr @k-podc @k-home XX      XX       XX       XX       XX       _      _      _     ;; QWERTY
+  _      @rayai  @sptfd  @k-ssh4 @tbefd  @zmute  XX      XX       XX       _        XX       _      _             ;; HOME
   _      XX      XX      XX      XX      XX      XX      XX       _        _        _        _      _             ;; BOTTOM
-  _      _       _       _              _               _       _        _        _        _                    ;; MOD
+  _      _       _       _              _                _        _        _        _        _                    ;; MOD
 )
 
 ;;----------------------------------------------------
