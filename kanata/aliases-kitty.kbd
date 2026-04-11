@@ -13,33 +13,33 @@
 ;;   listen_on unix:/tmp/kitty
 ;;
 ;; Session files live in ~/.config/kitty/sessions/<name>.kitty-session
-;; NOTE: $rx is a kanata defvar = /Users/schingon/.config/rx
+;; NOTE: $RX is a kanata defvar = /Users/schingon/.config/RX
 ;;       This is needed because kanata runs as root (LaunchDaemon)
 ;;       where shell $HOME = /var/root.
 ;;----------------------------------------------------
 
 (platform (macos)
   (defalias
-    k-dots (cmd zsh -lc "$rx/kitty-session.sh dotfiles")
-    k-nots (cmd zsh -lc "$rx/kitty-session.sh docs")
-    k-nvim (cmd zsh -lc "$rx/kitty-session.sh nvim")
-    k-dckr (cmd zsh -lc "$rx/kitty-session.sh automation")
-    k-podc (cmd zsh -lc "$rx/kitty-session.sh podcast")
-    k-home (cmd zsh -lc "$rx/kitty-session.sh home")
-    k-ssh2 (cmd zsh -lc "$rx/kitty-session.sh ssh-2mini")
-    k-ssh4 (cmd zsh -lc "$rx/kitty-session.sh ssh-4mini")
+    k-dots (cmd zsh -lc "$RX/kitty-session.sh dotfiles")
+    k-nots (cmd zsh -lc "$RX/kitty-session.sh docs")
+    k-nvim (cmd zsh -lc "$RX/kitty-session.sh nvim")
+    k-dckr (cmd zsh -lc "$RX/kitty-session.sh automation")
+    k-podc (cmd zsh -lc "$RX/kitty-session.sh podcast")
+    k-home (cmd zsh -lc "$RX/kitty-session.sh home")
+    k-ssh2 (cmd zsh -lc "$RX/kitty-session.sh ssh-2mini")
+    k-ssh4 (cmd zsh -lc "$RX/kitty-session.sh ssh-4mini")
   )
 )
 
 (platform (linux)
   (defalias
-    k-dots (cmd bash -c "$rx/kitty-session.sh dotfiles")
-    k-nots (cmd bash -c "$rx/kitty-session.sh docs")
-    k-nvim (cmd bash -c "$rx/kitty-session.sh nvim")
-    k-dckr (cmd bash -c "$rx/kitty-session.sh automation")
-    k-podc (cmd bash -c "$rx/kitty-session.sh podcast")
-    k-home (cmd bash -c "$rx/kitty-session.sh home")
-    k-ssh2 (cmd bash -c "$rx/kitty-session.sh ssh-2mini")
-    k-ssh4 (cmd bash -c "$rx/kitty-session.sh ssh-4mini")
+    k-dots (cmd bash -c "$RX/kitty-session.sh dotfiles")
+    k-nots (cmd bash -c "$RX/kitty-session.sh docs")
+    k-nvim (cmd bash -c "$RX/kitty-session.sh nvim")
+    k-dckr (cmd bash -c "$RX/kitty-session.sh automation")
+    k-podc (cmd bash -c "$RX/kitty-session.sh podcast")
+    k-home (cmd bash -c "$RX/kitty-session.sh home")
+    k-ssh2 (cmd bash -c "$RX/kitty-session.sh ssh-2mini")
+    k-ssh4 (cmd bash -c "$RX/kitty-session.sh ssh-4mini")
   )
 )
