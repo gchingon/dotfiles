@@ -1,3 +1,3 @@
-new_tab 4mini
+layout tall
 cd ~
-launch zsh -c "if [[ $(hostname) == *4mini* ]]; then echo 'Already on 4mini'; exec zsh; else ssh salvajechingon@4mini.local; fi"
+launch --title "4mini" zsh -c "if [[ $(hostname) == *4mini* ]]; then echo 'Already on 4mini'; exec zsh; else ssh salvajechingon@4mini.local; fi"

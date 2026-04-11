@@ -48,14 +48,16 @@
   zmute (tap-hold $tt $ht ' @MSa)
 
   ;; -----------------------------
-  ;; Right Shift: tap-dance + tap-hold
-  ;;   tap           → del   (preserves current @shdel behaviour)
-  ;;   hold          → rsft  (shift while held)
-  ;;   double-tap    → one-shot emoji layer
+  ;; Right Shift: tap del, hold shift
   ;; -----------------------------
-  rshem (tap-hold $tt $ht
-          (tap-dance 300 (del (one-shot 2000 (layer-while-held emoji))))
-          rsft)
+  shdel (tap-hold $tt $ht del rsft)
+
+  ;; -----------------------------
+  ;; Esc: tap-dance
+  ;;   tap        → esc
+  ;;   double-tap → one-shot emoji layer
+  ;; -----------------------------
+  escem (tap-dance 300 (esc (one-shot 2000 (layer-while-held emoji))))
 
   ;; -----------------------------
   ;; Layer entry aliases (sublayer holds)

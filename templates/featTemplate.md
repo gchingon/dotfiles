@@ -1,12 +1,24 @@
 ---
-title: {{title}}
-date: 
-excerpt: " "
-collection: feat
-header:
-  teaser: /images/REPLACE.jpg
-  overlay_image: /images/REPLACE.jpg
-  overlay_filter: 0.5
+title: ""
+created:
+updated: ""
+draft: false
+type: ""
+podcastName: ""
+hosts: []
+guests: []
+externalUrl: ""
+featuredImage: ""
+tags: []
+summary: ""
+description: ""
+overlayMetadata: true
+overlayPosition: "lower-left"
+transparency: true
+transparencyAmount: 0.7
+topicsOn: true
+toc: false
+lightgallery: true
 ---
 
 <iframe src='INSERT-SPOTIFY-EMBED-LINK-TO-EPISODE' width='80%' height='232' frameborder='0' allowtransparency='true' allow='encrypted-media'></iframe>

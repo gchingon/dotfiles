@@ -1,8 +1,8 @@
 ---
-id: quotesTemplate
+id:
+created:
+author: "Gallo Chingon"
 tags: []
-area: ""
-project: ""
 ---
 
 ## The quote

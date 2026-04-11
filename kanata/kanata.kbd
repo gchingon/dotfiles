@@ -75,14 +75,14 @@
 ;; Physical `s` = hold for apps layer
 ;; Physical `g` = hold for system layer
 ;; Physical `l` = hold for raycast layer
-;; Right Shift = tap del / hold shift / double-tap emoji layer
+;; Esc = tap esc / double-tap emoji layer
 ;;----------------------------------------------------
 (deflayer main
-  esc    brdn   brup   f3     f4     f5      f6     prev   pp     next   mute   vold   volu         ;; Fn row
+  @escem brdn   brup   f3     f4     f5      f6     prev   pp     next   mute   vold   volu         ;; Fn row
   @grasc 1      2      3      4      5       6      7      8      9      0      _      _      _     ;; NUM
   @tabSG _      _      @mhome _      _       _      _      _      _      _      _      _      _     ;; QWERTY
   @mehsc @Hlctl @sapps @Hlalt @Hlmet @gystm  _      @Hrmet @Hralt @rycst @Hrctl _      _            ;; HOME
-  lsft   _      _      _      _      _       _      _      _      _      _      _      @rshem       ;; BOTTOM
+  lsft   _      _      _      _      _       _      _      _      _      _      _      @shdel       ;; BOTTOM
   fn     @caltb @shalt @suXMS          spc          @hyper @trams _      _      _                   ;; MOD
 )
 
@@ -148,8 +148,8 @@
 
 ;;----------------------------------------------------
 ;; EMOJI layer — quick emoji output
-;; Activated by: double-tap Right Shift (one-shot)
-;; Single tap rsft = del, hold = shift, double-tap = emoji one-shot
+;; Activated by: double-tap Esc (one-shot)
+;; Single tap esc = esc, double-tap = emoji one-shot
 ;;
 ;; Physical key → emoji (see aliases-emoji.kbd for codepoints):
 ;;   1 = 💯

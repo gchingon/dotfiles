@@ -1,10 +1,9 @@
 ---
-id: bookTemplate
+id:
+created:
+author: "Gallo Chingon"
 tags: []
 title: {{title}}
-date: {{date}}
-area: ""
-project: ""
 ---
 
 # Book Name: 

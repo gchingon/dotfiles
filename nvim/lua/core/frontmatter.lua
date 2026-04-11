@@ -180,6 +180,7 @@ TEMPLATES.notes = {
     { "id",      nil },
     { "created", nil },
     { "author",  "Gallo Chingon" },
+    { "tags",    "[]"},
 }
 
 -- ── Podcast ─────────────────────────────────────────

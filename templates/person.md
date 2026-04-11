@@ -1,7 +1,7 @@
 ---
 id:
-title:
+created:
+author: "Gallo Chingon"
 tags: []
-created: {{date}}
-updated: {{date}}Z{{time}}
+title:
 ---

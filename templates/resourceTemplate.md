@@ -1,12 +1,11 @@
 ---
-id: resourceTepmlate
+id:
+created:
+author: "Gallo Chingon"
 tags: []
-area: ""
-project: ""
 ---
 
 ## Resource
-optional inject here progSummTemp [[]]
 optional inject here quotesTemp [[]]
 optional inject here bookTemp [[]]
 

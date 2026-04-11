@@ -1,11 +1,27 @@
 ---
-id: episodeTemplate
+title: ""
+created:
+updated: ""
+draft: false
+episodeNumber: ""
+season: ""
+episodeType: "full"
+podcast: ""
+host: ""
+guests: []
+featuredImage: ""
+duration: ""
 tags: []
-area: ""
-header:
-  overlay_filter: 0.5
-  overlay_image: /images/show-logo.png
-project: ""
+summary: ""
+description: ""
+embedPlayers: []
+overlayMetadata: true
+overlayPosition: "lower-center"
+transparency: true
+transparencyAmount: 0.7
+topicsOn: true
+toc: true
+lightgallery: true
 ---
 
 <iframe src='https://open.spotify.com/embed/episode/$shortLink' width='80%' height='232' frameborder='0' allowtransparency='true' allow='encrypted-media'></iframe>

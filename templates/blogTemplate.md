@@ -1,12 +1,14 @@
 ---
-title: {{title}}
-date: {{date}}
-description: 
-collection: blog
-header:
-  teaser: /images/header-single-episode.png
-  overlay_image: /images/header-single-episode.png
-podcast_image: /images/show-logo.png
+title: ""
+created:
+updated: ""
+draft: false
+featuredImage: ""
+tags: []
+summary: ""
+description: ""
+toc: true
+lightgallery: true
 ---
 
 # Mentioned items
