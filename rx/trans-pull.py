@@ -337,7 +337,7 @@ Examples:
     parser.add_argument('action', help='Action to perform: srt, stm, vtm, batch, clean, json')
     parser.add_argument('target', help='URL, filename, or directory to process')
     parser.add_argument('-o', '--output', default='.', help='Output directory (default: current directory)')
-    parser.add_argument('--keep-original', action='store_true', help='Keep original transcript file after conversion')
+    parser.add_argument('-k', '--keep-original', action='store_true', help='Keep original transcript file after conversion')
     
     if len(sys.argv) == 1:
         parser.print_help()

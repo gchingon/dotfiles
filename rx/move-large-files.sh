@@ -5,8 +5,26 @@
 source "$(dirname "$0")/lib/common.sh"
 check_deps fd
 
+show_usage() {
+  cat <<EOF
+Usage: move-large-files [-s|--size SIZE] [-t|--target DIR]
+
+Default size: 99M
+Default target: \$HOME/jackpot
+EOF
+}
+
 TARGET_DIR="${TARGET_DIR:-$HOME/jackpot}"
-SIZE="${1:-99M}"
+SIZE="99M"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help) show_usage; exit 0 ;;
+    -s|--size) SIZE="${2:-}"; shift 2 ;;
+    -t|--target) TARGET_DIR="${2:-}"; shift 2 ;;
+    *) SIZE="$1"; shift ;;
+  esac
+done
 
 log "Finding files larger than $SIZE..."
 fd -tf -S "+$SIZE" . | while read -r file; do

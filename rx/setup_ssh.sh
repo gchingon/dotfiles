@@ -37,17 +37,17 @@ ensure_agent() {
 
 show_help() {
   cat <<'EOF'
-Usage: setupssh [--setup | --agent | --help]
+Usage: setupssh [-s|--setup | -a|--agent | -h|--help]
 
-  --setup   Generate key and write SSH config (one-time)
-  --agent   Ensure ssh-agent is running and key loaded
+  -s, --setup   Generate key and write SSH config (one-time)
+  -a, --agent   Ensure ssh-agent is running and key loaded
   (no args) Run both setup and agent
 EOF
 }
 
 case "${1:-}" in
-  --setup) setup_ssh ;;
-  --agent) ensure_agent ;;
+  -s|--setup) setup_ssh ;;
+  -a|--agent) ensure_agent ;;
   --help|-h) show_help ;;
   "") setup_ssh; ensure_agent ;;
   *) die "Unknown option: $1. Use --help for usage." ;;

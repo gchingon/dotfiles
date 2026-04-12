@@ -7,6 +7,15 @@ FFMPEG_BIN="/opt/homebrew/bin/ffmpeg"
 
 # --- HELPER FUNCTIONS (from your script) ---
 
+show_usage() {
+    cat <<EOF
+Usage: vidcon <file_or_directory> [file2...]
+
+Processes video files and decides whether to transcode, remux, or skip them.
+Only files larger than 500MB are considered.
+EOF
+}
+
 _check_dependencies() {
     command -v "$FFMPEG_BIN" &> /dev/null || { echo "ffmpeg not found at $FFMPEG_BIN"; exit 1; }
     command -v "mediainfo" &> /dev/null || { echo "mediainfo not found, please run: brew install mediainfo"; exit 1; }
@@ -98,11 +107,15 @@ _remux_video() {
 # --- SCRIPT ENTRY POINT ---
 
 main() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        show_usage
+        exit 0
+    fi
+
     _check_dependencies
 
     if [ "$#" -eq 0 ]; then
-        echo "Usage: $(basename "$0") <file_or_directory> [file2...]"
-        echo "Processes video files, intelligently deciding whether to transcode or remux."
+        show_usage
         exit 1
     fi
 

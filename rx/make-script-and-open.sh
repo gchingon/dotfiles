@@ -214,6 +214,15 @@ create_script_and_open() {
 
 # Main function
 main() {
+  if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+    echo "Usage: $0 <script_name>[.sh|.py|.go]"
+    echo "Examples:"
+    echo "  $0 my-script"
+    echo "  $0 my-script.py"
+    echo "  $0 my-script.go"
+    exit 0
+  fi
+
   # Check if script name provided
   if [ $# -eq 0 ]; then
     echo "❌ Error: Missing script name"
@@ -245,4 +254,3 @@ main() {
 
 # Call main function
 main "$@"
-

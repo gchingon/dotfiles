@@ -1,5 +1,6 @@
-import sys
 import math
+import argparse
+from pathlib import Path
 
 def split_urls(input_file, output_prefix, chunk_size=250):
     with open(input_file, 'r') as f:
@@ -23,12 +24,18 @@ def split_urls(input_file, output_prefix, chunk_size=250):
         
         print(f"Wrote {len(chunk_urls)} URLs to {output_file}")
 
+def build_parser():
+    parser = argparse.ArgumentParser(
+        description="Split a URL list into numbered chunk files.",
+    )
+    parser.add_argument("input_file", help="Text file containing one URL per line")
+    parser.add_argument("output_prefix", help="Prefix for numbered output files")
+    parser.add_argument(
+        "-n", "--chunk-size", type=int, default=250,
+        help="URLs per output file (default: 250)",
+    )
+    return parser
+
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python split_urls.py input_urls.txt output_prefix")
-        sys.exit(1)
-    
-    input_file = sys.argv[1]
-    output_prefix = sys.argv[2]
-    
-    split_urls(input_file, output_prefix)
+    args = build_parser().parse_args()
+    split_urls(Path(args.input_file), args.output_prefix, args.chunk_size)

@@ -158,14 +158,19 @@ $description
 }
 
 # Main script
+show_usage() {
+  echo "Usage: $0 [epi|-e|feat|-f|blog|-b]"
+}
+
 if [ "$#" -ne 1 ]; then
-  echo "Usage: $0 <type> (epi, feat, blog)"
+  show_usage
   exit 1
 fi
 
 case "$1" in
-"epi") create_post "Episode" "$SCS/$EPISODE_DIR" ;;
-"feat") create_post "Featured" "$SCS/$FEATURED_DIR" ;;
-"blog") create_post "Blog" "$SCS/$BLOG_DIR" ;;
-*) echo "Invalid post type. Please use 'epi', 'feat', or 'blog'." && exit 1 ;;
+  -h|--help) show_usage ;;
+  "epi"|"-e") create_post "Episode" "$SCS/$EPISODE_DIR" ;;
+  "feat"|"-f") create_post "Featured" "$SCS/$FEATURED_DIR" ;;
+  "blog"|"-b") create_post "Blog" "$SCS/$BLOG_DIR" ;;
+  *) echo "Invalid post type. Please use 'epi', 'feat', or 'blog'." && exit 1 ;;
 esac

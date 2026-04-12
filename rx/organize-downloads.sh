@@ -1,50 +1,65 @@
 #!/usr/bin/env bash
 # ln ~/.config/rx/organize-downloads.sh ~/.local/bin/orgdn
-# Moves files from the Downloads directory to organized locations.
 
-# Centralized configuration for paths and extensions
-SOURCE_DIR="$HOME/Downloads"
-BACKUP_DIR="/Volumes/armor" # Or another default
+set -euo pipefail
 
-declare -A CATEGORIES
-CATEGORIES[iso]="iso dmg pkg:$BACKUP_DIR/iso/"
-CATEGORIES[nix]="iso:$BACKUP_DIR/iso/nix/"
-CATEGORIES[images]="heic jpg jpeg png webp:$HOME/Pictures/"
-CATEGORIES[ipa]="ipa:$BACKUP_DIR/iso/ipa/"
+SOURCE_DIR="${DN:-$HOME/Downloads}"
+ARMOR_DIR="/Volumes/armor"
 
-usage() {
-  echo "Usage: $(basename "$0") <category>"
-  echo "Available categories: ${!CATEGORIES[@]}"
-  exit 1
+destination_for() {
+  case "$1" in
+    images) echo "$HOME/Pictures" ;;
+    ipa) echo "$ARMOR_DIR/ipa" ;;
+    iso) echo "$ARMOR_DIR/iso" ;;
+    nix) echo "$ARMOR_DIR/nix" ;;
+  esac
 }
 
-CATEGORY=$1
-[ -z "$CATEGORY" ] && usage
+extensions_for() {
+  case "$1" in
+    images) echo "heic jpg jpeg png webp" ;;
+    ipa) echo "ipa" ;;
+    iso) echo "dmg iso pkg img" ;;
+    nix) echo "iso" ;;
+  esac
+}
 
-CONFIG=${CATEGORIES[$CATEGORY]}
-[ -z "$CONFIG" ] && echo "Error: Unknown category '$CATEGORY'" && usage
+show_usage() {
+  cat <<EOF
+Usage: orgdn [-a|all|images|ipa|iso|nix]
 
-# Split config into extensions and destination
-EXTENSIONS_STRING=$(echo "$CONFIG" | cut -d':' -f1)
-DESTINATION=$(echo "$CONFIG" | cut -d':' -f2)
+Default:
+  -a, all    Process images, ipa, and iso categories
 
-# Convert comma-separated string to array
-IFS=',' read -r -a EXTENSIONS <<<"$EXTENSIONS_STRING"
+Notes:
+  nix is opt-in because .iso overlaps with the general iso bucket.
+EOF
+}
 
-if [ ! -d "$DESTINATION" ]; then
-  echo "Warning: Destination '$DESTINATION' not found. Please ensure it is mounted/available."
-  exit 1
-fi
-
-echo "Organizing category '$CATEGORY'. Moving files to '$DESTINATION'."
-
-for ext in "${EXTENSIONS[@]}"; do
-  # Use nullglob to avoid errors if no files match
+move_category() {
+  local name="$1" moved=0
+  local destination; destination="$(destination_for "$name")"
+  [[ -d "$destination" ]] || { echo "Skipping $name: '$destination' not available"; return 0; }
   shopt -s nullglob
-  for file in "$SOURCE_DIR"/*."$ext"; do
-    mv -v "$file" "$DESTINATION"
+  for ext in $(extensions_for "$name"); do
+    for file in "$SOURCE_DIR"/*."$ext"; do
+      mv -v "$file" "$destination"/
+      ((moved+=1))
+    done
   done
   shopt -u nullglob
-done
+  (( moved > 0 )) && echo "Moved ${name^^}s from $SOURCE_DIR" || echo "No ${name^^} files found in $SOURCE_DIR"
+}
 
-echo "Organization for '$CATEGORY' complete."
+main() {
+  local mode="${1:-all}"
+  case "$mode" in
+    -h|--help) show_usage ;;
+    -a) for category in images ipa iso; do move_category "$category"; done ;;
+    all) for category in images ipa iso; do move_category "$category"; done ;;
+    images|ipa|iso|nix) move_category "$mode" ;;
+    *) echo "Unknown category: $mode"; show_usage; exit 1 ;;
+  esac
+}
+
+main "$@"

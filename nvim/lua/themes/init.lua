@@ -56,14 +56,14 @@ local function blend(h1, h2, alpha)
   return rgb_to_hex(r, g, b)
 end
 
--- Build a palette object from colors.json themes[slug].ghostty + derived ramp
+-- Build a palette object from colors.json themes[slug].terminal + derived ramp
 local function build_base_from_colors(slug)
   local all = decode_json(colors_json_path)
   if not all or not all.themes or not all.themes[slug] then
     return nil, "Theme slug not found in colors.json: " .. tostring(slug)
   end
   local t  = all.themes[slug]
-  local g  = t.ghostty or {}
+  local g  = t.terminal or {}
   local nv = t.neovim or {}
   local module_name = nv.theme or slug
   local bg = g.background or "#000000"
@@ -84,7 +84,7 @@ local function build_base_from_colors(slug)
 
   return {
     meta = { slug = slug, module = module_name, name = (t.name or slug), style = nv.style },
-    ghostty = g,
+    terminal = g,
     base = {
       bg0 = bg0,
       bg1 = bg1,

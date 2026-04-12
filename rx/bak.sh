@@ -163,52 +163,29 @@ process_multiple_files() {
   [ "$failed" -gt 0 ] && echo "   Failed to process: $failed files"
 }
 
-# Function to parse arguments
-parse_arguments() {
-  local files=()
+FILES=()
 
+parse_arguments() {
+  FILES=()
   while [[ $# -gt 0 ]]; do
     case $1 in
-      -c|--copy)
-        USE_COPY=true
-        shift
-        ;;
-      -h|--help)
-        show_usage
-        exit 0
-        ;;
-      -*)
-        echo "❌ Error: Unknown option '$1'"
-        echo ""
-        show_usage
-        exit 1
-        ;;
-      *)
-        files+=("$1")
-        shift
-        ;;
+      -c|--copy) USE_COPY=true; shift ;;
+      -h|--help) show_usage; exit 0 ;;
+      -*) echo "❌ Error: Unknown option '$1'"; echo ""; show_usage; exit 1 ;;
+      *) FILES+=("$1"); shift ;;
     esac
   done
-
-  # Return files array
-  printf '%s\n' "${files[@]}"
 }
 
 # Main execution function
 main() {
-  local mode_indicator=""
-
   echo "💾 Backup File Toggle (bak)"
   echo "==========================="
 
-  # Parse arguments and get file list - FIXED: Replace mapfile with while loop
-  local files=()
-  while IFS= read -r line; do
-    files+=("$line")
-  done < <(parse_arguments "$@")
+  parse_arguments "$@"
 
   # Check if any files provided
-  if [ ${#files[@]} -eq 0 ]; then
+  if [ ${#FILES[@]} -eq 0 ]; then
     echo "❌ Error: Missing filename"
     echo ""
     show_usage
@@ -217,20 +194,18 @@ main() {
 
   # Show mode information
   if [ "$USE_COPY" = true ]; then
-    mode_indicator=" (Copy Mode: preserves originals)"
     echo "📄 Running in COPY mode - original files will be preserved"
   else
-    mode_indicator=" (Move Mode: files become backups)"
     echo "💾 Running in MOVE mode - files will become backups"
   fi
   echo ""
 
   # Handle multiple files
-  if [ ${#files[@]} -gt 1 ]; then
-    process_multiple_files "${files[@]}"
+  if [ ${#FILES[@]} -gt 1 ]; then
+    process_multiple_files "${FILES[@]}"
   else
     # Single file processing
-    toggle_backup_extension "${files[0]}"
+    toggle_backup_extension "${FILES[0]}"
   fi
 }
 

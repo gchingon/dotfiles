@@ -1,1 +1,0 @@
-/Users/schingon/.config/rx/theme

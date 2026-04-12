@@ -1,26 +1,47 @@
 #!/usr/bin/env bash
 # ln ~/.config/rx/new_note.sh ~/.local/bin/newnote
 
-# new-note.sh - Create a new markdown note with proper front matter and naming
-# Usage: ./new-note.sh [category] [title]
+set -euo pipefail
 
-# Default location for notes
-NOTES_DIR="$HOME/notes"
+show_usage() {
+  cat <<EOF
+Usage: new-note <category> <title>
+  category: project, area, resource, or archive
+  title: Title of the note (used for the filename and front matter)
+EOF
+}
+
+resolve_notes_dir() {
+  local machine_name=""
+  [[ -f "$HOME/.config/machine.env" ]] && source "$HOME/.config/machine.env"
+  machine_name="${MACHINE_NAME:-}"
+  case "$machine_name" in
+    mbp) echo "$HOME/Documents/notes" ;;
+    2mini) echo "$HOME/Documents/2mepos/notes" ;;
+    4mini) echo "$HOME/Documents/repos/notes" ;;
+    *)
+      if [[ -n "${NT:-}" ]]; then
+        echo "$NT"
+      elif [[ -d "$HOME/Documents/notes" ]]; then
+        echo "$HOME/Documents/notes"
+      else
+        echo "$HOME/notes"
+      fi
+      ;;
+  esac
+}
 
 # Get date info
 DATE=$(date +%Y-%m-%d)
 DATESTAMP=$(date +%Y%m%d)
+NOTES_DIR="$(resolve_notes_dir)"
 
-# Check for arguments
-if [ $# -lt 2 ]; then
-  echo "Usage: new-note [category] [title]"
-  echo "  category: project, area, resource, or archive"
-  echo "  title: Title of the note (will be converted to kebab-case for filename)"
-  exit 1
-fi
+[[ "${1:-}" == "-h" || "${1:-}" == "--help" ]] && { show_usage; exit 0; }
+[[ $# -ge 2 ]] || { show_usage; exit 1; }
 
 CATEGORY="$1"
-TITLE="$2"
+shift
+TITLE="$*"
 
 # Convert title to kebab-case for filename
 FILENAME=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//')

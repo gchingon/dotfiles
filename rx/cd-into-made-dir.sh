@@ -2,6 +2,11 @@
 # ln ~/.config/rx/cd-into-made-dir.sh ~/.local/bin/mkcd
 # mkd - Make directory and change into it (simple version)
 
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  echo "Usage: mkd <directory_path>"
+  exit 0
+fi
+
 cd-into-made-dir() {
   if [ $# -eq 0 ]; then
     echo "Usage: mkd <directory_path>"
@@ -10,3 +15,5 @@ cd-into-made-dir() {
 
   mkdir -pv "$1" && cd "$1"
 }
+
+cd-into-made-dir "$@"

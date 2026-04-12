@@ -5,9 +5,26 @@
 # Usage: ./meta_helper.sh [directory] [mode]
 # Modes: list, organize, applescript
 
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+    cat <<EOF
+Usage: meta_helper.sh [directory] [mode]
+
+Modes:
+  list|-l
+  organize|-o
+  applescript|-a
+EOF
+    exit 0
+fi
+
 # Set the target directory (default to current if not provided)
 TARGET_DIR="${1:-.}"
 MODE="${2:-list}"
+case "$MODE" in
+    -l) MODE="list" ;;
+    -o) MODE="organize" ;;
+    -a) MODE="applescript" ;;
+esac
 
 # Color codes for output
 RED='\033[0;31m'

@@ -1,6 +1,12 @@
 #!/bin/zsh
 # ln ~/.config/rx/igdn.sh ~/.local/bin/instadl
 
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  echo "Usage: instadl"
+  echo "Downloads updates for the hardcoded Instagram account list via instaloader."
+  exit 0
+fi
+
 export PATH=/opt/homebrew/bin/:$PATH
 igdown () {
     cd /Volumes/armor/didact/IG

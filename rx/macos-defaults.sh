@@ -1,161 +1,123 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ln ~/.config/rx/macos-defaults.sh ~/.local/bin/macdefaults
 
+set -euo pipefail
+
+show_usage() {
+  cat <<EOF
+Usage: macdefaults [-h|--help]
+
+Applies the opinionated macOS defaults defined in this script.
+EOF
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  show_usage
+  exit 0
+fi
+
 check_environment() {
-  # First, detect what kind of workshop we're in
-  local os_type
+  local os_type architecture
   os_type="$(uname -s)"
+  [[ "$os_type" == "Darwin" ]] || {
+    echo "This script only applies macOS defaults."
+    return 1
+  }
 
-  if [[ "$os_type" != "Darwin" ]]; then
-    echo "🔧 This isn't a Mac workshop - skipping Mac-specific configurations"
-    echo "✨ But don't worry, we can still set up your general tools via Homebrew!"
-    return 1 # Return instead of exit - like passing the work to another tool
-  fi
-
-  # If we're here, we're in a Mac workshop - let's identify which kind
-  local architecture
   architecture="$(uname -m)"
-
   case "$architecture" in
-  "x86_64")
-    echo "🛠 Intel Mac detected - running with the classic power tools"
-    export MAC_TYPE="INTEL"
-    ;;
-  "arm64")
-    echo "🛠 Apple Silicon Mac detected - running with the new power tools"
-    export MAC_TYPE="SILICON"
-    ;;
-  *)
-    echo "⚠️ Unknown Mac architecture: $architecture"
-    echo "🤔 We'll try to continue, but some tools might not work right..."
-    export MAC_TYPE="UNKNOWN"
-    ;;
+    x86_64) export MAC_TYPE="INTEL" ;;
+    arm64) export MAC_TYPE="SILICON" ;;
+    *) export MAC_TYPE="UNKNOWN" ;;
   esac
 
-  # Log some useful system info for troubleshooting
-  echo "📊 Workshop Details:"
-  echo "   - OS Type: $os_type"
-  echo "   - macOS Version: $(sw_vers -productVersion)"
-  echo "   - Architecture: $architecture"
-  echo "   - Machine: $(sysctl -n machdep.cpu.brand_string)"
-
-  return 0 # Explicitly return success if we're on a Mac
+  echo "macOS $(sw_vers -productVersion) on $architecture"
 }
 
 get_sudo_access() {
-  # Asking for the master key to the workshop
-  if [[ -z "$TRAVIS_JOB_ID" ]]; then
-    sudo -v
-    # Keep our workshop pass active
-    while true; do
-      sudo -n true
-      sleep 60
-      kill -0 "$$" || exit
-    done 2>/dev/null &
-  fi
+  [[ -n "${TRAVIS_JOB_ID:-}" ]] && return 0
+  sudo -v
+  while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+  done 2>/dev/null &
 }
 
-load_system_defaults() {
-  # Loading our system toolbox - each tool has its purpose
-  SYSTEM_DEFAULTS=(
-    ["ApplePressAndHoldEnabled"]="false"
-    ["KeyRepeat"]="1.1"
-    ["InitialKeyRepeat"]="10"
-    ["AppleInterfaceStyle"]="Dark"
-    ["AppleShowScrollBars"]="Always"
-    ["NSAutomaticSpellingCorrectionEnabled"]="false"
-  )
+write_default() {
+  local domain="$1" key="$2" type="$3" value="$4"
+  case "$type" in
+    bool) defaults write "$domain" "$key" -bool "$value" ;;
+    int) defaults write "$domain" "$key" -int "$value" ;;
+    string) defaults write "$domain" "$key" -string "$value" ;;
+    float) defaults write "$domain" "$key" -float "$value" ;;
+    *) echo "Unknown type '$type' for $domain:$key" >&2; return 1 ;;
+  esac
 }
 
-load_finder_defaults() {
-  # Setting up our workbench just right
-  FINDER_DEFAULTS=(
-    ["FXPreferredViewStyle"]="Nlsv"
-    ["ShowExternalHardDrivesOnDesktop"]="true"
-    ["ShowPathbar"]="true"
-    ["ShowStatusBar"]="true"
-    ["FXEnableExtensionChangeWarning"]="false"
-  )
+apply_user_defaults() {
+  echo "Applying NSGlobalDomain defaults..."
+  write_default NSGlobalDomain ApplePressAndHoldEnabled bool true
+  write_default NSGlobalDomain AppleInterfaceStyle string Dark
+  write_default NSGlobalDomain AppleShowScrollBars string Always
+  write_default NSGlobalDomain NSAutomaticSpellingCorrectionEnabled bool false
+
+  echo "Applying Finder defaults..."
+  write_default com.apple.finder FXPreferredViewStyle string Nlsv
+  write_default com.apple.finder ShowExternalHardDrivesOnDesktop bool true
+  write_default com.apple.finder ShowPathbar bool true
+  write_default com.apple.finder ShowStatusBar bool true
+  write_default com.apple.finder FXEnableExtensionChangeWarning bool false
+
+  echo "Applying Dock defaults..."
+  write_default com.apple.dock tilesize int 25
+  write_default com.apple.dock autohide bool true
+  write_default com.apple.dock autohide-delay float 0
+  write_default com.apple.dock autohide-time-modifier float 0
+  write_default com.apple.dock launchanim bool false
+  write_default com.apple.dock mru-spaces bool false
+  write_default com.apple.dock orientation string right
+
+  echo "Applying Safari defaults..."
+  write_default com.apple.Safari ShowFavoritesBar bool false
+  write_default com.apple.Safari IncludeDevelopMenu bool true
+  write_default com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey bool true
 }
 
-load_dock_defaults() {
-  # Arranging our dock like tools on a pegboard - neat and accessible
-  DOCK_DEFAULTS=(
-    ["tilesize"]="36"
-    ["autohide"]="true"
-    ["autohide-delay"]="0"
-    ["autohide-time-modifier"]="0"
-    ["launchanim"]="false"
-    ["mru-spaces"]="false"
-    ["orientation"]="right"
-  )
-}
-
-load_browser_defaults() {
-  # Fine-tuning our web browsing tools like adjusting router blade depth
-  BROWSER_DEFAULTS=(
-    ["ShowFavoritesBar"]="false"
-    ["IncludeDevelopMenu"]="true"
-    ["WebKitDeveloperExtrasEnabledPreferenceKey"]="true"
-    # ["com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled"]="true"
-  )
-}
-
-apply_defaults() {
-  local domain="$1"
-  local defaults_array="$2[@]"
-  local defaults=(${!defaults_array})
-
-  # Like measuring twice, cutting once
-  echo "📏 Applying $domain settings..."
-  for key in "${!defaults[@]}"; do
-    defaults write "$domain" "$key" "${defaults[$key]}" ||
-      echo "Failed to set $key for $domain - might need different measurements"
-  done
+apply_system_defaults() {
+  echo "Applying Disk Arbitration defaults..."
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.DiskArbitration.diskarbitrationd DADisableEjectNotification -bool true
 }
 
 handle_ssd_optimizations() {
-  # SSDs need different care than old spinning rust
-  if diskutil info disk0 | grep SSD >/dev/null 2>&1; then
-    echo "🧰 Tuning up your SSD..."
-    sudo pmset -a hibernatemode 0
-    sudo tmutil disablelocal
-    # More SSD optimizations...
+  if diskutil info disk0 | grep -q SSD >/dev/null 2>&1; then
+    echo "Applying SSD optimizations..."
+    if pmset -g batt 2>/dev/null | grep -q "InternalBattery"; then
+      echo "Laptop detected; leaving hibernatemode unchanged."
+    else
+      echo "Desktop detected; setting hibernatemode 0."
+      sudo pmset -a hibernatemode 0 || true
+    fi
   fi
 }
 
 cleanup() {
-  # Clean up our workspace
-  echo "🧹 Sweeping up the sawdust..."
-  local apps=("Finder" "Dock" "SystemUIServer" "Terminal" "Mail" "Safari")
+  echo "Restarting affected services..."
+  local apps=("Finder" "Dock" "SystemUIServer" "Safari")
   for app in "${apps[@]}"; do
     killall "$app" >/dev/null 2>&1 || true
   done
+  sudo killall diskarbitrationd >/dev/null 2>&1 || true
 }
 
 main() {
-  check_environment
+  check_environment || exit 1
   get_sudo_access
-
-  # Load all our settings blueprints
-  load_system_defaults
-  load_finder_defaults
-  load_dock_defaults    # Added
-  load_browser_defaults # Added
-  load_mail_defaults    # Added
-
-  # Time to start building - now applying all our settings
-  apply_defaults "NSGlobalDomain" SYSTEM_DEFAULTS
-  apply_defaults "com.apple.finder" FINDER_DEFAULTS
-  apply_defaults "com.apple.dock" DOCK_DEFAULTS      # Added
-  apply_defaults "com.apple.Safari" BROWSER_DEFAULTS # Added
-  apply_defaults "com.apple.mail" MAIL_DEFAULTS      # Added
-
+  apply_user_defaults
+  apply_system_defaults
   handle_ssd_optimizations
   cleanup
-
-  echo "🎉 Workshop's clean and tools are sharp - ready for work!"
+  echo "macOS defaults applied."
 }
 
-# Fire up the power tools
 main "$@"

@@ -16,17 +16,18 @@ set -euo pipefail
 #   rctool dedupe-old <path>
 
 usage() {
-  echo "Usage: $(basename "$0") [--large|--small] <operation> <source> [destination]"
+  echo "Usage: $(basename "$0") [-l|--large|-s|--small] <operation> <source> [destination]"
   echo
-  echo "  Profiles:      --large  (2 transfers, 4 checkers, multi-thread for big files)"
-  echo "                 --small  (8 transfers, 8 checkers, default)"
+  echo "  Profiles:      -l, --large  (2 transfers, 4 checkers, multi-thread for big files)"
+  echo "                 -s, --small  (8 transfers, 8 checkers, default)"
+  echo "                 -h, --help   Show this help"
   echo
   echo "  copy  <src> <dst>  — copy, preserving source"
   echo "  move  <src> <dst>  — move, removing empty source dirs"
   echo "  sync  <src> <dst>  — make dst identical to src"
   echo "  dedupe-new <path>  — deduplicate, keep newest"
   echo "  dedupe-old <path>  — deduplicate, keep oldest"
-  exit 1
+  exit "${1:-1}"
 }
 
 OPERATION=""
@@ -37,8 +38,9 @@ DEST=""
 # Parse args: pull out flags first, then positional args
 for arg in "$@"; do
   case "$arg" in
-    --large) PROFILE="large" ;;
-    --small) PROFILE="small" ;;
+    -h|--help) usage 0 ;;
+    -l|--large) PROFILE="large" ;;
+    -s|--small) PROFILE="small" ;;
     copy|move|sync|dedupe-new|dedupe-old) OPERATION="$arg" ;;
     *)
       if [[ -z "$SOURCE" ]]; then SOURCE="$arg"

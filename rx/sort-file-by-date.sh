@@ -1,52 +1,45 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ln ~/.config/rx/sort-file-by-date.sh ~/.local/bin/bydate
 
-# Source directory
-source_dir="$1"
+set -euo pipefail
 
-# Check if source directory is provided
-if [ -z "$source_dir" ]; then
-  echo "Usage: $0 <source_directory>"
-  exit 1
-fi
+show_usage() {
+  cat <<EOF
+Usage: bydate [-d|--daily] <source_directory>
 
-# Get current date and year
-current_date=$(date +%Y-%m-%d)
-current_year=$(date +%Y)
-current_month=$(date +%m)
-previous_month=$((current_month - 1))
-if [ "$previous_month" -eq 0 ]; then
-  previous_month=12
-fi
+Default:
+  Sort dated files into YYYY/
 
-# Function to get the month from a date string
-get_month() {
-  local date_str="$1"
-  local month=$(date -j -f "%Y-%m-%d" "$date_str" "+%m")
-  echo "$month"
+Options:
+  -d, --daily  Sort into YYYY/MM/YYYY-MM-DD-filename.ext
+  -h, --help   Show this help
+EOF
 }
 
-# Iterate over files in the source directory
-for filename in "$source_dir"/*; do
-  if [ -f "$filename" ]; then
-    # Extract date from filename
-    date_str=$(echo "$filename" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
-    if [ -n "$date_str" ]; then
-      year=$(echo "$date_str" | cut -d'-' -f1)
-      month=$(get_month "$date_str")
+daily=false
+case "${1:-}" in
+  -h|--help) show_usage; exit 0 ;;
+  -d|--daily) daily=true; shift ;;
+esac
 
-      # Skip current month and previous month for the current year
-      if [ "$year" == "$current_year" ] && [ "$month" == "$current_month" ]; then
-        continue
-      elif [ "$year" == "$current_year" ] && [ "$month" == "$previous_month" ]; then
-        continue
-      fi
+source_dir="${1:-}"
+[[ -n "$source_dir" && -d "$source_dir" ]] || { show_usage; exit 1; }
 
-      dest_dir="$source_dir/$year/$year-$month"
-      mkdir -p "$dest_dir"
-      mv "$filename" "$dest_dir/"
-    else
-      echo "Skipping $filename (invalid filename format)"
-    fi
+for path in "$source_dir"/*; do
+  [[ -f "$path" ]] || continue
+  base="$(basename "$path")"
+  date_str="$(printf '%s\n' "$base" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1 || true)"
+  [[ -n "$date_str" ]] || { echo "Skipping $base (no YYYY-MM-DD found)"; continue; }
+  year="${date_str:0:4}"
+  month="${date_str:5:2}"
+  if $daily; then
+    stem="${base#$date_str-}"
+    target_dir="$source_dir/$year/$month"
+    target_name="${date_str}-${stem}"
+  else
+    target_dir="$source_dir/$year"
+    target_name="$base"
   fi
+  mkdir -p "$target_dir"
+  mv "$path" "$target_dir/$target_name"
 done

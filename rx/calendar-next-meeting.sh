@@ -4,6 +4,12 @@
 # Falls back to just activating Calendar if no meeting found.
 # Safe to call from kanata (runs as root, uses REAL_USER via /dev/console).
 
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  echo "Usage: calendar-next-meeting"
+  echo "Opens the URL from the next calendar event starting within 60 minutes."
+  exit 0
+fi
+
 REAL_USER=$(stat -f "%Su" /dev/console)
 
 /usr/bin/su - "$REAL_USER" -c "osascript" <<'EOF'

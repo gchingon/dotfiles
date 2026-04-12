@@ -1,6 +1,16 @@
 #!/bin/zsh
 # ln ~/.config/rx/bootstrap-new-mac.sh ~/.local/bin/bootstrap
 
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  cat <<EOF
+Usage: bootstrap
+
+Bootstraps a new Mac by installing Xcode CLT, SSH config, dotfiles, symlinks,
+macOS defaults, and Homebrew packages in sequence.
+EOF
+  exit 0
+fi
+
 # Configuration and logging setup
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="$SCRIPT_DIR/setup.log"

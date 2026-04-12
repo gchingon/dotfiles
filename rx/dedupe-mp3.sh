@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 # ln ~/.config/rx/dedupe-mp3.sh ~/.local/bin/dedupemuz
 # Find all .opus files and check for corresponding .mp3 duplicates
-fd --type f --extension opus --exec bash -c '
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  cat <<EOF
+Usage: dedupemuz [path]
+
+Deletes .mp3 files that have a same-basename .opus sibling.
+Default path: current directory
+EOF
+  exit 0
+fi
+
+fd --type f --extension opus . "${1:-.}" --exec bash -c '
   for opus_file; do
     # Extract the base name without extension
     base_name="${opus_file%.*}"
