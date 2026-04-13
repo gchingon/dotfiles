@@ -27,6 +27,8 @@ dreams_md_shortcut() {
     -c "startinsert"
 }
 
+unalias mkd dedupemuz cleannvimswp dots-sync lstype 2>/dev/null || true
+
 mkd() {
   [[ $# -gt 0 ]] || { echo "Usage: mkd <directory_path>"; return 1; }
   mkdir -pv "$1" && cd "$1"

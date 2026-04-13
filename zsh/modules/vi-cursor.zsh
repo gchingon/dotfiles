@@ -18,12 +18,14 @@ function zle-keymap-select {
     # Vi insert mode - blinking bar
     echo -ne '\e[5 q'
   fi
+  zle reset-prompt
 }
 zle -N zle-keymap-select
 
 # Initialize cursor to blinking bar when starting a new line
 function zle-line-init {
   echo -ne '\e[5 q'
+  zle reset-prompt
 }
 zle -N zle-line-init
 

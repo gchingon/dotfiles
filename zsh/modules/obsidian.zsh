@@ -11,7 +11,7 @@ alias vault-save="${HOME}/.hermes/scripts/save-session.sh"
 
 # Search commands
 alias obsidian_search="grep -r"
-alias vault_search="grep -r"
+alias vault_grep="grep -r"
 
 # Topic linker
 alias obsidian_link="python3 ${HOME}/.hermes/obsidian/topic-linker.py"
@@ -62,6 +62,7 @@ EOF
 }
 
 # Search vault for keyword
+unalias vault_search 2>/dev/null || true
 vault_search() {
   local keyword="$1"
   local vault="${HERMES_OBSIDIAN_VAULT}"

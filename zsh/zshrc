@@ -31,8 +31,6 @@ bindkey '^[w' kill-region               # Alt+w
 
 # export TERM=xterm command ssh "$@"
 
-eval "$(/opt/homebrew/bin/starship init zsh)"
-
 
 [ -s "/Users/schingon/.bun/_bun" ] && source "/Users/schingon/.bun/_bun"
 

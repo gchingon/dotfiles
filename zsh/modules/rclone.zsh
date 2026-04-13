@@ -43,3 +43,41 @@ alias rcss='rclone-sync'         # sync  — small profile
 # dedupe
 alias rcdn='rclone-dedupe-new'   # dedupe — keep newest
 alias rcdo='rclone-dedupe-old'   # dedupe — keep oldest
+
+# ── config sync (local → external volumes via rsync) ───────────────────────
+# Syncs ~/.config to one or more external volumes.
+# Default targets: /Volumes/g2mini and /Volumes/salvajechingon
+# Usage: confsync              — sync to all default targets
+#        confsync g2mini       — sync to specific target
+#        confsync x y          — sync to /Volumes/x and /Volumes/y
+_confsync_targets=(g2mini salvajechingon)
+
+confsync() {
+  local names=("${@:-${_confsync_targets[@]}}")
+  local src="${CF:-$HOME/.config}"
+  local failed=0
+
+  for name in "${names[@]}"; do
+    local dest="/Volumes/$name"
+    if [[ ! -d "$dest" ]]; then
+      echo "⏭  $dest not mounted, skipping"
+      continue
+    fi
+
+    echo "🔄 syncing $src → $dest/.config"
+    rsync -av --delete \
+      --exclude '*.env' \
+      --exclude '.DS_Store' \
+      "$src/" "$dest/.config/"
+
+    if (( $? == 0 )); then
+      echo "✅ $dest/.config done"
+    else
+      echo "❌ $dest/.config failed"
+      (( failed++ ))
+    fi
+    echo
+  done
+
+  return $failed
+}
