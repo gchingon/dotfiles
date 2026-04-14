@@ -29,15 +29,34 @@ git-push() {
 
 git-add-commit-push() {
   setup-ssh
-  # Pull first to avoid conflicts
-  git pull --rebase -q origin "$(git rev-parse --abbrev-ref HEAD)" || {
-    echo "Pull failed — resolve conflicts before pushing."
+  local branch remote upstream
+
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "Not inside a git repository."
     return 1
-  }
-  git add .
+  fi
+
+  branch="$(git rev-parse --abbrev-ref HEAD)" || return 1
+  upstream="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)" || upstream=""
+  remote="${upstream%%/*}"
+  [[ -n "$remote" ]] || remote="origin"
+
+  # Stage everything, including deletions, so `gac` reflects the full local state.
+  git add -A || return 1
+
+  if git diff --cached --quiet; then
+    echo "No changes to commit."
+    return 0
+  fi
+
   local msg="${1:-$(date +%Y-%m-%d) — $(git status --short | head -5 | tr '\n' ', ')}"
   git commit -m "$msg" || return 1
-  git-push
+
+  if [[ -n "$upstream" ]]; then
+    git push --force-with-lease -q "$remote" "$branch"
+  else
+    git push -u -q "$remote" "$branch"
+  fi
 }
 
 # ── Multi-Repo Operations ──────────────────────────────────────────────

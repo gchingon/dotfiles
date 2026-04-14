@@ -26,10 +26,7 @@ alias tn='theme'                         # Next theme (no args)
 alias tl='theme --list'                  # List themes
 alias tc='theme --current'               # Show current theme
 alias ytv='ytd video'
-alias oct='openclaw tui'
-alias occ='openclaw configure'
-alias ocd='openclaw doctor'
-alias dots='cd $CF && gac "sync $(date +%Y-%m-%d) [$MACHINE_NAME]" && cd -'
+alias dots='dots-sync'
 
 # ===== Git Aliases =====
 alias g='git'                            # Shortcut for git
@@ -142,6 +139,8 @@ alias bs='brew search '                  # Search for package
 # ===== Neovim Aliases =====
 alias v='nvim'                           # Launch Neovim
 alias nv='neovide'
+alias dly='daily'                        # Open today's daily note with optional slugged title
+alias pdi='podidea'                      # Create or open a monthly pod-content idea/source note
 alias va='open-aliases'                  # Edit aliases.zsh
 alias vd='dreams_md_shortcut'            # Quick dream journal entry
 alias vf='open-functions'                # Edit functions.zsh
@@ -157,5 +156,3 @@ alias rcm='rclone-move'                  # Move files with rclone
 alias rcc='rclone-copy'                  # Copy files with rclone
 alias rdo='rclone-dedupe-old'            # Dedupe, keep oldest
 alias rdn='rclone-dedupe-new'            # Dedupe, keep newest
-
-

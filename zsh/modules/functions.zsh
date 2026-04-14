@@ -5,15 +5,6 @@
 # open-nvim-init() and open-ghostty() removed - use config.zsh versions
 
 # App-specific reloads
-reload-ghostty() {
-  osascript <<-'EOF' 2>/dev/null
-    tell application "System Events"
-      tell application "Ghostty" to activate
-      keystroke "," using {command down, shift down}
-    end tell
-EOF
-}
-
 # Quick entry points
 dreams_md_shortcut() {
   local dream_date=$(date "+%Y-%m-%d")
@@ -27,7 +18,7 @@ dreams_md_shortcut() {
     -c "startinsert"
 }
 
-unalias mkd dedupemuz cleannvimswp dots-sync lstype 2>/dev/null || true
+unalias mkd dedupemuz cleannvimswp dots-sync lstype oct occ ocd 2>/dev/null || true
 
 mkd() {
   [[ $# -gt 0 ]] || { echo "Usage: mkd <directory_path>"; return 1; }
@@ -52,6 +43,27 @@ dots-sync() {
   local real_user; real_user=$(stat -f "%Su" /dev/console)
   /usr/bin/su - "$real_user" -c \
     "cd \$CF || exit 1; kitten @ launch --type=tab zsh -lc 'cd ~/.config && gac \"sync \$(date +%Y-%m-%d)\" ; exec zsh'"
+}
+
+_openclaw_or_note() {
+  if command -v openclaw >/dev/null 2>&1; then
+    command openclaw "$@"
+  else
+    echo "openclaw is not installed on this machine. Expected on 2mini; current machine: ${MACHINE_NAME:-$(hostname -s 2>/dev/null || hostname 2>/dev/null)}"
+    return 127
+  fi
+}
+
+oct() {
+  _openclaw_or_note tui "$@"
+}
+
+occ() {
+  _openclaw_or_note configure "$@"
+}
+
+ocd() {
+  _openclaw_or_note doctor "$@"
 }
 
 lstype() {
