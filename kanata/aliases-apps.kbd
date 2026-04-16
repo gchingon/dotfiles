@@ -8,6 +8,7 @@
   (defalias
     a-cale (cmd open -a Calendar)
     a-clau (cmd open -a Claude)
+    a-codx (cmd open -a Codex)
     a-comt (cmd open -a Comet)
     a-dict (cmd open -a Dictionary)
     a-find (cmd open -a Finder)

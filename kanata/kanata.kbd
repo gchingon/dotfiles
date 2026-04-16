@@ -91,17 +91,17 @@
 ;; Activated by: hold physical `s`
 ;;
 ;; Physical → App (a-* aliases in aliases-apps.kbd)
-;;   8 = Dictionary     9 = System Settings
+;;   8 = Dictionary     9 = System Settings n = Codex
 ;;   y = Finder         ; = Spotify         [ = Passwords
 ;;   f = Safari         , = Notes           i = Claude     ret = kitty
 ;;   m = Messages       j = Comet (browser)
 ;;----------------------------------------------------
 (deflayer apps
   _      _       _       _       _       _       _       _       _       _       _       _       _             ;; Fn
-  _      _       _       _       _       _       _       _       @a-dict @a-sset _       _       _       _     ;; NUM
+  _      _       _       _       _       5       6       _       @a-dict @a-sset _       _       _       _     ;; NUM
   _      _       _       _       _       _       @a-find _       @a-clau _       _       @a-pass _       _     ;; QWERTY
-  _      _       _       _       @a-sfri _       _       @a-comt _       _       @a-spot _       @a-term       ;; HOME
-  _      _       _       _       _       _       _       @a-msgs @a-note _       _       _       _             ;; BOTTOM
+  _      _       _       _       @a-sfri _       _       @a-comt _       @a-note @a-spot _       @a-term       ;; HOME
+  _      _       _       _       _       _       @a-codx @a-msgs _       _       _       _       _             ;; BOTTOM
   _      _       _       _             _         _       _       _       _       _                             ;; MOD
 )
 
