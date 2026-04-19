@@ -1,11 +1,12 @@
 ;;----------------------------------------------------
 ;; App-switching aliases — platform-conditional
 ;; Used by: deflayer apps
-;; Pattern: hold sublayer key, tap target → focus or launch app
+;; Pattern: caps+u chord to enter layer, tap target → focus or launch app
 ;;----------------------------------------------------
 
 (platform (macos)
   (defalias
+    a-afnt (cmd open -a 'Affinity Designer')
     a-cale (cmd open -a Calendar)
     a-clau (cmd open -a Claude)
     a-codx (cmd open -a Codex)
@@ -19,7 +20,9 @@
     a-sfri (cmd open -a Safari)
     a-spot (cmd open -a Spotify)
     a-sset (cmd open -a 'System Settings')
+    a-davr (cmd open -a 'DaVinci Resolve')
     a-term (cmd open -a kitty)
+    a-what (cmd open -a WhatsApp)
   )
 )
 

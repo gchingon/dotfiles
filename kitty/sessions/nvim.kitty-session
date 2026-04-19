@@ -1,0 +1,3 @@
+new_tab nvim
+layout tall
+launch --title "nvim" --env SESSION_NAME=nvim zsh --login -c 'cd "${RP:-$HOME/Documents}" && exec zsh'

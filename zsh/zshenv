@@ -1,6 +1,9 @@
 # ~/.config/zsh/zshenv
 # Defines global environment variables for all Zsh sessions
+
 [[ -f "$HOME/.config/machine.env" ]] && source "$HOME/.config/machine.env"
+PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+
 # Base directories
 export XDG_CONFIG_HOME="$HOME/.config"
 export CF="$XDG_CONFIG_HOME"
@@ -8,28 +11,29 @@ export CAPTURE_FOLDER="$HOME/Pictures"
 export DN="$HOME/Downloads"
 export DX="$HOME/Documents"
 export LB="$HOME/.local/bin"
-export NT_INBOX="$NT/inbox.md"
-export PJ="$NT/projects"
-export CT="$NT/content"
-export PD="$RP/podcast"   # podcast stuff
+export RW="$NT/raw"
 export DZ="$CF/zsh"         # zsh config stuff
+export ZM="$DZ/modules"
 export NV="$CF/nvim"        # Real Neovim repo
 export RX="$CF/rx"          # shortcut to global scripts
-export RP="$DX/repos"    # podcast ideas, topics & published content
-export NT="$RP/notes"     # git repo for notes
 export KN="$CF/kanata"
 export KT="$CF/kitty"
 
 case "$(hostname)" in
   2mini*)
-    export HL="$RP/2lab"
+    export RP="$DX/2mepos"
     ;;
   4mini*)
-    export HL="$RP/4lab"
+    export RP="$DX/repos"
+    ;;
+  mbp*)
+    export RP="$DX"
     ;;
 esac
-export WP="$DX/webpage"
-export WC="$DX/widows-club"
+export WP="$RP/sites"
+export WC="$RP/widows-club"
+export PD="$RP/pod-content"   # podcast stuff
+export NT="$RP/notes"     # git repo for notes
 
 # Tool-specific settings
 export PATH="/opt/homebrew/opt/ruby/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/Library/Python/3.9/bin:$RX:$PATH"  # Add $RX to PATH
@@ -60,4 +64,3 @@ export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 # Source zprofile
 source "$DZ/zprofile"
-

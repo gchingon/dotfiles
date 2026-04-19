@@ -5,16 +5,17 @@
 ;;
 ;; LAYER MAP:
 ;;   main    — daily typing, home row mods
-;;   apps    — app switching         (hold physical `s`)
-;;   system  — system controls       (hold physical `g`)
-;;   raycast — raycast + kitty jumps (hold physical `l`)
-;;   emoji   — quick emoji           (double-tap Right Shift)
+;;   apps    — app switching         (tab+0 chord, one-shot 3s)
+;;   system  — system controls       (tab+[ chord, one-shot 3s)
+;;   raycast — raycast + kitty jumps (tab+] chord, one-shot 3s)
+;;   emoji   — quick emoji           (double-tap Esc)
 ;;----------------------------------------------------
 
 (defcfg
   process-unmapped-keys yes
   concurrent-tap-hold   yes
   danger-enable-cmd     yes
+  chords-v2-min-idle    80
 )
 
 ;;----------------------------------------------------
@@ -24,14 +25,14 @@
   tap-higher 400
   tt 300
   ht 300
-  kord-t 60
+  kord-t 500
   subl-t 500
 
   ;; Absolute paths — kanata runs as root LaunchDaemon so $HOME = /var/root.
   ;; These defvar values are substituted at parse time, before cmd reaches the shell.
   UH /Users/schingon
   CF (concat $UH /.config)
-  RX (concat $CF /RX)
+  RX (concat $CF /rx)
   LB (concat $UH /.local/bin)
 )
 
@@ -46,12 +47,23 @@
 (include aliases-emoji.kbd)
 
 ;;----------------------------------------------------
-;; Sublayer entry aliases — held to activate a layer
+;; Sublayer entry — chords activate layers
+;; tab+0 → apps (one-shot 3s)   tab+[ → system (one-shot 3s)
+;; tab+] → raycast (one-shot 3s)
+;; Chord timeout $kord-t = 500ms; release condition = all-released
+;;----------------------------------------------------
+(defchordsv2
+  (tab 0) (one-shot 3000 (layer-while-held apps))    $kord-t all-released ()
+  (tab [) (one-shot 3000 (layer-while-held system))  $kord-t all-released ()
+  (tab ]) (one-shot 3000 (layer-while-held raycast)) $kord-t all-released ()
+)
+
+;;----------------------------------------------------
+;; Return: tap = ret, double-tap = kitty
+;; (defined after includes so @a-term is available)
 ;;----------------------------------------------------
 (defalias
-  sapps (tap-hold $tt $subl-t s (layer-while-held apps))
-  gystm (tap-hold $tt $subl-t g (layer-while-held system))
-  rycst (tap-hold $tt $subl-t l (layer-while-held raycast))
+  retkt (tap-dance 200 (ret @a-term))
 )
 
 ;;----------------------------------------------------
@@ -72,63 +84,61 @@
 ;; MAIN layer — daily typing, home row mods
 ;; Physical positions → Dvorak output via process-unmapped-keys
 ;;
-;; Physical `s` = hold for apps layer
-;; Physical `g` = hold for system layer
-;; Physical `l` = hold for raycast layer
-;; Esc = tap esc / double-tap emoji layer
+;; tab+0 chord → apps layer (one-shot 3s)
+;; tab+[ chord → system layer (one-shot 3s)
+;; tab+] chord → raycast layer (one-shot 3s)
+;; Esc = tap esc / double-tap → emoji layer (one-shot)
+;; Return = tap ret / double-tap → open kitty
 ;;----------------------------------------------------
 (deflayer main
   @escem brdn   brup   f3     f4     f5      f6     prev   pp     next   mute   vold   volu         ;; Fn row
   @grasc 1      2      3      4      5       6      7      8      9      0      _      _      _     ;; NUM
   @tabSG _      _      @mhome _      _       _      _      _      _      _      _      _      _     ;; QWERTY
-  @mehsc @Hlctl @sapps @Hlalt @Hlmet @gystm  _      @Hrmet @Hralt @rycst @Hrctl _      _            ;; HOME
+  @mehsc @Hlctl _      @Hlalt @Hlmet _       _      @Hrmet @Hralt _      @Hrctl _      @retkt       ;; HOME
   lsft   _      _      _      _      _       _      _      _      _      _      _      @shdel       ;; BOTTOM
   fn     @caltb @shalt @suXMS          spc          @hyper @trams _      _      _                   ;; MOD
 )
 
 ;;----------------------------------------------------
 ;; APPS layer — app switching
-;; Activated by: hold physical `s`
+;; Activated by: caps+u chord (one-shot 3s)
 ;;
 ;; Physical → App (a-* aliases in aliases-apps.kbd)
-;;   8 = Dictionary     9 = System Settings n = Codex
-;;   y = Finder         ; = Spotify         [ = Passwords
-;;   f = Safari         , = Notes           i = Claude     ret = kitty
-;;   m = Messages       j = Comet (browser)
+;;   QWERTY: e=Passwords  r=Dictionary  t=Preview  y=SystemSettings
+;;           u=Affinity   i=Calendar   o=DaVinci
+;;   HOME:   a=Claude  s=Codex  f=Finder  j=Comet  k=Safari  l=Notes  ;=Spotify
+;;   BOTTOM: m=Messages  ,=WhatsApp
 ;;----------------------------------------------------
 (deflayer apps
   _      _       _       _       _       _       _       _       _       _       _       _       _             ;; Fn
-  _      _       _       _       _       5       6       _       @a-dict @a-sset _       _       _       _     ;; NUM
-  _      _       _       _       _       _       @a-find _       @a-clau _       _       @a-pass _       _     ;; QWERTY
-  _      _       _       _       @a-sfri _       _       @a-comt _       @a-note @a-spot _       @a-term       ;; HOME
-  _      _       _       _       _       _       @a-codx @a-msgs _       _       _       _       _             ;; BOTTOM
+  _      _       _       _       _       _       _       _       _       _       _       _       _       _     ;; NUM
+  _      _       _       @a-pass @a-dict @a-prev @a-sset @a-afnt @a-cale @a-davr _       _       _       _     ;; QWERTY
+  _      @a-clau @a-codx _       @a-find _       _       @a-comt @a-sfri @a-note @a-spot _       _             ;; HOME
+  _      _       _       _       _       _       _       @a-msgs @a-what _       _       _       _             ;; BOTTOM
   _      _       _       _             _         _       _       _       _       _                             ;; MOD
 )
 
 ;;----------------------------------------------------
 ;; RAYCAST layer — Raycast utilities + kitty session jumps
-;; Activated by: hold physical `l`
+;; Activated by: caps+m chord (one-shot 3s)
 ;;
-;; Physical → Action
-;;   1 = ssh-2mini      2 = Clipboard     3 = File search
-;;   4 = Emoji picker   5 = Empty trash
-;;   q = dotfiles       w = nvim          e = automation(docker)
-;;   r = podcast        t = home
-;;   a = AI chat        s = Spotify search  d = ssh-4mini
-;;   f = YouTube search g = zoom mute
+;; QWERTY e–o → kitty sessions:
+;;   e=dotfiles  r=nvim  t=docker  y=podcast  u=home  i=ssh2  o=ssh4
+;; HOME a–k → Raycast utilities:
+;;   a=AI  s=Clipboard  d=Files  f=Emoji  g=Spotify  h=YouTube  j=Trash  k=ZoomMute
 ;;----------------------------------------------------
 (deflayer raycast
   _      XX      XX      XX      XX      XX      XX      XX       XX       XX       XX       XX     XX           ;; Fn
-  grv    @k-ssh2 @rclip  @rfile  @remoj  @mtrsh  6       7        8        9        0        _      _      _     ;; NUM
-  _      @k-dots @k-nvim @k-dckr @k-podc @k-home XX      XX       XX       XX       XX       _      _      _     ;; QWERTY
-  _      @rayai  @sptfd  @k-ssh4 @tbefd  @zmute  XX      XX       XX       _        XX       _      _             ;; HOME
+  grv    XX      XX      XX      XX      XX      XX      XX       XX       XX       XX       _      _      _     ;; NUM
+  _      XX      XX      @k-dots @k-nvim @k-dckr @k-podc @k-home @k-ssh2  @k-ssh4  XX       _      _      _     ;; QWERTY
+  _      @rayai  @rclip  @rfile  @remoj  @sptfd  @tbefd  @mtrsh  @zmute   XX       XX       _      _             ;; HOME
   _      XX      XX      XX      XX      XX      XX      XX       _        _        _        _      _             ;; BOTTOM
   _      _       _       _              _                _        _        _        _        _                    ;; MOD
 )
 
 ;;----------------------------------------------------
 ;; SYSTEM layer — system controls
-;; Activated by: hold physical `g`
+;; Activated by: caps+; chord (one-shot 3s)
 ;;
 ;; Physical → Action (sys-* aliases in aliases-system.kbd)
 ;;   u = Audio          i = Wifi          o = Bluetooth

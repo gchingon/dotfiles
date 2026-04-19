@@ -13,14 +13,14 @@
 ;;   listen_on unix:/tmp/kitty
 ;;
 ;; Session files live in ~/.config/kitty/sessions/<name>.kitty-session
-;; NOTE: $RX is a kanata defvar = /Users/schingon/.config/RX
+;; NOTE: $RX is a kanata defvar = /Users/schingon/.config/rx
 ;;       This is needed because kanata runs as root (LaunchDaemon)
 ;;       where shell $HOME = /var/root.
 ;;----------------------------------------------------
 
 (platform (macos)
   (defalias
-    k-dots (cmd zsh -lc "$RX/kitty-session.sh dotfiles")
+    k-dots (cmd zsh -lc "$RX/kitty-session.sh dots")
     k-nots (cmd zsh -lc "$RX/kitty-session.sh docs")
     k-nvim (cmd zsh -lc "$RX/kitty-session.sh nvim")
     k-dckr (cmd zsh -lc "$RX/kitty-session.sh automation")
@@ -33,7 +33,7 @@
 
 (platform (linux)
   (defalias
-    k-dots (cmd bash -c "$RX/kitty-session.sh dotfiles")
+    k-dots (cmd bash -c "$RX/kitty-session.sh dots")
     k-nots (cmd bash -c "$RX/kitty-session.sh docs")
     k-nvim (cmd bash -c "$RX/kitty-session.sh nvim")
     k-dckr (cmd bash -c "$RX/kitty-session.sh automation")
