@@ -11,7 +11,6 @@ export CAPTURE_FOLDER="$HOME/Pictures"
 export DN="$HOME/Downloads"
 export DX="$HOME/Documents"
 export LB="$HOME/.local/bin"
-export RW="$NT/raw"
 export DZ="$CF/zsh"         # zsh config stuff
 export ZM="$DZ/modules"
 export NV="$CF/nvim"        # Real Neovim repo
@@ -30,10 +29,13 @@ case "$(hostname)" in
     export RP="$DX"
     ;;
 esac
-export WP="$RP/sites"
+
+export SITES="$RP/sites"
 export WC="$RP/widows-club"
-export PD="$RP/pod-content"   # podcast stuff
+export POD="$RP/pod-content"   # podcast stuff
 export NT="$RP/notes"     # git repo for notes
+export VT="$RP/crypt"
+export RW="$NT/raw"
 
 # Tool-specific settings
 export PATH="/opt/homebrew/opt/ruby/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/Library/Python/3.9/bin:$RX:$PATH"  # Add $RX to PATH

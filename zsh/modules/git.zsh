@@ -57,6 +57,23 @@ git-add-commit-push() {
   else
     git push -u -q "$remote" "$branch"
   fi
+
+  local repo_root repo_name repo_prefix repo_component
+  repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+  repo_prefix="$(git rev-parse --show-prefix 2>/dev/null || true)"
+  repo_component="${repo_prefix%%/*}"
+  case "$repo_component" in
+    notes|crypt|agent-vault|pod-content) repo_name="$repo_component" ;;
+    *) repo_name="$(basename "${repo_root:-}")" ;;
+  esac
+  case "$repo_name" in
+    .config)
+      "$RX/repo-sync-peers.sh" config
+      ;;
+    notes|crypt|agent-vault|pod-content)
+      "$RX/repo-sync-peers.sh" "$repo_name"
+      ;;
+  esac
 }
 
 # ── Multi-Repo Operations ──────────────────────────────────────────────
@@ -93,3 +110,5 @@ alias gac='git-add-commit-push'
 alias gpl='git-pull'
 alias gph='git-push'
 alias gfh='git fetch'
+alias notesync='$RX/repo-sync-peers.sh notes'
+alias podsync='$RX/repo-sync-peers.sh pod-content'

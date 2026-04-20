@@ -74,3 +74,22 @@ lstype() {
     echo
   done
 }
+
+ssh-2mini() {
+  if [[ "${MACHINE_NAME:-$(hostname -s 2>/dev/null || hostname 2>/dev/null)}" == 2mini* ]]; then
+    echo "Already on 2mini"
+    return 0
+  fi
+  TERM=xterm-256color ssh 2mini
+}
+
+ssh-4mini() {
+  if [[ "${MACHINE_NAME:-$(hostname -s 2>/dev/null || hostname 2>/dev/null)}" == 4mini* ]]; then
+    echo "Already on 4mini"
+    return 0
+  fi
+  TERM=xterm-256color ssh 4mini
+}
+
+alias ssh2='ssh-2mini'
+alias ssh4='ssh-4mini'

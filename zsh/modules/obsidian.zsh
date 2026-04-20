@@ -7,7 +7,7 @@ if [[ -f "$AGENT_VAULT_CONFIG" ]]; then
   source "$AGENT_VAULT_CONFIG"
 fi
 
-export HERMES_OBSIDIAN_VAULT="${AGENT_VAULT_PATH:-$HOME/Documents/agent-vault}"
+export HERMES_OBSIDIAN_VAULT="${AGENT_VAULT_PATH:-$HOME/Documents/crypt}"
 
 # Obsidian CLI (if installed)
 alias obs="obsidian"

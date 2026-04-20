@@ -5,6 +5,12 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source "$HOME/.config/rx/agent-vault-lib.sh"
 
+sync_peers() {
+  local peer_sync="$HOME/.config/rx/repo-sync-peers.sh"
+  [[ -x "$peer_sync" ]] || return 0
+  "$peer_sync" crypt
+}
+
 agent_vault_require_repo
 agent_vault_ensure_structure
 
@@ -32,6 +38,7 @@ fi
 
 if [[ "$LOCAL_HEAD" == "$REMOTE_HEAD" ]]; then
   agent_vault_log "Already up to date."
+  sync_peers
   exit 0
 fi
 
@@ -43,12 +50,14 @@ if agent_vault_git merge-base --is-ancestor "$LOCAL_HEAD" "$REMOTE_HEAD"; then
   fi
   agent_vault_git merge --ff-only "$REMOTE_REF"
   agent_vault_log "Fast-forwarded from origin."
+  sync_peers
   exit 0
 fi
 
 if agent_vault_git merge-base --is-ancestor "$REMOTE_HEAD" "$LOCAL_HEAD"; then
   agent_vault_git push origin "$AGENT_VAULT_BRANCH"
   agent_vault_log "Pushed local commits to origin."
+  sync_peers
   exit 0
 fi
 
