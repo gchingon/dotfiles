@@ -26,6 +26,7 @@ alias tl='theme --list'                   # List available themes; source: theme
 alias tc='theme --current'                # Show current theme; source: theme -- /Users/schingon/.config/rx/theme
 alias ytv='ytd video'                     # Download video format via ytd helper; source: ytd -- ~/.local/bin/ytd
 alias dots='dots-sync'                    # Run dotfiles sync helper; source: dots-sync() -- /Users/schingon/.config/zsh/modules/functions.zsh
+alias d4d='defaults delete com.charliemonroe.Downie-4'
 
 # ===== Git and Sync Aliases =====
 alias g='git'                             # Short alias for git; source: git -- CLI tool

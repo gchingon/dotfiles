@@ -6,16 +6,22 @@ A unified tool for downloading and converting video transcripts
 
 Usage:
     tsp srt URL                    # Download transcript as SRT only
-    tsp stm URL                    # Download and convert to markdown 
+    tsp stm URL                    # Download and convert to markdown
     tsp vtm URL                    # Download and convert to markdown (prefer VTT)
     tsp stm filename.srt           # Convert SRT to markdown
+    tsp stm 'pattern*.srt'         # Convert SRT files matching glob pattern
     tsp vtm filename.vtt           # Convert VTT to markdown
     tsp -h, --help                 # Show help
-    
+
 Additional features:
     tsp batch URL                  # Download both SRT and VTT if available
     tsp clean directory/           # Convert all SRT/VTT files in directory
     tsp json URL                   # Download transcript as JSON with metadata
+
+Flags:
+    -k, --keep-original            # Keep original transcript file after conversion
+    -f, --force                    # Force re-conversion of existing files
+    -o, --output DIR               # Specify output directory
 """
 
 import argparse
@@ -189,16 +195,21 @@ class TranscriptProcessor:
                 
         return '\n'.join(deduped_lines)
     
-    def convert_to_markdown(self, input_file: str, keep_original: bool = True) -> Optional[str]:
+    def convert_to_markdown(self, input_file: str, keep_original: bool = True, skip_existing: bool = True) -> Optional[str]:
         """Convert SRT or VTT file to markdown"""
         if not os.path.exists(input_file):
             print(f"ERROR: File {input_file} not found")
             return None
-            
+
         file_path = Path(input_file)
         extension = file_path.suffix.lower()
         base_name = file_path.stem
         output_file = file_path.parent / f"{base_name}.md"
+
+        # Skip if output file already exists and skip_existing is True
+        if skip_existing and output_file.exists():
+            print(f"SKIPPED: {output_file} already exists (use --force to re-convert)")
+            return str(output_file)
         
         try:
             with open(input_file, 'r', encoding='utf-8', errors='ignore') as f:
@@ -300,21 +311,21 @@ class TranscriptProcessor:
                 downloaded_files.append(file_path)
         return downloaded_files
     
-    def clean_directory(self, directory: str) -> List[str]:
+    def clean_directory(self, directory: str, skip_existing: bool = True) -> List[str]:
         """Convert all SRT and VTT files in a directory to markdown"""
         converted_files = []
         dir_path = Path(directory)
-        
+
         if not dir_path.exists():
             print(f"ERROR: Directory {directory} not found")
             return converted_files
-            
+
         for file_path in dir_path.glob('*'):
             if file_path.suffix.lower() in ['.srt', '.vtt']:
-                result = self.convert_to_markdown(str(file_path), keep_original=True)
+                result = self.convert_to_markdown(str(file_path), keep_original=True, skip_existing=skip_existing)
                 if result:
                     converted_files.append(result)
-                    
+
         print(f"Converted {len(converted_files)} files in {directory}")
         return converted_files
 
@@ -325,19 +336,23 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  tsp srt https://youtube.com/watch?v=xyz    # Download SRT transcript
-  tsp stm https://youtube.com/watch?v=xyz    # Download and convert to markdown
-  tsp stm transcript.srt                      # Convert SRT to markdown  
-  tsp vtm transcript.vtt                      # Convert VTT to markdown
-  tsp batch https://youtube.com/watch?v=xyz   # Download all available formats
-  tsp clean ~/Downloads/                      # Convert all transcripts in directory
+  tsp srt https://youtube.com/watch?v=xyz     # Download SRT transcript
+  tsp stm https://youtube.com/watch?v=xyz     # Download and convert to markdown
+  tsp stm transcript.srt                       # Convert SRT to markdown
+  tsp stm 'HTLAL*.srt' -k                      # Convert matching files, skip existing
+  tsp stm 'HTLAL*.srt' -k -f                   # Convert matching files, force re-convert
+  tsp vtm transcript.vtt                       # Convert VTT to markdown
+  tsp batch https://youtube.com/watch?v=xyz    # Download all available formats
+  tsp clean ~/Downloads/                       # Convert all transcripts in directory
+  tsp clean ~/Downloads/ -f                    # Re-convert all transcripts (force)
         """
     )
     
     parser.add_argument('action', help='Action to perform: srt, stm, vtm, batch, clean, json')
-    parser.add_argument('target', help='URL, filename, or directory to process')
+    parser.add_argument('target', help='URL, filename, directory, or glob pattern to process')
     parser.add_argument('-o', '--output', default='.', help='Output directory (default: current directory)')
     parser.add_argument('-k', '--keep-original', action='store_true', help='Keep original transcript file after conversion')
+    parser.add_argument('-f', '--force', action='store_true', help='Force re-conversion of existing files')
     
     if len(sys.argv) == 1:
         parser.print_help()
@@ -367,17 +382,49 @@ Examples:
             print(f"ERROR: Invalid action '{args.action}' for URL")
             return
     
-    # Handle file-based actions
+    # Handle file-based actions and glob patterns
+    elif '*' in args.target or '?' in args.target or '[' in args.target:
+        # Glob pattern detected
+        if args.action in ['stm', 'vtm']:
+            matched_files = list(Path('.').glob(args.target))
+            if not matched_files:
+                print(f"ERROR: No files matching pattern '{args.target}'")
+                return
+
+            converted_count = 0
+            skipped_count = 0
+            for file_path in sorted(matched_files):
+                if file_path.suffix.lower() in ['.srt', '.vtt']:
+                    result = processor.convert_to_markdown(
+                        str(file_path),
+                        keep_original=args.keep_original,
+                        skip_existing=not args.force
+                    )
+                    if result:
+                        converted_count += 1
+                    else:
+                        skipped_count += 1
+
+            print(f"Processed {converted_count} files (skipped {skipped_count})")
+        else:
+            print(f"ERROR: Action '{args.action}' not compatible with glob patterns")
+            return
+
+    # Handle single file
     elif os.path.exists(args.target):
         if args.action in ['stm', 'vtm']:
-            processor.convert_to_markdown(args.target, keep_original=args.keep_original)
+            processor.convert_to_markdown(
+                args.target,
+                keep_original=args.keep_original,
+                skip_existing=not args.force
+            )
         else:
             print(f"ERROR: Action '{args.action}' not compatible with file '{args.target}'")
             return
     
     # Handle directory cleaning
     elif args.action == 'clean':
-        processor.clean_directory(args.target)
+        processor.clean_directory(args.target, skip_existing=not args.force)
     
     else:
         print(f"ERROR: Target '{args.target}' not found or invalid")

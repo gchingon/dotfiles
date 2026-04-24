@@ -63,7 +63,7 @@
 ;; (defined after includes so @a-term is available)
 ;;----------------------------------------------------
 (defalias
-  retkt (tap-dance 80 (ret @a-term))
+  retkt (tap-dance 200 (ret @a-term))
 )
 
 ;;----------------------------------------------------
@@ -91,12 +91,12 @@
 ;; Return = tap ret / double-tap → open kitty
 ;;----------------------------------------------------
 (deflayer main
-  @escem brdn   brup   f3     f4     f5      f6     prev   pp     next   mute   vold   volu         ;; Fn row
-  @grasc 1      2      3      4      5       6      7      8      9      0      _      _      _     ;; NUM
-  @tabSG _      _      @mhome _      _       _      _      _      _      _      _      _      _     ;; QWERTY
-  @mehsc @Hlctl _      @Hlalt @Hlmet _       _      @Hrmet @Hralt _      @Hrctl _      @retkt       ;; HOME
-  lsft   _      _      _      _      _       _      _      _      _      _      _      @shdel       ;; BOTTOM
-  fn     @caltb @shalt @suXMS          spc          @hyper @trams _      _      _                   ;; MOD
+  @escem brdn    brup    f3      f4      f5      f6      prev    pp      next    mute    vold    volu          ;; Fn row
+  @grasc 1       2       3       4       5       6       7       8       9       0       _       _       _     ;; NUM
+  @tabSG _       _       @mhome  _       _       _       _       _       _       _       _       _       _     ;; QWERTY
+  @mehsc @Hlctl  _       @Hlalt  @Hlmet  _       _       @Hrmet  @Hralt  _       @Hrctl  _       @retkt        ;; HOME
+  lsft   _       _       _       _       _       _       _       _       _       _       _       @shdel        ;; BOTTOM
+  fn     @caltb  @shalt  @suXMS            spc           @hyper  @trams  _       _       _                     ;; MOD
 )
 
 ;;----------------------------------------------------
@@ -113,9 +113,9 @@
   _      _       _       _       _       _       _       _       _       _       _       _       _             ;; Fn
   _      1       2       3       4       5       6       7       8       9       0       _       _       _     ;; NUM
   _      _       _       @a-pass @a-dict @a-prev @a-sset @a-afnt @a-cale @a-davr _       _       _       _     ;; QWERTY
-  _      _       _       @a-obsi @a-find @a-sfri @a-comt _       _       @a-note @a-spot _       _       _             ;; HOME
-  _      _       _       _       @a-codx _       @a-clau @a-msgs @a-what _       _       _             ;; BOTTOM
-  _      _       _       _             _         _       _       _       _       _                             ;; MOD
+  _      _       _       @a-obsi @a-find @a-sfri @a-comt _       _       @a-note @a-spot _       _             ;; HOME
+  _      _       _       _       @a-codx _       @a-clau @a-msgs @a-what _       _       _       _             ;; BOTTOM
+  _      _       _       _                 _             _       _       _       _       _                     ;; MOD
 )
 
 ;;----------------------------------------------------
@@ -128,12 +128,12 @@
 ;;   a=AI  s=Clipboard  d=Files  f=Emoji  g=Spotify  h=YouTube  j=Trash  k=ZoomMute
 ;;----------------------------------------------------
 (deflayer raycast
-  _      XX      XX      XX      XX      XX      XX      XX       XX       XX       XX       XX     XX           ;; Fn
-  grv    XX      XX      XX      XX      XX      XX      XX       XX       XX       XX       _      _      _     ;; NUM
-  _      XX      XX      @k-dots @k-nvim @k-dckr @k-podc @k-home @k-ssh2  @k-ssh4  XX       _      _      _     ;; QWERTY
-  _      @rayai  @rclip  @rfile  @remoj  @sptfd  @tbefd  @mtrsh  @zmute   XX       XX       _      _             ;; HOME
-  _      XX      XX      XX      XX      XX      XX      XX       _        _        _        _      _             ;; BOTTOM
-  _      _       _       _              _                _        _        _        _        _                    ;; MOD
+  _       XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
+  grv     1       2       3       4       5       6       7       8       9       0       _       _      _     ;; NUM
+  _       XX      XX      @k-dots @k-nvim @k-dckr @k-podc @k-home @k-ssh2 @k-ssh4 XX      _       _      _     ;; QWERTY
+  _       @rayai  @rclip  @rfile  @remoj  @sptfd  @tbefd  @mtrsh  @zmute  XX      XX      _       _             ;; HOME
+  _       XX      XX      XX      XX      XX      XX      XX      _       _       _       _       _             ;; BOTTOM
+  _       _       _       _              _                _       _       _       _       _                     ;; MOD
 )
 
 ;;----------------------------------------------------
