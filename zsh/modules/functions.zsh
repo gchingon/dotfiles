@@ -90,6 +90,3 @@ ssh-4mini() {
   fi
   TERM=xterm-256color ssh 4mini
 }
-
-alias ssh2='ssh-2mini'
-alias ssh4='ssh-4mini'

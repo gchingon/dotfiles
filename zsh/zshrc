@@ -53,3 +53,6 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' completer _complete _files
 
 bindkey '^I' expand-or-complete
+
+# OpenFang
+export PATH=/Users/schingon/.openfang/bin:$PATH

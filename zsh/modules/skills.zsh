@@ -3,11 +3,6 @@
 
 export HERMES_SKILLS_MASTER="${HOME}/.hermes/skills"
 
-# Skill discovery and adoption
-alias skills-list="python3 ${HOME}/.hermes/scripts/skill-adopt.py list"
-alias skills-adopt="python3 ${HOME}/.hermes/scripts/skill-adopt.py adopt"
-alias skills-sync="python3 ${HOME}/.hermes/scripts/skill-adopt.py sync"
-
 # Quick skill view from master registry
 skill-view() {
   local name="$1"

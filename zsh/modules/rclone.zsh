@@ -29,21 +29,3 @@ rclone-sync()       { _rc_run "$1" sync       "${_rc_base[@]}" "${_rc_profile_sm
 rclone-sync-large() { _rc_run "$1" sync       "${_rc_base[@]}" "${_rc_profile_large[@]}" "$2"; }
 rclone-dedupe-new() { _rc_run "$1" dedupe     "${_rc_base[@]}" --dedupe-mode newest --by-hash; }
 rclone-dedupe-old() { _rc_run "$1" dedupe     "${_rc_base[@]}" --dedupe-mode oldest --by-hash; }
-
-# ── rc* short aliases ────────────────────────────────────────────────────────
-# copy
-alias rccl='rclone-copy-large'   # copy  — large profile (big files, multi-thread)
-alias rccs='rclone-copy'         # copy  — small profile (many small files)
-# move
-alias rcml='rclone-move-large'   # move  — large profile
-alias rcms='rclone-move'         # move  — small profile
-# sync
-alias rcsl='rclone-sync-large'   # sync  — large profile
-alias rcss='rclone-sync'         # sync  — small profile
-# dedupe
-alias rcdn='rclone-dedupe-new'   # dedupe — keep newest
-alias rcdo='rclone-dedupe-old'   # dedupe — keep oldest
-
-confsync() {
-  "$RX/repo-sync-peers.sh" config "$@"
-}

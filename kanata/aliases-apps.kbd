@@ -15,6 +15,7 @@
     a-find (cmd open -a Finder)
     a-msgs (cmd open -a Messages)
     a-note (cmd open -a Notes)
+    a-obsi (cmd open -a Obsidian)
     a-pass (cmd open -a Passwords)
     a-prev (cmd open -a Preview)
     a-sfri (cmd open -a Safari)

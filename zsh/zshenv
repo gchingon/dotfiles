@@ -25,17 +25,19 @@ case "$(hostname)" in
   4mini*)
     export RP="$DX/repos"
     ;;
-  mbp*)
+  mbp*|Mac*)
     export RP="$DX"
     ;;
 esac
 
 export SITES="$RP/sites"
+export SCS="$RP/sucias"
 export WC="$RP/widows-club"
 export POD="$RP/pod-content"   # podcast stuff
 export NT="$RP/notes"     # git repo for notes
 export VT="$RP/crypt"
 export RW="$NT/raw"
+export CT="$RW"
 
 # Tool-specific settings
 export PATH="/opt/homebrew/opt/ruby/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/Library/Python/3.9/bin:$RX:$PATH"  # Add $RX to PATH

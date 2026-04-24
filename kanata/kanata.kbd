@@ -53,9 +53,9 @@
 ;; Chord timeout $kord-t = 500ms; release condition = all-released
 ;;----------------------------------------------------
 (defchordsv2
-  (tab 0) (one-shot 3000 (layer-while-held apps))    $kord-t all-released ()
-  (tab [) (one-shot 3000 (layer-while-held system))  $kord-t all-released ()
-  (tab ]) (one-shot 3000 (layer-while-held raycast)) $kord-t all-released ()
+  (tab 2) (one-shot 3000 (layer-while-held apps))    $kord-t all-released ()
+  (tab 3) (one-shot 3000 (layer-while-held raycast)) $kord-t all-released ()
+  (tab 4) (one-shot 3000 (layer-while-held system))  $kord-t all-released ()
 )
 
 ;;----------------------------------------------------
@@ -63,7 +63,7 @@
 ;; (defined after includes so @a-term is available)
 ;;----------------------------------------------------
 (defalias
-  retkt (tap-dance 200 (ret @a-term))
+  retkt (tap-dance 80 (ret @a-term))
 )
 
 ;;----------------------------------------------------
@@ -111,10 +111,10 @@
 ;;----------------------------------------------------
 (deflayer apps
   _      _       _       _       _       _       _       _       _       _       _       _       _             ;; Fn
-  _      _       _       _       _       _       _       _       _       _       _       _       _       _     ;; NUM
+  _      1       2       3       4       5       6       7       8       9       0       _       _       _     ;; NUM
   _      _       _       @a-pass @a-dict @a-prev @a-sset @a-afnt @a-cale @a-davr _       _       _       _     ;; QWERTY
-  _      @a-clau @a-codx _       @a-find _       _       @a-comt @a-sfri @a-note @a-spot _       _             ;; HOME
-  _      _       _       _       _       _       _       @a-msgs @a-what _       _       _       _             ;; BOTTOM
+  _      _       _       @a-obsi @a-find @a-sfri @a-comt _       _       @a-note @a-spot _       _       _             ;; HOME
+  _      _       _       _       @a-codx _       @a-clau @a-msgs @a-what _       _       _             ;; BOTTOM
   _      _       _       _             _         _       _       _       _       _                             ;; MOD
 )
 

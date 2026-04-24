@@ -7,6 +7,9 @@ if [[ -f "$HOME/.config/machine.env" ]]; then
   source "$HOME/.config/machine.env"
 fi
 
+# shellcheck disable=SC1091
+source "$HOME/.config/rx/lib/repo-sync-common.sh"
+
 usage() {
   cat <<EOF
 Usage: repo-sync-peers.sh [config|notes|crypt|agent-vault|pod-content|current] [-n|--dry-run]
@@ -27,84 +30,14 @@ ensure_ssh_key_ready() {
   return 1
 }
 
-current_machine() {
-  if [[ -n "${MACHINE_NAME:-}" ]]; then
-    printf '%s\n' "$MACHINE_NAME"
-  else
-    hostname -s 2>/dev/null || hostname 2>/dev/null || printf 'unknown\n'
-  fi
-}
-
-ssh_target_for_machine() {
-  local machine="$1"
-  case "$machine" in
-    mbp*) printf '%s\n' 'schingon@mbp.local' ;;
-    2mini*) printf '%s\n' '2chingon@192.168.1.153' ;;
-    4mini*) printf '%s\n' 'salvajechingon@4mini-de-gallo.local' ;;
-    *) return 1 ;;
-  esac
-}
-
-repo_path_for_machine() {
-  local repo="$1" machine="$2"
-  case "$machine" in
-    mbp*)
-      case "$repo" in
-        config) printf '%s\n' '/Users/schingon/.config' ;;
-        notes) printf '%s\n' '/Users/schingon/Documents/notes' ;;
-        crypt|agent-vault) printf '%s\n' '/Users/schingon/Documents/crypt' ;;
-        pod-content) printf '%s\n' '/Users/schingon/Documents/pod-content' ;;
-      esac
-      ;;
-    2mini*)
-      case "$repo" in
-        config) printf '%s\n' '/Users/2chingon/.config' ;;
-        notes) printf '%s\n' '/Users/2chingon/Documents/2mepos/notes' ;;
-        crypt|agent-vault) printf '%s\n' '/Users/2chingon/Documents/2mepos/crypt' ;;
-        pod-content) printf '%s\n' '/Users/2chingon/Documents/2mepos/pod-content' ;;
-      esac
-      ;;
-    4mini*)
-      case "$repo" in
-        config) printf '%s\n' '/Users/salvajechingon/.config' ;;
-        notes) printf '%s\n' '/Users/salvajechingon/Documents/repos/notes' ;;
-        crypt|agent-vault) printf '%s\n' '/Users/salvajechingon/Documents/repos/crypt' ;;
-        pod-content) printf '%s\n' '/Users/salvajechingon/Documents/repos/pod-content' ;;
-      esac
-      ;;
-    *)
-      return 1
-      ;;
-  esac
-}
-
-detect_current_repo_name() {
-  local root base prefix first_component
-  root="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1
-  prefix="$(git rev-parse --show-prefix 2>/dev/null || true)"
-  first_component="${prefix%%/*}"
-  case "$first_component" in
-    notes|crypt|agent-vault|pod-content)
-      printf '%s\n' "$first_component"
-      return 0
-      ;;
-  esac
-  base="$(basename "$root")"
-  case "$base" in
-    .config) printf '%s\n' config ;;
-    notes|crypt|agent-vault|pod-content) printf '%s\n' "$base" ;;
-    *) return 1 ;;
-  esac
-}
-
 sync_peer() {
   local repo="$1" machine="$2" local_repo_path="$3" branch="$4" dry_run="$5"
   local repo_path ssh_target remote_url remote_status
-  repo_path="$(repo_path_for_machine "$repo" "$machine")" || {
+  repo_path="$(repo_sync_path_for_machine "$repo" "$machine")" || {
     printf '[repo-sync] %s: unknown repo path mapping for %s\n' "$machine" "$repo" >&2
     return 1
   }
-  ssh_target="$(ssh_target_for_machine "$machine")" || {
+  ssh_target="$(repo_sync_ssh_target_for_machine "$machine")" || {
     printf '[repo-sync] %s: unknown ssh target\n' "$machine" >&2
     return 1
   }
@@ -154,24 +87,21 @@ main() {
   done
 
   if [[ "$repo" == "current" ]]; then
-    repo="$(detect_current_repo_name)" || {
+    repo="$(repo_sync_detect_current_repo_name)" || {
       echo "[repo-sync] Current repo is not one of: config, notes, crypt, agent-vault, pod-content" >&2
       exit 1
     }
   fi
 
-  case "$repo" in
-    config|notes|crypt|agent-vault|pod-content) ;;
-    *) echo "Unknown repo: $repo" >&2; usage; exit 1 ;;
-  esac
+  repo_sync_validate_repo_name "$repo" || { echo "Unknown repo: $repo" >&2; usage; exit 1; }
 
   if [[ "$dry_run" != "true" ]]; then
     ensure_ssh_key_ready || exit 1
   fi
 
   local here local_repo_path branch
-  here="$(current_machine)"
-  local_repo_path="$(repo_path_for_machine "$repo" "$here")" || {
+  here="$(repo_sync_current_machine)"
+  local_repo_path="$(repo_sync_path_for_machine "$repo" "$here")" || {
     printf '[repo-sync] %s: unknown local repo path mapping for %s\n' "$here" "$repo" >&2
     exit 1
   }
