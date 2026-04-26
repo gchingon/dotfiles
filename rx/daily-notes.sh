@@ -9,8 +9,8 @@ Usage: daily [title...]
 Create or open today's note in the machine-specific notes directory.
 
 Behavior:
-  - No title: open an existing YYYY-MM-DD-*.md note for today if one exists.
-  - With title: open YYYY-MM-DD-slugged-title.md if it exists, otherwise create it.
+  - No title: open an existing YYYYMMDD-*.md note for today if one exists.
+  - With title: open YYYYMMDD-slugged-title.md if it exists, otherwise create it.
 
 Examples:
   daily
@@ -23,6 +23,11 @@ resolve_notes_dir() {
   local machine_name="" host_name=""
 
   [[ -f "$HOME/.config/machine.env" ]] && source "$HOME/.config/machine.env"
+
+  if [[ -n "${RW:-}" ]]; then
+    printf '%s\n' "$RW"
+    return 0
+  fi
 
   machine_name="${MACHINE_NAME:-}"
   host_name="$(hostname -s 2>/dev/null || hostname 2>/dev/null || true)"
@@ -39,7 +44,7 @@ resolve_notes_dir() {
       ;;
     *)
       if [[ -n "${NT:-}" ]]; then
-        printf '%s\n' "$NT"
+        printf '%s\n' "$NT/raw"
       elif [[ -d "$HOME/Documents/notes/raw" ]]; then
         printf '%s\n' "$HOME/Documents/notes/raw"
       else
@@ -72,10 +77,10 @@ slugify() {
 }
 
 find_existing_daily() {
-  local notes_dir="$1" today="$2"
+  local notes_dir="$1" compact_today="$2" legacy_today="$3"
   local preferred fallback
 
-  preferred="${notes_dir}/${today}-daily.md"
+  preferred="${notes_dir}/${compact_today}-daily.md"
 
   if [[ -f "$preferred" ]]; then
     printf '%s\n' "$preferred"
@@ -83,7 +88,24 @@ find_existing_daily() {
   fi
 
   shopt -s nullglob
-  local matches=("${notes_dir}/${today}-"*.md)
+  local matches=("${notes_dir}/${compact_today}-"*.md)
+  shopt -u nullglob
+
+  if [[ ${#matches[@]} -gt 0 ]]; then
+    fallback="$(printf '%s\n' "${matches[@]}" | sort | head -n 1)"
+    printf '%s\n' "$fallback"
+    return 0
+  fi
+
+  preferred="${notes_dir}/${legacy_today}-daily.md"
+
+  if [[ -f "$preferred" ]]; then
+    printf '%s\n' "$preferred"
+    return 0
+  fi
+
+  shopt -s nullglob
+  matches=("${notes_dir}/${legacy_today}-"*.md)
   shopt -u nullglob
 
   if [[ ${#matches[@]} -gt 0 ]]; then
@@ -96,7 +118,7 @@ find_existing_daily() {
 }
 
 main() {
-  local today notes_dir suffix file_path
+  local today daily_stamp notes_dir suffix file_path
 
   case "${1:-}" in
     -h|--help)
@@ -106,19 +128,20 @@ main() {
   esac
 
   today="$(date +%F)"
+  daily_stamp="$(date +%Y%m%d)"
   notes_dir="$(resolve_notes_dir)"
 
   if [[ $# -gt 0 ]]; then
     suffix="$(slugify "$*")"
-    file_path="${notes_dir}/${today}-${suffix}.md"
+    file_path="${notes_dir}/${daily_stamp}-${suffix}.md"
     mkdir -p "$notes_dir"
     [[ -e "$file_path" ]] || : > "$file_path"
   else
     mkdir -p "$notes_dir"
-    if file_path="$(find_existing_daily "$notes_dir" "$today")"; then
+    if file_path="$(find_existing_daily "$notes_dir" "$daily_stamp" "$today")"; then
       :
     else
-      file_path="${notes_dir}/${today}-daily.md"
+      file_path="${notes_dir}/${daily_stamp}-daily.md"
       : > "$file_path"
     fi
   fi

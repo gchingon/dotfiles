@@ -144,6 +144,7 @@ alias bs='brew search '                   # Search Homebrew formulas and casks; 
 alias v='nvim'                            # Open Neovim; source: nvim -- CLI tool
 alias nv='neovide'                        # Open Neovide GUI; source: neovide -- CLI tool
 alias dly='daily'                         # Open today's daily note; source: daily -- ~/.local/bin/daily
+alias daws='$RX/aws-daily-notes.sh'        # Open or create an AWS daily note; source: aws-daily-notes.sh -- /Users/schingon/.config/rx/aws-daily-notes.sh
 alias pdi='podidea'                       # Open or create pod-content idea note; source: podidea -- ~/.local/bin/podidea
 alias va='open-aliases'                   # Edit aliases.zsh; source: open-aliases() -- /Users/schingon/.config/zsh/modules/config.zsh
 alias vd='dreams_md_shortcut'             # Append a dream note skeleton; source: dreams_md_shortcut() -- /Users/schingon/.config/zsh/modules/functions.zsh
