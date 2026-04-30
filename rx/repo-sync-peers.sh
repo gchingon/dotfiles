@@ -56,7 +56,7 @@ sync_peer() {
 
   remote_status="$(
     ssh -o BatchMode=yes -o ConnectTimeout=8 "$ssh_target" \
-      "git -C \"$repo_path\" status --porcelain 2>/dev/null || exit 4" 2>/dev/null || true
+      "git -C \"$repo_path\" status --porcelain=v1 --untracked-files=no --ignore-submodules=dirty 2>/dev/null || exit 4" 2>/dev/null || true
   )"
   if [[ -n "$remote_status" ]]; then
     printf '[repo-sync] %s: peer repo is not clean:\n' "$machine" >&2
