@@ -54,19 +54,19 @@ confsync() {
   behind="${behind:-0}"
 
   if [[ -z "$git_status" && "$ahead" == "0" && "$behind" == "0" ]]; then
-    "$RX/repo-pull-peers.sh" config "$@"
+    "$RX/repo-sync-peers.sh" config "$@"
     return $?
   fi
 
   if [[ -z "$git_status" && "$ahead" == "0" && "$behind" -gt "0" ]]; then
     git -C "$repo" pull --ff-only -q "$remote" "$branch" || return 1
-    "$RX/repo-pull-peers.sh" config "$@"
+    "$RX/repo-sync-peers.sh" config "$@"
     return $?
   fi
 
   if [[ -z "$git_status" && "$ahead" -gt "0" && "$behind" == "0" ]]; then
     git -C "$repo" push -q "$remote" "$branch" || return 1
-    "$RX/repo-pull-peers.sh" config "$@"
+    "$RX/repo-sync-peers.sh" config "$@"
     return $?
   fi
 
@@ -81,5 +81,5 @@ confsync() {
     git-add-commit-push "$message"
   ) || return 1
 
-  "$RX/repo-pull-peers.sh" config "$@"
+  "$RX/repo-sync-peers.sh" config "$@"
 }

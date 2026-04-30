@@ -43,6 +43,11 @@ sync_peer() {
   }
   remote_url="${ssh_target}:${repo_path}"
 
+  if [[ "$dry_run" == "true" ]]; then
+    printf '[repo-sync] %s -> git -C %q push %q %q\n' "$machine" "$local_repo_path" "$remote_url" "$branch"
+    return 0
+  fi
+
   if ! ssh -o BatchMode=yes -o ConnectTimeout=8 "$ssh_target" "test -d \"$repo_path/.git\""; then
     printf 'missing repo: %s\n' "$repo_path" >&2
     printf '[repo-sync] %s: failed\n' "$machine" >&2
@@ -58,11 +63,6 @@ sync_peer() {
     printf '%s\n' "$remote_status" >&2
     printf '[repo-sync] %s: failed\n' "$machine" >&2
     return 1
-  fi
-
-  if [[ "$dry_run" == "true" ]]; then
-    printf '[repo-sync] %s -> git -C %q push %q %q\n' "$machine" "$local_repo_path" "$remote_url" "$branch"
-    return 0
   fi
 
   if git -C "$local_repo_path" push "$remote_url" "$branch"; then
