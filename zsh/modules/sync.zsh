@@ -24,12 +24,24 @@ _confsync_message() {
 
 confsync() {
   local repo branch upstream remote remote_branch
-  local git_status ahead behind message
+  local git_status ahead behind message dry_run arg
 
   repo="$HOME/.config"
   if ! git -C "$repo" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     echo "Not inside the config git repository."
     return 1
+  fi
+
+  dry_run="false"
+  for arg in "$@"; do
+    case "$arg" in
+      -n|--dry-run) dry_run="true" ;;
+    esac
+  done
+
+  if [[ "$dry_run" == "true" ]]; then
+    "$RX/repo-sync-peers.sh" config "$@"
+    return $?
   fi
 
   setup-ssh
