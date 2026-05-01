@@ -1,0 +1,2 @@
+yabai -m config layout stack
+yabai -m rule --add app=".*" space=1

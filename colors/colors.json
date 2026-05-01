@@ -33,101 +33,6 @@
       "yazi": {
         "theme": "tokyonight"
       },
-      "nushell": {
-        "foreground": "#c0caf5",
-        "background": "#11121d",
-        "cursor": "#bb9af7",
-        "accent": "#7aa2f7",
-        "separator": "#414868",
-        "empty": "dark_gray",
-        "bool": {
-          "fg": "#7dcfff",
-          "attr": "b"
-        },
-        "date": {
-          "fg": "#e0af68"
-        },
-        "float": {
-          "fg": "#9ece6a"
-        },
-        "int": {
-          "fg": "#9ece6a"
-        },
-        "range": {
-          "fg": "#7aa2f7"
-        },
-        "string": {
-          "fg": "#c0caf5"
-        },
-        "filesize": {
-          "fg": "#bb9af7"
-        },
-        "duration": {
-          "fg": "#7dcfff"
-        },
-        "row_index": {
-          "fg": "#7aa2f7"
-        },
-        "header": {
-          "fg": "#bb9af7",
-          "attr": "b"
-        },
-        "shape_block": {
-          "fg": "#7aa2f7"
-        },
-        "shape_directory": {
-          "fg": "#7aa2f7",
-          "attr": "b"
-        },
-        "shape_external": {
-          "fg": "#f7768e"
-        },
-        "shape_globpattern": {
-          "fg": "#bb9af7"
-        },
-        "shape_int": {
-          "fg": "#9ece6a"
-        },
-        "shape_float": {
-          "fg": "#9ece6a"
-        },
-        "shape_bool": {
-          "fg": "#7dcfff"
-        },
-        "shape_string": {
-          "fg": "#c0caf5"
-        },
-        "shape_filepath": {
-          "fg": "#7aa2f7"
-        },
-        "shape_key": {
-          "fg": "#e0af68"
-        },
-        "shape_operator": {
-          "fg": "#f7768e"
-        },
-        "shape_signature": {
-          "fg": "#bb9af7"
-        },
-        "shape_table": {
-          "fg": "#c0caf5"
-        },
-        "shape_error": {
-          "fg": "#f7768e",
-          "attr": "b"
-        },
-        "shape_hint": {
-          "fg": "#414868"
-        },
-        "search_result": {
-          "fg": "#11121d",
-          "bg": "#7aa2f7"
-        },
-        "status_bar": {
-          "fg": "#11121d",
-          "bg": "#7aa2f7"
-        }
-      },
       "palette": {
         "lualine": {
           "normal": {
@@ -227,101 +132,6 @@
       },
       "yazi": {
         "theme": "onedark"
-      },
-      "nushell": {
-        "foreground": "#a0a8b7",
-        "background": "#0F111A",
-        "cursor": "#61afef",
-        "accent": "#61afef",
-        "separator": "#1b1f27",
-        "empty": "dark_gray",
-        "bool": {
-          "fg": "#56b6c2",
-          "attr": "b"
-        },
-        "date": {
-          "fg": "#e5c07b"
-        },
-        "float": {
-          "fg": "#98c379"
-        },
-        "int": {
-          "fg": "#98c379"
-        },
-        "range": {
-          "fg": "#61afef"
-        },
-        "string": {
-          "fg": "#a0a8b7"
-        },
-        "filesize": {
-          "fg": "#c678dd"
-        },
-        "duration": {
-          "fg": "#56b6c2"
-        },
-        "row_index": {
-          "fg": "#61afef"
-        },
-        "header": {
-          "fg": "#c678dd",
-          "attr": "b"
-        },
-        "shape_block": {
-          "fg": "#61afef"
-        },
-        "shape_directory": {
-          "fg": "#61afef",
-          "attr": "b"
-        },
-        "shape_external": {
-          "fg": "#e06c75"
-        },
-        "shape_globpattern": {
-          "fg": "#c678dd"
-        },
-        "shape_int": {
-          "fg": "#98c379"
-        },
-        "shape_float": {
-          "fg": "#98c379"
-        },
-        "shape_bool": {
-          "fg": "#56b6c2"
-        },
-        "shape_string": {
-          "fg": "#a0a8b7"
-        },
-        "shape_filepath": {
-          "fg": "#61afef"
-        },
-        "shape_key": {
-          "fg": "#e5c07b"
-        },
-        "shape_operator": {
-          "fg": "#e06c75"
-        },
-        "shape_signature": {
-          "fg": "#c678dd"
-        },
-        "shape_table": {
-          "fg": "#a0a8b7"
-        },
-        "shape_error": {
-          "fg": "#be5046",
-          "attr": "b"
-        },
-        "shape_hint": {
-          "fg": "#2c313c"
-        },
-        "search_result": {
-          "fg": "#0F111A",
-          "bg": "#61afef"
-        },
-        "status_bar": {
-          "fg": "#0F111A",
-          "bg": "#61afef"
-        }
       },
       "palette": {
         "lualine": {
@@ -423,101 +233,6 @@
       "yazi": {
         "theme": "eldritch"
       },
-      "nushell": {
-        "foreground": "#d8e6e6",
-        "background": "#171928",
-        "cursor": "#f0313e",
-        "accent": "#8b75d9",
-        "separator": "#2a2e45",
-        "empty": "dark_gray",
-        "bool": {
-          "fg": "#0396b3",
-          "attr": "b"
-        },
-        "date": {
-          "fg": "#ccd663"
-        },
-        "float": {
-          "fg": "#2dcc82"
-        },
-        "int": {
-          "fg": "#2dcc82"
-        },
-        "range": {
-          "fg": "#8b75d9"
-        },
-        "string": {
-          "fg": "#d8e6e6"
-        },
-        "filesize": {
-          "fg": "#d154a1"
-        },
-        "duration": {
-          "fg": "#0396b3"
-        },
-        "row_index": {
-          "fg": "#8b75d9"
-        },
-        "header": {
-          "fg": "#d154a1",
-          "attr": "b"
-        },
-        "shape_block": {
-          "fg": "#8b75d9"
-        },
-        "shape_directory": {
-          "fg": "#8b75d9",
-          "attr": "b"
-        },
-        "shape_external": {
-          "fg": "#cc5860"
-        },
-        "shape_globpattern": {
-          "fg": "#d154a1"
-        },
-        "shape_int": {
-          "fg": "#2dcc82"
-        },
-        "shape_float": {
-          "fg": "#2dcc82"
-        },
-        "shape_bool": {
-          "fg": "#0396b3"
-        },
-        "shape_string": {
-          "fg": "#d8e6e6"
-        },
-        "shape_filepath": {
-          "fg": "#8b75d9"
-        },
-        "shape_key": {
-          "fg": "#ccd663"
-        },
-        "shape_operator": {
-          "fg": "#cc5860"
-        },
-        "shape_signature": {
-          "fg": "#d154a1"
-        },
-        "shape_table": {
-          "fg": "#d8e6e6"
-        },
-        "shape_error": {
-          "fg": "#cc2935",
-          "attr": "b"
-        },
-        "shape_hint": {
-          "fg": "#506299"
-        },
-        "search_result": {
-          "fg": "#171928",
-          "bg": "#8b75d9"
-        },
-        "status_bar": {
-          "fg": "#171928",
-          "bg": "#8b75d9"
-        }
-      },
       "palette": {
         "lualine": {
           "normal": {
@@ -618,101 +333,6 @@
       "yazi": {
         "theme": "nightblossom"
       },
-      "nushell": {
-        "foreground": "#FFEBF7",
-        "background": "#00041F",
-        "cursor": "#FFB3FF",
-        "accent": "#A99CFF",
-        "separator": "#1D1D38",
-        "empty": "dark_gray",
-        "bool": {
-          "fg": "#6ADCEA",
-          "attr": "b"
-        },
-        "date": {
-          "fg": "#FFB46E"
-        },
-        "float": {
-          "fg": "#22DA6E"
-        },
-        "int": {
-          "fg": "#22DA6E"
-        },
-        "range": {
-          "fg": "#A99CFF"
-        },
-        "string": {
-          "fg": "#FFEBF7"
-        },
-        "filesize": {
-          "fg": "#EB73BF"
-        },
-        "duration": {
-          "fg": "#6ADCEA"
-        },
-        "row_index": {
-          "fg": "#A99CFF"
-        },
-        "header": {
-          "fg": "#FFB3FF",
-          "attr": "b"
-        },
-        "shape_block": {
-          "fg": "#A99CFF"
-        },
-        "shape_directory": {
-          "fg": "#A99CFF",
-          "attr": "b"
-        },
-        "shape_external": {
-          "fg": "#E8336C"
-        },
-        "shape_globpattern": {
-          "fg": "#FFB3FF"
-        },
-        "shape_int": {
-          "fg": "#22DA6E"
-        },
-        "shape_float": {
-          "fg": "#22DA6E"
-        },
-        "shape_bool": {
-          "fg": "#6ADCEA"
-        },
-        "shape_string": {
-          "fg": "#FFEBF7"
-        },
-        "shape_filepath": {
-          "fg": "#A99CFF"
-        },
-        "shape_key": {
-          "fg": "#FFB46E"
-        },
-        "shape_operator": {
-          "fg": "#EB73BF"
-        },
-        "shape_signature": {
-          "fg": "#FFB3FF"
-        },
-        "shape_table": {
-          "fg": "#FFEBF7"
-        },
-        "shape_error": {
-          "fg": "#E8336C",
-          "attr": "b"
-        },
-        "shape_hint": {
-          "fg": "#1D1D38"
-        },
-        "search_result": {
-          "fg": "#00041F",
-          "bg": "#A99CFF"
-        },
-        "status_bar": {
-          "fg": "#00041F",
-          "bg": "#A99CFF"
-        }
-      },
       "palette": {
         "render_markdown": {
           "color1_bg": "#65285D",
@@ -759,101 +379,6 @@
       "yazi": {
         "theme": "nightowl"
       },
-      "nushell": {
-        "foreground": "#d6deeb",
-        "background": "#011627",
-        "cursor": "#c792ea",
-        "accent": "#82aaff",
-        "separator": "#112630",
-        "empty": "dark_gray",
-        "bool": {
-          "fg": "#7fdbca",
-          "attr": "b"
-        },
-        "date": {
-          "fg": "#ecc48d"
-        },
-        "float": {
-          "fg": "#addb67"
-        },
-        "int": {
-          "fg": "#addb67"
-        },
-        "range": {
-          "fg": "#82aaff"
-        },
-        "string": {
-          "fg": "#d6deeb"
-        },
-        "filesize": {
-          "fg": "#c792ea"
-        },
-        "duration": {
-          "fg": "#7fdbca"
-        },
-        "row_index": {
-          "fg": "#82aaff"
-        },
-        "header": {
-          "fg": "#c792ea",
-          "attr": "b"
-        },
-        "shape_block": {
-          "fg": "#82aaff"
-        },
-        "shape_directory": {
-          "fg": "#82aaff",
-          "attr": "b"
-        },
-        "shape_external": {
-          "fg": "#ff5874"
-        },
-        "shape_globpattern": {
-          "fg": "#c792ea"
-        },
-        "shape_int": {
-          "fg": "#addb67"
-        },
-        "shape_float": {
-          "fg": "#addb67"
-        },
-        "shape_bool": {
-          "fg": "#7fdbca"
-        },
-        "shape_string": {
-          "fg": "#d6deeb"
-        },
-        "shape_filepath": {
-          "fg": "#82aaff"
-        },
-        "shape_key": {
-          "fg": "#ecc48d"
-        },
-        "shape_operator": {
-          "fg": "#c792ea"
-        },
-        "shape_signature": {
-          "fg": "#c792ea"
-        },
-        "shape_table": {
-          "fg": "#d6deeb"
-        },
-        "shape_error": {
-          "fg": "#ff5874",
-          "attr": "b"
-        },
-        "shape_hint": {
-          "fg": "#637777"
-        },
-        "search_result": {
-          "fg": "#011627",
-          "bg": "#82aaff"
-        },
-        "status_bar": {
-          "fg": "#011627",
-          "bg": "#82aaff"
-        }
-      },
       "palette": {
         "render_markdown": {
           "color1_bg": "#2d2c5d",
@@ -873,7 +398,7 @@
         "color_scheme": "matrix"
       },
       "terminal": {
-        "background": "#002100",
+        "background": "#001200",
         "foreground": "#00FF41",
         "cursor": "#39FF14",
         "color0": "#0D1F0D",
@@ -900,106 +425,11 @@
       "yazi": {
         "theme": "matrix"
       },
-      "nushell": {
-        "foreground": "#00FF41",
-        "background": "#002100",
-        "cursor": "#39FF14",
-        "accent": "#00FF41",
-        "separator": "#0D1F0D",
-        "empty": "dark_gray",
-        "bool": {
-          "fg": "#22DDBB",
-          "attr": "b"
-        },
-        "date": {
-          "fg": "#DDDD22"
-        },
-        "float": {
-          "fg": "#00FF41"
-        },
-        "int": {
-          "fg": "#00FF41"
-        },
-        "range": {
-          "fg": "#4488EE"
-        },
-        "string": {
-          "fg": "#00FF41"
-        },
-        "filesize": {
-          "fg": "#CC55DD"
-        },
-        "duration": {
-          "fg": "#22DDBB"
-        },
-        "row_index": {
-          "fg": "#4488EE"
-        },
-        "header": {
-          "fg": "#39FF14",
-          "attr": "b"
-        },
-        "shape_block": {
-          "fg": "#4488EE"
-        },
-        "shape_directory": {
-          "fg": "#4488EE",
-          "attr": "b"
-        },
-        "shape_external": {
-          "fg": "#FF3344"
-        },
-        "shape_globpattern": {
-          "fg": "#CC55DD"
-        },
-        "shape_int": {
-          "fg": "#00FF41"
-        },
-        "shape_float": {
-          "fg": "#00FF41"
-        },
-        "shape_bool": {
-          "fg": "#22DDBB"
-        },
-        "shape_string": {
-          "fg": "#00FF41"
-        },
-        "shape_filepath": {
-          "fg": "#4488EE"
-        },
-        "shape_key": {
-          "fg": "#DDDD22"
-        },
-        "shape_operator": {
-          "fg": "#CC55DD"
-        },
-        "shape_signature": {
-          "fg": "#CC55DD"
-        },
-        "shape_table": {
-          "fg": "#00FF41"
-        },
-        "shape_error": {
-          "fg": "#FF3344",
-          "attr": "b"
-        },
-        "shape_hint": {
-          "fg": "#447744"
-        },
-        "search_result": {
-          "fg": "#002100",
-          "bg": "#00FF41"
-        },
-        "status_bar": {
-          "fg": "#002100",
-          "bg": "#00FF41"
-        }
-      },
       "palette": {
         "lualine": {
           "normal": {
             "a": {
-              "fg": "#002100",
+              "fg": "#001200",
               "bg": "#00FF41"
             },
             "b": {
@@ -1008,18 +438,18 @@
             },
             "c": {
               "fg": "#00FF41",
-              "bg": "#002100"
+              "bg": "#001200"
             }
           },
           "insert": {
             "a": {
-              "fg": "#002100",
+              "fg": "#001200",
               "bg": "#4488EE"
             }
           },
           "visual": {
             "a": {
-              "fg": "#002100",
+              "fg": "#001200",
               "bg": "#CC55DD"
             }
           },
@@ -1031,22 +461,22 @@
           },
           "command": {
             "a": {
-              "fg": "#002100",
+              "fg": "#001200",
               "bg": "#DDDD22"
             }
           },
           "inactive": {
             "a": {
               "fg": "#447744",
-              "bg": "#002100"
+              "bg": "#001200"
             },
             "b": {
               "fg": "#447744",
-              "bg": "#002100"
+              "bg": "#001200"
             },
             "c": {
               "fg": "#447744",
-              "bg": "#002100"
+              "bg": "#001200"
             }
           }
         },

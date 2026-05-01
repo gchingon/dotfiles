@@ -11,10 +11,6 @@ end
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear Search Highlight" })
 map("n", "S", ":%s//g<Left><Left>", { silent = false, desc = "Search and Replace" })
 
--- Use '.' to enter command mode instantly
-map("n", ".", ":", { silent = false })
-map("n", ":", ".", { silent = false })
-
 -- Redo
 map("n", "U", "<cmd>redo<cr>", { desc = "Redo" })
 

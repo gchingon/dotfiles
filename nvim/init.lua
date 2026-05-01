@@ -1,5 +1,5 @@
 -- $HOME/.config/nvim/init.lua
-vim.g.mapleader = ";"
+vim.g.mapleader = " "
 
 -- ============================================================================
 -- Plugin Setup Utilities
@@ -169,6 +169,7 @@ end)
 -- Load Plugin Configurations
 -- ============================================================================
 
+require("plugins.treesitter")
 require("plugins.mini")
 require("plugins.markview")
 require("plugins.which-key")
