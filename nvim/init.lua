@@ -1,4 +1,17 @@
 -- $HOME/.config/nvim/init.lua
+
+-- Disable treesitter for Lua BEFORE anything loads
+-- This prevents the treesitter query error in Neovim 0.12.2
+do
+  local orig_start = vim.treesitter.start
+  vim.treesitter.start = function(bufnr, lang, ...)
+    if lang == "lua" or (not lang and vim.bo[bufnr or 0].filetype == "lua") then
+      return nil
+    end
+    return orig_start(bufnr, lang, ...)
+  end
+end
+
 vim.g.mapleader = " "
 
 -- ============================================================================

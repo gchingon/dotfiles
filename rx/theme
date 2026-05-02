@@ -87,6 +87,12 @@ nudge_nvim() {
   fi
 }
 
+reload_sketchybar() {
+  if command -v sketchybar >/dev/null 2>&1 && pgrep -x sketchybar >/dev/null 2>&1; then
+    sketchybar --reload >/dev/null 2>&1 || true
+  fi
+}
+
 # Main
 case "${1:-}" in
   --help|-h)
@@ -121,5 +127,6 @@ printf '{"active": "%s"}\n' "$theme" > "$ACTIVE_FILE"
 apply_kitty "$theme"
 apply_yazi "$theme"
 nudge_nvim
+reload_sketchybar
 
 echo "Theme: $theme"

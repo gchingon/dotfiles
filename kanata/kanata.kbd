@@ -5,9 +5,9 @@
 ;;
 ;; LAYER MAP:
 ;;   main    — daily typing, home row mods
-;;   apps    — app switching         (tab+0 chord, one-shot 3s)
-;;   system  — system controls       (tab+[ chord, one-shot 3s)
-;;   raycast — raycast + kitty jumps (tab+] chord, one-shot 3s)
+;;   apps    — app switching         (caps+j chord, one-shot 3s)
+;;   raycast — raycast + system      (caps+u chord, one-shot 3s)
+;;   yabai   — window placement      (caps+m chord, one-shot 3s)
 ;;   emoji   — quick emoji           (double-tap Esc)
 ;;----------------------------------------------------
 
@@ -48,14 +48,15 @@
 
 ;;----------------------------------------------------
 ;; Sublayer entry — chords activate layers
-;; tab+0 → apps (one-shot 3s)   tab+[ → system (one-shot 3s)
-;; tab+] → raycast (one-shot 3s)
+;; caps+j → apps (one-shot 3s)
+;; caps+u → raycast (one-shot 3s)
+;; caps+m → yabai (one-shot 3s)
 ;; Chord timeout $kord-t = 500ms; release condition = all-released
 ;;----------------------------------------------------
 (defchordsv2
-  (tab 2) (one-shot 3000 (layer-while-held apps))    $kord-t all-released ()
-  (tab 3) (one-shot 3000 (layer-while-held raycast)) $kord-t all-released ()
-  (tab 4) (one-shot 3000 (layer-while-held system))  $kord-t all-released ()
+  (caps j) (one-shot 3000 (layer-while-held apps))    $kord-t all-released ()
+  (caps u) (one-shot 3000 (layer-while-held raycast)) $kord-t all-released ()
+  (caps m) (one-shot 3000 (layer-while-held yabai))   $kord-t all-released ()
 )
 
 ;;----------------------------------------------------
@@ -84,9 +85,9 @@
 ;; MAIN layer — daily typing, home row mods
 ;; Physical positions → Dvorak output via process-unmapped-keys
 ;;
-;; tab+0 chord → apps layer (one-shot 3s)
-;; tab+[ chord → system layer (one-shot 3s)
-;; tab+] chord → raycast layer (one-shot 3s)
+;; caps+j chord → apps layer (one-shot 3s)
+;; caps+u chord → raycast layer (one-shot 3s)
+;; caps+m chord → yabai layer (one-shot 3s)
 ;; Esc = tap esc / double-tap → emoji layer (one-shot)
 ;; Return = tap ret / double-tap → open kitty
 ;;----------------------------------------------------
@@ -101,7 +102,7 @@
 
 ;;----------------------------------------------------
 ;; APPS layer — app switching
-;; Activated by: caps+u chord (one-shot 3s)
+;; Activated by: caps+j chord (one-shot 3s)
 ;;
 ;; Physical → App (a-* aliases in aliases-apps.kbd)
 ;;   QWERTY: e=Passwords  r=Dictionary  t=Preview  y=SystemSettings
@@ -119,40 +120,40 @@
 )
 
 ;;----------------------------------------------------
-;; RAYCAST layer — Raycast utilities + kitty session jumps
-;; Activated by: caps+m chord (one-shot 3s)
+;; RAYCAST layer — Raycast utilities + kitty jumps + system utilities
+;; Activated by: caps+u chord (one-shot 3s)
 ;;
 ;; QWERTY e–o → kitty sessions:
 ;;   e=dotfiles  r=nvim  t=docker  y=podcast  u=home  i=ssh2  o=ssh4
-;; HOME a–k → Raycast utilities:
-;;   a=AI  s=Clipboard  d=Files  f=Emoji  g=Spotify  h=YouTube  j=Trash  k=ZoomMute
+;; Raycast: a=AI d=Files f=Emoji g=Spotify h=YouTube
+;; System: p=Screenshot z/x/c=Audio/Wifi/Bluetooth j=AirDrop k=Mic n=Meeting m=Dots ,=Theme .=SketchyBar
 ;;----------------------------------------------------
 (deflayer raycast
   _       XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
   grv     1       2       3       4       5       6       7       8       9       0       _       _      _     ;; NUM
-  _       XX      XX      @k-dots @k-nvim @k-dckr @k-podc @k-home @k-ssh2 @k-ssh4 XX      _       _      _     ;; QWERTY
-  _       @rayai  @rclip  @rfile  @remoj  @sptfd  @tbefd  @mtrsh  @zmute  XX      XX      _       _             ;; HOME
-  _       XX      XX      XX      XX      XX      XX      XX      _       _       _       _       _             ;; BOTTOM
+  _       XX      XX      @k-dots @k-nvim @k-dckr @k-podc @k-home @k-ssh2 @k-ssh4 @sys-cap _       _      _     ;; QWERTY
+  _       @rayai  XX      @rfile  @remoj  @sptfd  @tbefd  @sys-shr @sys-mic XX      XX      _       _             ;; HOME
+  _       @sys-aud @sys-wfi @sys-blu XX   XX      @sys-cal @sys-dot @sys-col @sys-sbar XX    _       _             ;; BOTTOM
   _       _       _       _              _                _       _       _       _       _                     ;; MOD
 )
 
 ;;----------------------------------------------------
-;; SYSTEM layer — system controls
-;; Activated by: caps+; chord (one-shot 3s)
+;; YABAI layer — window placement
+;; Activated by: caps+m chord (one-shot 3s)
 ;;
-;; Physical → Action (sys-* aliases in aliases-system.kbd)
-;;   u = Audio          i = Wifi          o = Bluetooth
-;;   p = Screenshot
-;;   j = Activity       k = Share/AirDrop l = Mic mute
-;;   ; = Lock screen
-;;   m = Next meeting   , = Dots sync     . = Colorscheme next
+;; j/l = left/right half
+;; i/o = top-left/top-right
+;; ,/. = bottom-left/bottom-right
+;; 1/2/3 = thirds
+;; q/w/e = ultrawide top sixths, a/s/d = ultrawide bottom sixths
+;; u/p = 60/40 split, f = fullscreen
 ;;----------------------------------------------------
-(deflayer system
+(deflayer yabai
   _      XX      XX      XX      XX      XX      XX       XX       XX       XX       XX       XX     XX           ;; Fn
-  grv    XX      XX      XX      XX      XX      XX       XX       XX       XX       XX       _      _      _     ;; NUM
-  _      XX      XX      XX      XX      XX      XX       @sys-aud @sys-wfi @sys-blu @sys-cap _      _      _     ;; QWERTY
-  _      XX      XX      XX      XX      _       XX       @sys-act @sys-shr @sys-mic @sys-lok _      _             ;; HOME
-  _      XX      XX      XX      XX      XX      XX       @sys-cal @sys-dot @sys-col XX       _      _             ;; BOTTOM
+  grv    @y-3l   @y-3c   @y-3r   XX      XX      XX       XX       XX       XX       XX       _      _      _     ;; NUM
+  _      @y-6tl  @y-6tc  @y-6tr  XX      XX      XX       @y-l60   @y-tl    @y-tr    @y-r40   _      _      _     ;; QWERTY
+  _      @y-6bl  @y-6bc  @y-6br  @y-full XX      XX       @y-left  XX       @y-right XX       _      _             ;; HOME
+  _      XX      XX      XX      XX      XX      XX       XX       @y-bl    @y-br    XX       _      _             ;; BOTTOM
   _      _       _       _              _                _        _        _        _        _                    ;; MOD
 )
 

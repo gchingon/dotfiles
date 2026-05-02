@@ -141,6 +141,38 @@ local function apply_highlight_groups(groups)
   end
 end
 
+local function merge_markdown_headers(def, palette)
+  local md = palette.extras and palette.extras.render_markdown
+  if not md then return def end
+
+  local fg = md.color_fg or palette.base.bg0
+  local heads = {
+    md.color1_bg or palette.base.blue,
+    md.color2_bg or palette.base.green,
+    md.color3_bg or palette.base.cyan,
+    md.color4_bg or palette.base.magenta,
+    md.color5_bg or palette.base.yellow,
+    md.color6_bg or palette.base.gray,
+  }
+
+  def.markdown_groups = def.markdown_groups or {}
+  for i, bg in ipairs(heads) do
+    local spec = { fg = fg, bg = bg, bold = true }
+    def.markdown_groups["markdownH" .. i] = spec
+    def.markdown_groups["@markup.heading." .. i] = spec
+    def.markdown_groups["@markup.heading." .. i .. ".markdown"] = spec
+    def.markdown_groups["MarkviewHeading" .. i] = spec
+    def.markdown_groups["RenderMarkdownH" .. i] = spec
+  end
+
+  def.markdown_groups["@markup.heading"] = { fg = palette.base.fg, bold = true }
+  def.markdown_groups.markdownCode = def.markdown_groups.markdownCode or { fg = palette.base.green }
+  def.markdown_groups.markdownBlockquote = def.markdown_groups.markdownBlockquote or { fg = palette.base.gray, italic = true }
+  def.markdown_groups.markdownTableDelimiter = def.markdown_groups.markdownTableDelimiter or { fg = palette.base.gray }
+
+  return def
+end
+
 local function apply_theme_module(module_name, palette)
   local ok, mod = pcall(require, "themes." .. module_name)
   if not ok then
@@ -148,6 +180,7 @@ local function apply_theme_module(module_name, palette)
     return
   end
   local def = mod.build(palette)
+  def = merge_markdown_headers(def, palette)
   def = resolve_placeholders(def, palette.base)
   local order = {
     "base_palette", "syntax_highlighting", "ui_elements",

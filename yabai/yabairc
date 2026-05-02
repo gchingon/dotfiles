@@ -1,2 +1,47 @@
-yabai -m config layout stack
-yabai -m rule --add app=".*" space=1
+#!/usr/bin/env zsh
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+displays_json="$(yabai -m query --displays 2>/dev/null || true)"
+display_count="$(jq 'length' 2>/dev/null <<<"$displays_json" || echo 1)"
+host="$(hostname -s 2>/dev/null || hostname)"
+
+if [[ "$display_count" -gt 1 || "$host" == *2mini* || "$host" == *4mini* ]]; then
+  default_layout="float"
+else
+  default_layout="stack"
+fi
+
+yabai -m config \
+  layout "$default_layout" \
+  window_placement second_child \
+  window_insertion_point focused \
+  window_zoom_persist on \
+  window_shadow off \
+  window_gap 0 \
+  top_padding 0 \
+  bottom_padding 0 \
+  left_padding 0 \
+  right_padding 0 \
+  split_ratio 0.50 \
+  auto_balance off \
+  mouse_follows_focus off \
+  focus_follows_mouse off \
+  mouse_modifier fn \
+  mouse_action1 move \
+  mouse_action2 resize \
+  mouse_drop_action swap
+
+for sid in 1 2 3 4 5 6 7 8 9 10; do
+  yabai -m space "$sid" --label "desk$sid" >/dev/null 2>&1 || true
+done
+
+yabai -m rule --add app="^(Calculator|System Settings|Activity Monitor|Raycast|CleanShot X|Karabiner-Elements)$" manage=off
+yabai -m rule --add app=".*" sub-layer=normal
+
+if command -v sketchybar >/dev/null 2>&1; then
+  yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
+  yabai -m signal --add event=space_changed action="sketchybar --trigger space_change"
+fi
+
+yabai -m rule --apply

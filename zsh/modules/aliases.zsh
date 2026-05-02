@@ -133,7 +133,7 @@ alias ....='../../..'                     # Move up three directories; source: c
 
 # ===== Brew Aliases =====
 alias bi='brew install '                  # Install a Homebrew package; source: brew -- CLI tool
-alias bl='brew list'                      # List installed Homebrew packages; source: brew -- CLI tool
+alias bl='brew leaves'                      # List installed Homebrew packages; source: brew -- CLI tool
 alias bri='brew reinstall'                # Reinstall a Homebrew package; source: brew -- CLI tool
 alias brm='brew uninstall --force --zap'  # Uninstall and zap a Homebrew package; source: brew -- CLI tool
 alias bu='brew update; brew upgrade; brew cleanup' # Update, upgrade, and clean Homebrew; source: brew -- CLI tool
