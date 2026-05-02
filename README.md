@@ -5,7 +5,7 @@ date: 2024-04-18
 # README
 
 to install run
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/gallo-s-chingon/dotfiles/main/rx/bootstrap-new-mac.sh)`
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/gchingon/dotfiles/main/rx/bootstrap-new-mac.sh)`
 ## ~Why the weird name for *dotfiles*~ Why did I go back to dotfiles?
 
 Everyone uses dotfiles, I wanted to be ***special*** but typing out `daught-fylz` grew to be cumbersome and annoying.
@@ -25,7 +25,7 @@ folder for custom shell scripts which are then hardlinked to `~/.local/bin/short
 
 ### zsh
 
-the impetus to make dotfiles after customizing `.zshrc` eventually switching over to nushell
+the impetus to make dotfiles after customizing `.zshrc` ~eventually switching over to nushell~ Changed my mind, nushell too much work to try to configure and I don't mess with "data" in the terminal enough to be worthwhile.
 
 ## everything else
 
