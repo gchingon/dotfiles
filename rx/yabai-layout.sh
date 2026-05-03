@@ -5,6 +5,12 @@ set -euo pipefail
 
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
+if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
+  real_user="$(stat -f "%Su" /dev/console)"
+  real_uid="$(id -u "$real_user")"
+  exec launchctl asuser "$real_uid" sudo -u "$real_user" "$0" "$@"
+fi
+
 usage() {
   cat <<'EOF'
 Usage: yabai-layout.sh <command>

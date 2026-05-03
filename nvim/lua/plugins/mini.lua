@@ -152,6 +152,8 @@ setup_plugin("mini.hipatterns", function(hipatterns)
   }
 
   local highlighters = {}
+  highlighters.hex_color = hipatterns.gen_highlighter.hex_color({ style = "bg" })
+
   for word, group in pairs(callout_map) do
     table.insert(highlighters, { pattern = wpat(word), group = group })
   end

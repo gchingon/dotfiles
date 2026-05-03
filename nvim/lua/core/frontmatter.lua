@@ -106,6 +106,25 @@ local function ancestor_parts(filepath)
     return rev, segs
 end
 
+local function find_ancestor_index(segs, segment)
+    for i, seg in ipairs(segs) do
+        if seg == segment then
+            return i
+        end
+    end
+    return nil
+end
+
+local function has_hugo_config(filepath)
+    local dir = vim.fn.fnamemodify(filepath, ":p:h")
+    return vim.fn.findfile("hugo.toml", dir .. ";") ~= ""
+        or vim.fn.findfile("config.toml", dir .. ";") ~= ""
+        or vim.fn.findfile("hugo.yaml", dir .. ";") ~= ""
+        or vim.fn.findfile("config.yaml", dir .. ";") ~= ""
+        or vim.fn.findfile("hugo.yml", dir .. ";") ~= ""
+        or vim.fn.findfile("config.yml", dir .. ";") ~= ""
+end
+
 -- Does this segment look like a domain? e.g. "tokyo.dev", "gallochingon.com"
 local function is_domain(segment)
     return segment:match("^[%w][%w%-]*%.[%a][%a]%a?%a?$") ~= nil
@@ -114,11 +133,21 @@ end
 -- Hugo subtype: look for content/{featured,episodes,blog} in full path
 local HUGO_SUBTYPES = { featured = true, episodes = true, blog = true }
 
-local function detect_hugo_subtype(forward_segs)
-    for i = 1, #forward_segs - 1 do
-        if forward_segs[i] == "content" and HUGO_SUBTYPES[forward_segs[i + 1]] then
-            return forward_segs[i + 1]
-        end
+local function detect_hugo_subtype(forward_segs, filepath)
+    local content_idx = find_ancestor_index(forward_segs, "content")
+    if not content_idx then
+        return "blog"
+    end
+
+    local next_seg = forward_segs[content_idx + 1]
+    local filename = vim.fn.fnamemodify(filepath or "", ":t")
+
+    if filename == "_index.md" or filename == "_index.markdown" or filename == "_index.mdx" then
+        return "index"
+    end
+
+    if next_seg and HUGO_SUBTYPES[next_seg] then
+        return next_seg
     end
     return "blog" -- sensible default for content/ without recognized subtype
 end
@@ -138,12 +167,16 @@ function M.classify(filepath)
     local ancestors, forward_segs = ancestor_parts(filepath)
     local depth = math.min(4, #ancestors)
 
+    if has_hugo_config(filepath) then
+        return "hugo", detect_hugo_subtype(forward_segs, filepath)
+    end
+
     for i = 1, depth do
         local seg = ancestors[i]
 
         -- Domain-bearing dir → Hugo site
         if is_domain(seg) then
-            return "hugo", detect_hugo_subtype(forward_segs)
+            return "hugo", detect_hugo_subtype(forward_segs, filepath)
         end
 
         if seg == "podcast" then
@@ -182,6 +215,8 @@ TEMPLATES.notes = {
     { "author",  "Gallo Chingon" },
     { "tags",    "[]"},
 }
+
+TEMPLATES["hugo:index"] = TEMPLATES.notes
 
 -- ── Podcast ─────────────────────────────────────────
 TEMPLATES.podcast = {
@@ -270,22 +305,49 @@ end
 -- FM parsing (shared)
 -- =============================
 
+local function should_use_toml_frontmatter(delimiter, body_lines)
+    if delimiter == "+++" then
+        return true
+    end
+
+    for _, line in ipairs(body_lines or {}) do
+        if line:match("^%s*%[.*%]%s*$") or line:match("^[%w_%-]+%s*=") then
+            return true
+        end
+    end
+
+    return false
+end
+
 local function parse_frontmatter(lines)
-    if not lines or #lines == 0 or lines[1] ~= "---" then
+    if not lines or #lines == 0 or (lines[1] ~= "---" and lines[1] ~= "+++") then
         return nil, 0
     end
-    local fm, end_idx = {}, 0
+
+    local delimiter = lines[1]
+    local fm, passthrough, body_lines, end_idx = {}, {}, {}, 0
     for i = 2, #lines do
-        if lines[i] == "---" then
+        if lines[i] == delimiter then
             end_idx = i
             break
         end
-        local key, value = lines[i]:match("^([%w_%-%[%]]+):%s*(.*)$")
-        if key and value then
-            fm[key] = vim.trim(value)
+
+        table.insert(body_lines, lines[i])
+
+        local yaml_key, yaml_value = lines[i]:match("^([%w_%-%[%]]+):%s*(.*)$")
+        local toml_key, toml_value = lines[i]:match("^([%w_%-]+)%s*=%s*(.*)$")
+        if yaml_key and yaml_value then
+            fm[yaml_key] = vim.trim(yaml_value)
+        elseif toml_key and toml_value then
+            fm[toml_key] = vim.trim(toml_value)
+        else
+            table.insert(passthrough, lines[i])
         end
     end
+
     if end_idx == 0 then return nil, 0 end
+    fm.__passthrough = passthrough
+    fm.__delimiter = should_use_toml_frontmatter(delimiter, body_lines) and "+++" or delimiter
     return fm, end_idx
 end
 
@@ -303,10 +365,22 @@ local function merge_frontmatter(existing, context, subtype)
     if not tpl then return existing end
 
     local fm = {}
-    for k, v in pairs(existing or {}) do fm[k] = v end
+    for k, v in pairs(existing or {}) do
+        if type(k) ~= "string" or k:sub(1, 2) ~= "__" then
+            fm[k] = v
+        end
+    end
+    fm.__passthrough = existing and existing.__passthrough or {}
+    fm.__delimiter = existing and existing.__delimiter or "---"
 
     -- Whether this template uses an id field
-    local needs_id = (context == "notes" or context == "podcast")
+    local needs_id = false
+    for _, field in ipairs(tpl) do
+        if field[1] == "id" then
+            needs_id = true
+            break
+        end
+    end
 
     for _, field in ipairs(tpl) do
         local fname, default = field[1], field[2]
@@ -335,36 +409,69 @@ end
 -- FM building (shared)
 -- =============================
 
+local function toml_value(value)
+    local v = vim.trim(tostring(value or ""))
+    if v == "" then
+        return '""'
+    end
+    if v:match('^".*"$') or v:match("^'.*'$") then
+        return v
+    end
+    if v:match("^%[.*%]$") or v:match("^{.*}$") then
+        return v
+    end
+    if v == "true" or v == "false" then
+        return v
+    end
+    if tonumber(v) ~= nil then
+        return v
+    end
+    return string.format("%q", v)
+end
+
+local function frontmatter_line(delimiter, key, value)
+    if delimiter == "+++" then
+        return string.format("%s = %s", key, toml_value(value))
+    end
+    return string.format("%s: %s", key, value)
+end
+
 local function build_frontmatter_lines(fm, context, subtype)
     local key = template_key(context, subtype)
     local tpl = TEMPLATES[key]
     if not tpl then return { "---", "---" } end
 
-    local out = { "---" }
+    local delimiter = fm.__delimiter or "---"
+    local out = { delimiter }
     local used = {}
+    local hard_keys = { "id", "created", "author", "tags" }
 
-    -- Template-ordered keys first
-    for _, field in ipairs(tpl) do
-        local fname = field[1]
+    -- Hard-set keys first.
+    for _, fname in ipairs(hard_keys) do
         if fm[fname] ~= nil then
-            table.insert(out, string.format("%s: %s", fname, fm[fname]))
+            table.insert(out, frontmatter_line(delimiter, fname, fm[fname]))
             used[fname] = true
         end
     end
 
-    -- Extras alphabetically
+    -- Every other root key alphabetically.
     local extras = {}
     for k, v in pairs(fm) do
-        if not used[k] then
+        if type(k) ~= "string" or (k:sub(1, 2) ~= "__" and not used[k]) then
             table.insert(extras, { k, v })
         end
     end
     table.sort(extras, function(a, b) return a[1] < b[1] end)
     for _, kv in ipairs(extras) do
-        table.insert(out, string.format("%s: %s", kv[1], kv[2]))
+        table.insert(out, frontmatter_line(delimiter, kv[1], kv[2]))
     end
 
-    table.insert(out, "---")
+    -- Preserve table blocks, arrays of tables, comments, blanks, and other body lines exactly.
+    for _, line in ipairs(fm.__passthrough or {}) do
+        table.insert(out, line)
+    end
+
+    table.insert(out, delimiter)
     return out
 end
 
