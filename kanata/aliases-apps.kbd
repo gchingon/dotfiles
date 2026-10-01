@@ -1,49 +1,54 @@
 ;;----------------------------------------------------
 ;; App-switching aliases — platform-conditional
-;; Used by: deflayer apps
-;; Pattern: caps+u chord to enter layer, tap target → focus or launch app
+;; Used by: deflayer apps (caps held)
+;; Pattern: hold caps, tap target → focus or launch app
 ;;----------------------------------------------------
 
 (platform (macos)
   (defalias
-    a-afnt (cmd zsh -lc "$RX/app-switch.sh 'Affinity Designer'")
-    a-cale (cmd zsh -lc "$RX/app-switch.sh Calendar")
-    a-clau (cmd zsh -lc "$RX/app-switch.sh Claude")
-    a-codx (cmd zsh -lc "$RX/app-switch.sh Codex")
-    a-comt (cmd zsh -lc "$RX/app-switch.sh Comet")
-    a-dict (cmd zsh -lc "$RX/app-switch.sh Dictionary")
-    a-find (cmd zsh -lc "$RX/app-switch.sh Finder")
-    a-msgs (cmd zsh -lc "$RX/app-switch.sh Messages")
-    a-note (cmd zsh -lc "$RX/app-switch.sh Notes")
-    a-obsi (cmd zsh -lc "$RX/app-switch.sh Obsidian")
-    a-pass (cmd zsh -lc "$RX/app-switch.sh Passwords")
-    a-prev (cmd zsh -lc "$RX/app-switch.sh Preview")
-    a-sfri (cmd zsh -lc "$RX/app-switch.sh Safari")
-    a-spot (cmd zsh -lc "$RX/app-switch.sh Spotify")
-    a-sset (cmd zsh -lc "$RX/app-switch.sh 'System Settings'")
-    a-davr (cmd zsh -lc "$RX/app-switch.sh 'DaVinci Resolve'")
-    a-term (cmd zsh -lc "$RX/app-switch.sh kitty")
-    a-what (cmd zsh -lc "$RX/app-switch.sh WhatsApp")
+    a-spot (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Spotify")
+    a-pass (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Passwords")
+    a-cale (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Calendar")
+    a-prev (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Preview")
+    a-davr (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh 'DaVinci Resolve'")
+
+    a-comt (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Comet")
+    a-clau (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Claude")
+    a-obsi (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Obsidian")
+    a-note (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Notes")
+    a-msgs (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Messages")
+    a-sset (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh 'System Settings'")
+
+    a-find (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh Finder")
+    a-what (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh WhatsApp")
+    a-grok (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh 'Grok Bot'")
+    a-afnt (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh 'Affinity Designer'")
+
+    a-term (cmd zsh -lc "/Users/schingon/.config/rx/app-switch.sh kitty")
   )
 )
 
 (platform (linux)
   (defalias
-    a-term (cmd bash -c "wmctrl -xa kitty || kitty &")
-    a-brws (cmd bash -c "wmctrl -xa firefox || firefox &")
-    a-obsi (cmd bash -c "wmctrl -xa obsidian || obsidian &")
-    a-clau (cmd bash -c "wmctrl -xa claude || claude &")
-    a-find (cmd bash -c "wmctrl -xa thunar || thunar &")
-    a-disc (cmd bash -c "wmctrl -xa discord || discord &")
     a-spot (cmd bash -c "wmctrl -xa spotify || spotify &")
+    a-pass (cmd bash -c "wmctrl -xa 1password || 1password &")
     a-cale (cmd bash -c "wmctrl -xa gnome-calendar || gnome-calendar &")
-    a-what (cmd bash -c "wmctrl -xa whatsapp || xdg-open 'https://web.whatsapp.com' &")
-    a-msgs (cmd bash -c "echo 'no messages client configured'")
     a-prev (cmd bash -c "echo 'no preview client configured'")
     a-davr (cmd bash -c "wmctrl -xa resolve || /opt/resolve/bin/resolve &")
+
+    a-comt (cmd bash -c "echo 'no comet client configured'")
+    a-clau (cmd bash -c "wmctrl -xa claude || claude &")
+    a-obsi (cmd bash -c "wmctrl -xa obsidian || obsidian &")
     a-note (cmd bash -c "wmctrl -xa notes || xdg-open 'https://keep.google.com' &")
+    a-msgs (cmd bash -c "echo 'no messages client configured'")
     a-sset (cmd bash -c "wmctrl -xa gnome-control-center || gnome-control-center &")
-    a-meld (cmd bash -c "echo 'Meld Studio macOS only'")
-    a-pass (cmd bash -c "wmctrl -xa 1password || 1password &")
+
+    a-find (cmd bash -c "wmctrl -xa thunar || thunar &")
+    a-what (cmd bash -c "wmctrl -xa whatsapp || xdg-open 'https://web.whatsapp.com' &")
+    a-grok (cmd bash -c "echo 'no grok client configured'")
+    a-1pwd (cmd bash -c "wmctrl -xa 1password || 1password &")
+    a-afnt (cmd bash -c "echo 'Affinity Designer macOS only'")
+
+    a-term (cmd bash -c "wmctrl -xa kitty || kitty &")
   )
 )

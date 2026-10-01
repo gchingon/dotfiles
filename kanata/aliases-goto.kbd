@@ -1,0 +1,42 @@
+;;----------------------------------------------------
+;; "Goto" aliases — platform-conditional
+;; Used by: deflayer goto (LGUI/lmet held)
+;;
+;; nvim-* open a kitty tab (reusing it if already open, via kitty-session.sh
+;; — same mechanism as the raycast layer's k-* jumps) running nvim at a
+;; directory resolved through the user's own login shell: ~/.config is fixed,
+;; but $RP/$DX/$NT come from zshenv's per-hostname case block, so this same
+;; alias works unmodified on every machine.
+;;
+;; obs-* open the same four directories in Obsidian via obsidian-open.sh,
+;; which resolves paths the same way. Directories with no .obsidian/ vault
+;; (dots, repos) just won't do much — that's expected.
+;;----------------------------------------------------
+
+(platform (macos)
+  (defalias
+    gt-dots  (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-dots")
+    gt-repos (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-repos")
+    gt-docs  (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-docs")
+    gt-notes (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-notes")
+
+    obs-dots  (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh dots")
+    obs-repos (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh repos")
+    obs-docs  (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh docs")
+    obs-notes (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh notes")
+  )
+)
+
+(platform (linux)
+  (defalias
+    gt-dots  (cmd bash -c "echo 'goto layer is macOS only for now'")
+    gt-repos (cmd bash -c "echo 'goto layer is macOS only for now'")
+    gt-docs  (cmd bash -c "echo 'goto layer is macOS only for now'")
+    gt-notes (cmd bash -c "echo 'goto layer is macOS only for now'")
+
+    obs-dots  (cmd bash -c "echo 'goto layer is macOS only for now'")
+    obs-repos (cmd bash -c "echo 'goto layer is macOS only for now'")
+    obs-docs  (cmd bash -c "echo 'goto layer is macOS only for now'")
+    obs-notes (cmd bash -c "echo 'goto layer is macOS only for now'")
+  )
+)

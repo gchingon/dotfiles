@@ -4,5 +4,12 @@
     "felixkratz/formulae",
     "gchingon/slugged",
     "xykong/tap"
+  ],
+  "trustedformulae": [
+    "asmvik/formulae/yabai",
+    "felixkratz/formulae/borders"
+  ],
+  "trustedcasks": [
+    "nikitabobko/tap/aerospace"
   ]
 }

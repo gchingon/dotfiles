@@ -1,3 +1,20 @@
+;; mtrsh must be defined before the main defalias block below, since `trams`
+;; there references it (kanata requires forward-declared aliases to come
+;; first — see the `scam*` note further down).
+(platform (macos)
+  (defalias
+    ;; Direct Finder empty-trash (native confirm dialog) — was a Raycast
+    ;; deeplink, but that just opened Raycast without actually running the
+    ;; extension reliably.
+    mtrsh (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh trash")
+  )
+)
+(platform (linux)
+  (defalias
+    mtrsh (cmd bash -c "trash-empty 2>/dev/null || rm -rf ~/.local/share/Trash/files/*")
+  )
+)
+
 (defalias
   ;; -----------------------------
   ;; Base modifier combos
@@ -39,18 +56,34 @@
   ;; -----------------------------
   caltb (tap-hold $tt $ht @tabal @AC)
   grasc (tap-hold $tt $ht grv @CS)
-  hyper (tap-hold $tt $ht f18 @hypur)
-  mehsc (tap-hold $tt $ht esc @meh)
+  ;; Hold = yabai layer (window placement, aliases-system.kbd's y-*). Tap is
+  ;; unchanged (f18, currently unused elsewhere). hypur is kept as a plain
+  ;; alias — still used as a building block by scam6/scam0/etc below.
+  hyper (tap-hold $tt $ht f18 (layer-while-held yabai))
+  ;; Hold = apps layer (app launching, aliases-apps.kbd). Tap is unchanged
+  ;; (esc). meh is kept as a plain alias for anything else.
+  mehsc (tap-hold $tt $ht esc (layer-while-held apps))
   mhome (tap-hold $tt $ht e @scam6)
   shalt (tap-hold $tt $ht @scam0 @AS)
-  suXMS (tap-hold $tt $ht @force @CMS)
-  tabSG (tap-hold $tt $ht tab @MS)
+  ;; Hold = goto layer (nvim/Obsidian directory jumps, aliases-goto.kbd).
+  ;; Tap is unchanged (Force Quit dialog). CMS is kept as a plain alias in
+  ;; case anything else still wants literal ctrl+cmd+shift.
+  suXMS (tap-hold $tt $ht @force (layer-while-held goto))
+  ;; Hold = toggles layer (system toggles/power, aliases-toggles.kbd). Tap
+  ;; is unchanged (tab). MS is kept as a plain alias for anything else.
+  tabSG (tap-hold $tt $ht tab (layer-while-held toggles))
   zmute (tap-hold $tt $ht ' @MSa)
 
   ;; -----------------------------
   ;; Right Shift: tap del, hold shift
   ;; -----------------------------
   shdel (tap-hold $tt $ht del rsft)
+
+  ;; -----------------------------
+  ;; Right Alt: tap empty-trash, hold hyper-ish chord
+  ;; mtrsh/trams platform blocks are below, after this defalias block closes.
+  ;; -----------------------------
+  trams (tap-hold $tt $ht @mtrsh (multi lalt lmet lsft))
 
   ;; -----------------------------
   ;; Esc: tap-dance

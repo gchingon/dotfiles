@@ -1,0 +1,3 @@
+new_tab nvim-notes
+layout tall
+launch --title "nvim-notes" --env SESSION_NAME=nvim-notes zsh --login -c 'cd "${NT:-$RP/notes}" && exec nvim'

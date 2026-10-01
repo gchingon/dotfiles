@@ -12,12 +12,22 @@ else
   default_layout="stack"
 fi
 
+# Reserves space for SketchyBar (32px, matches sketchybarrc's --bar height)
+# so windows don't get placed under/behind it — nothing did this before.
+yabai -m config external_bar all:32:0
+
 yabai -m config \
   layout "$default_layout" \
   window_placement second_child \
   window_insertion_point focused \
   window_zoom_persist on \
   window_shadow off \
+  window_animation_duration 0.0 \
+  window_opacity_duration 0.0 \
+  split_type auto \
+  display_arrangement_order default \
+  window_origin_display default \
+  menubar_opacity 1.0 \
   window_gap 0 \
   top_padding 0 \
   bottom_padding 0 \
@@ -36,7 +46,7 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
   yabai -m space "$sid" --label "desk$sid" >/dev/null 2>&1 || true
 done
 
-yabai -m rule --add app="^(Calculator|System Settings|Activity Monitor|Raycast|CleanShot X|Karabiner-Elements)$" manage=off
+yabai -m rule --add app="^(Calculator|System Settings|Activity Monitor|Raycast|CleanShot X|Karabiner-Elements|Vorssaint)$" manage=off
 yabai -m rule --add app=".*" sub-layer=normal
 
 if command -v sketchybar >/dev/null 2>&1; then

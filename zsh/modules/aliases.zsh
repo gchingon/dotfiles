@@ -16,14 +16,13 @@ alias mnf='mediainfo'                     # Show media metadata; source: mediain
 alias o.='open .'                         # Open the current directory in Finder; source: open -- macOS CLI tool
 alias nowrap='setterm --linewrap off'     # Disable terminal line wrapping; source: setterm -- CLI tool
 alias wrap='setterm --linewrap on'        # Enable terminal line wrapping; source: setterm -- CLI tool
-alias sv='sudo nvim '                     # Open a file in Neovim with sudo; source: sudo -- CLI tool, nvim -- CLI tool
+alias sn='sudo nvim '                     # Open a file in Neovim with sudo; source: sudo -- CLI tool, nvim -- CLI tool
 alias dcd='docker-compose down'           # Stop docker-compose services; source: docker-compose -- CLI tool
 alias dcu='docker-compose up -d'          # Start docker-compose services in background; source: docker-compose -- CLI tool
-alias theme='${HOME}/.config/rx/theme'    # Run theme switcher; source: theme -- /Users/schingon/.config/rx/theme
-alias t='theme'                           # Short alias for theme switcher; source: theme alias above
+alias theme='${HOME}/.local/bin/theme'    # Run theme switcher; source: theme -- ~/code/omarchy4mac/bin/theme (Omarchy engine; consolidated off ~/.config/rx/theme 2026-09-22)
 alias tn='theme'                          # Cycle or run theme with default behavior; source: theme alias above
-alias tl='theme --list'                   # List available themes; source: theme -- /Users/schingon/.config/rx/theme
-alias tc='theme --current'                # Show current theme; source: theme -- /Users/schingon/.config/rx/theme
+alias tl='theme --list'                   # List available themes; source: theme alias above
+alias tc='theme'                          # Show current theme (no args prints current + list); source: theme alias above
 alias ytv='ytd video'                     # Download video format via ytd helper; source: ytd -- ~/.local/bin/ytd
 alias dots='dots-sync'                    # Run dotfiles sync helper; source: dots-sync() -- /Users/schingon/.config/zsh/modules/functions.zsh
 alias d4d='defaults delete com.charliemonroe.Downie-4'
@@ -146,20 +145,17 @@ alias bci='brew install --cask '          # Install a Homebrew cask app; source:
 alias bs='brew search '                   # Search Homebrew formulas and casks; source: brew -- CLI tool
 
 # ===== Neovim / Editor Aliases =====
-alias v='nvim'                            # Open Neovim; source: nvim -- CLI tool
-alias nv='neovide'                        # Open Neovide GUI; source: neovide -- CLI tool
+alias n='nvim'                            # Open Neovim; source: nvim -- CLI tool
 alias dly='daily'                         # Open today's daily note; source: daily -- ~/.local/bin/daily
 alias daws='$RX/aws-daily-notes.sh'        # Open or create an AWS daily note; source: aws-daily-notes.sh -- /Users/schingon/.config/rx/aws-daily-notes.sh
 alias pdi='podidea'                       # Open or create pod-content idea note; source: podidea -- ~/.local/bin/podidea
 alias va='open-aliases'                   # Edit aliases.zsh; source: open-aliases() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias vd='dreams_md_shortcut'             # Append a dream note skeleton; source: dreams_md_shortcut() -- /Users/schingon/.config/zsh/modules/functions.zsh
-alias vf='open-functions'                 # Edit functions.zsh; source: open-functions() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias vm='open-nvim-init'                 # Edit Neovim init.lua; source: open-nvim-init() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias vs='open-secrets'                   # Edit a plaintext temp copy in Neovim, then encrypt on exit; source: open-secrets() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias vz='open-zshrc'                     # Edit zshrc; source: open-zshrc() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias vh='open-zsh-history'               # Edit zsh history; source: open-zsh-history() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias vg='v $CF/ghostty/config'           # Edit Ghostty config; source: v alias above, file path target
-alias vw='v $CF/wezterm/wezterm.lua'      # Edit WezTerm config; source: v alias above, file path target
+alias nd='dreams_md_shortcut'             # Append a dream note skeleton; source: dreams_md_shortcut() -- /Users/schingon/.config/zsh/modules/functions.zsh
+alias nf='open-functions'                 # Edit functions.zsh; source: open-functions() -- /Users/schingon/.config/zsh/modules/config.zsh
+alias nm='open-nvim-init'                 # Edit Neovim init.lua; source: open-nvim-init() -- /Users/schingon/.config/zsh/modules/config.zsh
+alias ns='open-secrets'                   # Edit a plaintext temp copy in Neovim, then encrypt on exit; source: open-secrets() -- /Users/schingon/.config/zsh/modules/config.zsh
+alias nz='open-zshrc'                     # Edit zshrc; source: open-zshrc() -- /Users/schingon/.config/zsh/modules/config.zsh
+alias nh='open-zsh-history'               # Edit zsh history; source: open-zsh-history() -- /Users/schingon/.config/zsh/modules/config.zsh
 
 # ===== Rclone Aliases =====
 alias rccl='rclone-copy-large'            # Copy with rclone large-file profile; source: rclone-copy-large() -- /Users/schingon/.config/zsh/modules/rclone.zsh

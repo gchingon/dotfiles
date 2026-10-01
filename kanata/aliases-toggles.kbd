@@ -1,0 +1,48 @@
+;;----------------------------------------------------
+;; Toggle/power aliases — platform-conditional
+;; Used by: deflayer toggles (tab held)
+;; Wifi/Bluetooth/mute-mic/AirDrop reuse the existing sys-* aliases from
+;; aliases-system.kbd directly rather than redefining them here.
+;;----------------------------------------------------
+
+;; tg-lock/zoom/restart/shutdown/logout/dnd all shell out to system-toggle.sh
+;; instead of inlining osascript here — kanata's string syntax doesn't
+;; support escaped double-quotes the way most shells do (nested "..." broke
+;; silently), and a real script sidesteps that entirely.
+(platform (macos)
+  (defalias
+    tg-scrn (cmd zsh -lc "/opt/homebrew/bin/hs -c 'launchScreensaver(true)'")
+    tg-prnt (cmd zsh -lc "open 'x-apple.systempreferences:com.apple.Print-Scan-Settings.extension'")
+    tg-zoom (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh zoom")
+    tg-calc (cmd zsh -lc "open -a Calculator")
+
+    tg-lock (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh lock")
+    tg-dnd  (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh dnd")
+    tg-caff (cmd zsh -lc "pgrep -x caffeinate >/dev/null && pkill -x caffeinate || caffeinate -dimsu &")
+
+    tg-slep (cmd zsh -lc "pmset sleepnow")
+    tg-rest (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh restart")
+    tg-shut (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh shutdown")
+    tg-lout (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh logout")
+    tg-info (cmd zsh -lc "open -a 'System Information'")
+  )
+)
+
+(platform (linux)
+  (defalias
+    tg-scrn (cmd bash -c "echo 'no screensaver configured'")
+    tg-prnt (cmd bash -c "gnome-control-center printers &")
+    tg-zoom (cmd bash -c "echo 'no zoom toggle configured'")
+    tg-calc (cmd bash -c "gnome-calculator &")
+
+    tg-lock (cmd bash -c "loginctl lock-session")
+    tg-dnd  (cmd bash -c "echo 'no DND toggle configured'")
+    tg-caff (cmd bash -c "echo 'no caffeinate toggle configured'")
+
+    tg-slep (cmd bash -c "systemctl suspend")
+    tg-rest (cmd bash -c "systemctl reboot")
+    tg-shut (cmd bash -c "systemctl poweroff")
+    tg-lout (cmd bash -c "loginctl terminate-user $USER")
+    tg-info (cmd bash -c "gnome-control-center info-overview &")
+  )
+)

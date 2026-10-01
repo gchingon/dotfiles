@@ -1,0 +1,3 @@
+new_tab nvim-docs
+layout tall
+launch --title "nvim-docs" --env SESSION_NAME=nvim-docs zsh --login -c 'cd "${DX:-$HOME/Documents}" && exec nvim'

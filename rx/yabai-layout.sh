@@ -91,6 +91,13 @@ run_layout() {
     third-left)     place 1:3:0:0:1:1 ;;
     third-center)   place 1:3:1:0:1:1 ;;
     third-right)    place 1:3:2:0:1:1 ;;
+    # Ultrawide fractions (2mini/4mini hosts — see cycle-left/cycle-right below)
+    l2-3)           place 1:3:0:0:2:1 ;;
+    r2-3)           place 1:3:1:0:2:1 ;;
+    l1-3)           place 1:3:0:0:1:1 ;;
+    r1-3)           place 1:3:2:0:1:1 ;;
+    l1-4)           place 1:4:0:0:1:1 ;;
+    r1-4)           place 1:4:3:0:1:1 ;;
     quarter-top)    place 4:1:0:0:1:1 ;;
     quarter-second) place 4:1:0:1:1:1 ;;
     quarter-third)  place 4:1:0:2:1:1 ;;
@@ -156,9 +163,30 @@ cmd="${1:-}"
 need_yabai
 focused_window_id="$(focused_id)"
 
+# Ultrawide monitors (2mini/4mini hosts) get finer-grained halves: repeated
+# presses cycle half -> 2/3 -> 1/3 -> 1/4 -> half, instead of the laptop's
+# half -> 60% -> 40%.
+host="$(hostname -s 2>/dev/null || hostname)"
+case "$host" in
+  *2mini*|*4mini*) is_ultrawide_host=1 ;;
+  *)                is_ultrawide_host=0 ;;
+esac
+
 case "$cmd" in
-  cycle-left)   cycle_layout 1200 cycle-left left l60 l40 ;;
-  cycle-right)  cycle_layout 1200 cycle-right right r60 r40 ;;
+  cycle-left)
+    if [[ "$is_ultrawide_host" -eq 1 ]]; then
+      cycle_layout 1200 cycle-left left l2-3 l1-3 l1-4
+    else
+      cycle_layout 1200 cycle-left left l60 l40
+    fi
+    ;;
+  cycle-right)
+    if [[ "$is_ultrawide_host" -eq 1 ]]; then
+      cycle_layout 1200 cycle-right right r2-3 r1-3 r1-4
+    else
+      cycle_layout 1200 cycle-right right r60 r40
+    fi
+    ;;
   cycle-top)    cycle_layout 1800 cycle-top top quarter-top quarter-second ;;
   cycle-bottom) cycle_layout 1800 cycle-bottom bottom quarter-third quarter-bottom ;;
   cycle-thirds) cycle_layout 1800 cycle-thirds third-top third-middle third-bottom ;;

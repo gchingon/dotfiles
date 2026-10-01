@@ -1,0 +1,3 @@
+new_tab nvim-repos
+layout tall
+launch --title "nvim-repos" --env SESSION_NAME=nvim-repos zsh --login -c 'cd "${RP:-$HOME/repos}" && exec nvim'

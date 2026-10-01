@@ -1,0 +1,3 @@
+new_tab nvim-dots
+layout tall
+launch --title "nvim-dots" --env SESSION_NAME=nvim-dots zsh --login -c 'cd ~/.config && exec nvim'

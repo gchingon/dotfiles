@@ -4,11 +4,13 @@
 ;; Runs as LaunchDaemon (macOS) or systemd unit (Linux)
 ;;
 ;; LAYER MAP:
-;;   main    — daily typing, home row mods
-;;   apps    — app switching         (caps+j chord, one-shot 3s)
-;;   raycast — raycast + system      (caps+u chord, one-shot 3s)
-;;   yabai   — window placement      (caps+m chord, one-shot 3s)
-;;   emoji   — quick emoji           (double-tap Esc)
+;;   main     — daily typing, home row mods
+;;   apps     — app switching         (hold caps)
+;;   toggles  — system toggles/power  (hold tab)
+;;   goto     — nvim/Obsidian jumps   (hold lmet / left ⌘)
+;;   raycast  — raycast + system      (caps+u chord, one-shot 3s)
+;;   yabai    — window placement      (hold RGUI/rmet)
+;;   emoji    — quick emoji           (double-tap Esc)
 ;;────────────────────────────────────────────
 
 (defcfg
@@ -41,6 +43,8 @@
 ;;────────────────────────────────────────────
 (include aliases-shared.kbd)
 (include aliases-apps.kbd)
+(include aliases-goto.kbd)
+(include aliases-toggles.kbd)
 (include aliases-kitty.kbd)
 (include aliases-system.kbd)
 (include aliases-raycast.kbd)
@@ -48,15 +52,20 @@
 
 ;;────────────────────────────────────────────
 ;; Sublayer entry — chords activate layers
-;; caps+j → apps (one-shot 3s)
+;; caps (hold, no chord)   → apps    — see mehsc in aliases-shared.kbd
+;; tab  (hold, no chord)   → toggles — see tabSG in aliases-shared.kbd
+;; lmet (hold, no chord)   → goto    — see suXMS in aliases-shared.kbd
+;; rmet (hold, no chord)   → yabai   — see hyper in aliases-shared.kbd
 ;; caps+u → raycast (one-shot 3s)
-;; caps+m → yabai while either chord key remains held
+;; lctl+down+[ → restart yabai service (uncommon on purpose; physical keys,
+;;               so this is lctl+down+/ in Dvorak output). Was lalt, but
+;;               alt is a dead-key modifier on macOS (alt+/ → ¿) and passed
+;;               through instead of being caught as a chord.
 ;; Chord timeout $kord-t = 500ms
 ;;────────────────────────────────────────────
 (defchordsv2
-  (caps j) (one-shot 3000 (layer-while-held apps))    $kord-t all-released ()
-  (caps u) (one-shot 3000 (layer-while-held raycast)) $kord-t all-released ()
-  (caps m) (layer-while-held yabai)                   $kord-t first-release ()
+  (caps r)      (one-shot 3000 (layer-while-held raycast)) $kord-t all-released ()
+  (lctl down [) @yb-rst                                    $kord-t all-released ()
 )
 
 ;;────────────────────────────────────────────
@@ -77,11 +86,12 @@
 ;; MAIN layer — daily typing, home row mods
 ;; Physical positions → Dvorak output via process-unmapped-keys
 ;;
-;; caps+j chord → apps layer (one-shot 3s)
+;; caps (hold) → apps layer; tap = esc
+;; tab  (hold) → toggles layer; tap = tab
+;; lmet (hold) → goto layer; tap = Force Quit dialog
+;; rmet (hold) → yabai layer; tap = f18
 ;; caps+u chord → raycast layer (one-shot 3s)
-;; caps+m chord → yabai layer while either chord key remains held
-;; Esc = tap esc / double-tap → emoji layer (one-shot)
-;; Return = tap ret / double-tap → open kitty
+;; rmet (hold) → yabai layer — see hyper in aliases-shared.kbd
 ;;────────────────────────────────────────────
 (deflayer main
   _      brdn    brup    f3      f4      f5      f6      prev    pp      next    mute    vold    volu          ;; Fn row
@@ -94,21 +104,20 @@
 
 ;;────────────────────────────────────────────
 ;; APPS layer — app switching
-;; Activated by: caps+j chord (one-shot 3s)
+;; Activated by: hold caps (tap is still esc), see mehsc in aliases-shared.kbd
 ;;
-;; Physical → App (a-* aliases in aliases-apps.kbd)
-;;   QWERTY: e=Passwords  r=Dictionary  t=Preview  y=SystemSettings
-;;           u=Affinity   i=Calendar   o=DaVinci
-;;   HOME:   a=Claude  s=Codex  f=Finder  j=Comet  k=Safari  l=Notes  ;=Spotify
-;;   BOTTOM: m=Messages  ,=WhatsApp
+;; QWERTY y/u/i/o/p = Spotify/Passwords/Calendar/Preview/DaVinci Resolve
+;; HOME   h/j/k/l/;/' = Comet/Claude/Obsidian/Notes/Messages/System Settings
+;; HOME   ret         = kitty (terminal)
+;; BOTTOM n/m/,/./  = Finder/ Grok Bot / WhatsApp / clipboard history /Affinity Designer
 ;;────────────────────────────────────────────
 (deflayer apps
-  _      _       _       _       _       _       _       _       _       _       _       _       _             ;; Fn
-  _      1       2       3       4       5       6       7       8       9       0       _       _       _     ;; NUM
-  _      _       _       @a-pass @a-dict @a-prev @a-sset @a-afnt @a-cale @a-davr _       _       _       _     ;; QWERTY
-  _      _       _       @a-obsi @a-find @a-sfri @a-comt _       _       @a-note @a-spot _       @a-term       ;; HOME
-  _      _       _       _       @a-codx _       @a-clau @a-msgs @a-what _       _       _       _             ;; BOTTOM
-  _      _       _       _                 _             _       _       _       _       _                     ;; MOD
+  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
+  grv    XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _      _     ;; NUM
+  _      XX      XX      XX      XX      XX      @a-spot @a-pass @a-cale @a-prev @a-davr _       _      _     ;; QWERTY
+  _      XX      XX      XX      XX      XX      @a-comt @a-clau @a-obsi @a-note @a-msgs @a-sset @a-term       ;; HOME
+  _      XX      XX      XX      XX      XX      @a-find @a-grok @a-what @rclip  @a-afnt _       _             ;; BOTTOM
+  _      _       _       _              _               _       _       _       _       _                     ;; MOD
 )
 
 ;;────────────────────────────────────────────
@@ -131,7 +140,7 @@
 
 ;;────────────────────────────────────────────
 ;; YABAI layer — window placement
-;; Activated by: caps+m chord, then release m and hold caps
+;; Activated by: hold RGUI/rmet (tap is still f18)
 ;;
 ;; j/p = cycle left/right widths
 ;; i/o = top-left/top-right
@@ -150,6 +159,41 @@
   _      @y-6bl  @y-6bc  @y-6br  @y-cbot XX      XX       @y-left  XX       XX       XX       _      _             ;; HOME
   _      XX      XX      XX      @y-c3rd XX      XX       @y-full  @y-bl    @y-br    XX       _      _             ;; BOTTOM
   _      _       _       _              _                _        _        _        _        _                    ;; MOD
+)
+
+;;────────────────────────────────────────────
+;; TOGGLES layer — system toggles + power
+;; Activated by: hold tab (tap is still tab), see tabSG in aliases-shared.kbd
+;;
+;; QWERTY y/u/i/o/p = Screensaver/Printers&Scanners/Zoom toggle/Calculator/AirDrop
+;; HOME   h/j/k/l/;/' = Wifi/Bluetooth/Lock/DND/Mute mic/Caffeinate toggle
+;; BOTTOM n/m/,/./  = Sleep/Restart/Shut Down/Log Out/System Information
+;;────────────────────────────────────────────
+(deflayer toggles
+  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
+  grv    XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _      _     ;; NUM
+  _      XX      XX      XX      XX      XX      @tg-scrn @tg-prnt @tg-zoom @tg-calc @sys-shr _   _      _     ;; QWERTY
+  _      XX      XX      XX      XX      XX      @sys-wfi @sys-blu @tg-lock @tg-dnd  @sys-mic @tg-caff _       ;; HOME
+  _      XX      XX      XX      XX      XX      @tg-slep @tg-rest @tg-shut @tg-lout @tg-info _       _             ;; BOTTOM
+  _      _       _       _              _               _       _       _       _       _                     ;; MOD
+)
+
+;;────────────────────────────────────────────
+;; GOTO layer — nvim/Obsidian directory jumps
+;; Activated by: hold lmet (left ⌘), tap is unchanged (Force Quit dialog)
+;;
+;; HOME h/j/k/l = nvim in .config/repos/Documents/notes (kitty, reuses tab)
+;; QWERTY y/u/i/o = same 4 directories, opened in Obsidian instead
+;; repos/Documents/notes resolve per-machine via zshenv ($RP/$DX/$NT) —
+;; see aliases-goto.kbd. Room to grow: ;/'/p and the whole BOTTOM row.
+;;────────────────────────────────────────────
+(deflayer goto
+  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
+  grv    XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _      _     ;; NUM
+  _      XX      XX      XX      XX      XX      @obs-dots @obs-repos @obs-docs @obs-notes XX     _      _      _     ;; QWERTY
+  _      XX      XX      XX      XX      XX      @gt-dots  @gt-repos  @gt-docs  @gt-notes  XX     XX     _            ;; HOME
+  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _             ;; BOTTOM
+  _      _       _       _              _               _       _       _       _       _                     ;; MOD
 )
 
 ;;────────────────────────────────────────────
