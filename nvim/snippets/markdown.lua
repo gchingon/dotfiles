@@ -158,4 +158,125 @@ return {
     t("bypass_shorts: false"),
   }),
 
+  -- Headers (h1-h6)
+  s({ trig = "h1", name = "Header 1" }, {
+    t("# "), i(0)
+  }),
+  s({ trig = "h2", name = "Header 2" }, {
+    t("## "), i(0)
+  }),
+  s({ trig = "h3", name = "Header 3" }, {
+    t("### "), i(0)
+  }),
+  s({ trig = "h4", name = "Header 4" }, {
+    t("#### "), i(0)
+  }),
+  s({ trig = "h5", name = "Header 5" }, {
+    t("##### "), i(0)
+  }),
+  s({ trig = "h6", name = "Header 6" }, {
+    t("###### "), i(0)
+  }),
+
+  -- Text formatting
+  s({ trig = "b", name = "Bold text" }, {
+    t("**"), i(1), t("**"), i(0)
+  }),
+  s({ trig = "i", name = "Italic text" }, {
+    t("*"), i(1), t("*"), i(0)
+  }),
+  s({ trig = "bi", name = "Bold and italic" }, {
+    t("***"), i(1), t("***"), i(0)
+  }),
+  s({ trig = "code", name = "Inline code" }, {
+    t("`"), i(1), t("`"), i(0)
+  }),
+  s({ trig = "strikethrough", name = "Strikethrough" }, {
+    t("~~"), i(1), t("~~"), i(0)
+  }),
+
+  -- Links and URLs
+  s({ trig = "l", name = "Link" }, {
+    t("["), i(1, "text"), t("]("), i(2, "url"), t(")"), i(0)
+  }),
+  s({ trig = "link", name = "Link" }, {
+    t("["), i(1, "text"), t("]("), i(2, "url"), t(")"), i(0)
+  }),
+  s({ trig = "u", name = "URL" }, {
+    t("<"), i(1), t(">"), i(0)
+  }),
+  s({ trig = "url", name = "URL" }, {
+    t("<"), i(1), t(">"), i(0)
+  }),
+
+  -- Images
+  s({ trig = "img", name = "Image" }, {
+    t("!["), i(1, "alt text"), t("]("), i(2, "path"), t(")"), i(0)
+  }),
+
+  -- Lists
+  s({ trig = "unordered list", name = "Unordered list" }, {
+    t({ "- ", "- ", "- " }), i(0)
+  }),
+  s({ trig = "ordered list", name = "Ordered list" }, {
+    t({ "1. ", "2. ", "3. " }), i(0)
+  }),
+
+  -- Code block
+  s({ trig = "codeblock", name = "Code block" }, {
+    t({ "```", "" }), i(1, "language"), t({ "", "" }), i(0), t({ "", "```" })
+  }),
+
+  -- Quote
+  s({ trig = "quote", name = "Quote" }, {
+    t("> "), i(0)
+  }),
+
+  -- Horizontal rule
+  s({ trig = "hr", name = "Horizontal rule" }, {
+    t("---")
+  }),
+
+  -- Task list
+  s({ trig = "task", name = "Task" }, {
+    t("- [ ] "), i(0)
+  }),
+  s({ trig = "todo", name = "Todo" }, {
+    t("- [ ] "), i(0)
+  }),
+
+  -- Tables (basic 3x3)
+  s({ trig = "table", name = "Table" }, {
+    t({ "| ", "" }), i(1, "Column1"), t({ " | ", "" }), i(2, "Column2"), t({ " | ", "" }), i(3, "Column3"), t({ " |", "" }),
+    t({ "| --- | --- | --- |", "" }),
+    t({ "| ", "" }), i(4, "Item1"), t({ " | ", "" }), i(5, "Item2"), t({ " | ", "" }), i(6, "Item3"), t({ " |", "" }),
+    i(0)
+  }),
+
+  -- Admonitions (GitHub-style)
+  s({ trig = "note", name = "Note admonition" }, {
+    t({ "> [!NOTE]", "> " }), i(0)
+  }),
+  s({ trig = "n", name = "Note admonition" }, {
+    t({ "> [!NOTE]", "> " }), i(0)
+  }),
+  s({ trig = "tip", name = "Tip admonition" }, {
+    t({ "> [!TIP]", "> " }), i(0)
+  }),
+  s({ trig = "t", name = "Tip admonition" }, {
+    t({ "> [!TIP]", "> " }), i(0)
+  }),
+  s({ trig = "important", name = "Important admonition" }, {
+    t({ "> [!IMPORTANT]", "> " }), i(0)
+  }),
+  s({ trig = "warning", name = "Warning admonition" }, {
+    t({ "> [!WARNING]", "> " }), i(0)
+  }),
+  s({ trig = "w", name = "Warning admonition" }, {
+    t({ "> [!WARNING]", "> " }), i(0)
+  }),
+  s({ trig = "caution", name = "Caution admonition" }, {
+    t({ "> [!CAUTION]", "> " }), i(0)
+  }),
+
 }

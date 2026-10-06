@@ -56,22 +56,19 @@
   ;; -----------------------------
   caltb (tap-hold $tt $ht @tabal @AC)
   grasc (tap-hold $tt $ht grv @CS)
-  ;; Hold = yabai layer (window placement, aliases-system.kbd's y-*). Tap is
-  ;; unchanged (f18, currently unused elsewhere). hypur is kept as a plain
-  ;; alias — still used as a building block by scam6/scam0/etc below.
-  hyper (tap-hold $tt $ht f18 (layer-while-held yabai))
-  ;; Hold = apps layer (app launching, aliases-apps.kbd). Tap is unchanged
-  ;; (esc). meh is kept as a plain alias for anything else.
-  mehsc (tap-hold $tt $ht esc (layer-while-held apps))
+  ;; Hold = Hyper (alt+ctrl+cmd+shift) AND the goto layer. Tap is f18 (nothing in
+  ;; kanata/Hammerspoon uses it — likely a hotkey in some other app).
+  hyper (tap-hold $tt $ht f18 (multi lalt lctl lmet lsft (layer-while-held goto)))
+  ;; Hold = Meh (alt+ctrl+shift) AND the apps layer. Tap = esc. Keys the layer
+  ;; doesn't bind pass through, so meh+<key> shortcuts still work.
+  mehsc (tap-hold $tt $ht esc (multi lalt lctl lsft (layer-while-held apps)))
   mhome (tap-hold $tt $ht e @scam6)
   shalt (tap-hold $tt $ht @scam0 @AS)
-  ;; Hold = goto layer (nvim/Obsidian directory jumps, aliases-goto.kbd).
-  ;; Tap is unchanged (Force Quit dialog). CMS is kept as a plain alias in
-  ;; case anything else still wants literal ctrl+cmd+shift.
-  suXMS (tap-hold $tt $ht @force (layer-while-held goto))
-  ;; Hold = toggles layer (system toggles/power, aliases-toggles.kbd). Tap
-  ;; is unchanged (tab). MS is kept as a plain alias for anything else.
-  tabSG (tap-hold $tt $ht tab (layer-while-held toggles))
+  ;; Hold = ctrl+cmd+shift AND the yabai layer. Tap = Force Quit dialog.
+  suXMS (tap-hold $tt $ht @force (multi lctl lmet lsft (layer-while-held yabai)))
+  ;; Hold = shift+cmd AND the toggles layer. Tap = tab. Unbound layer keys pass
+  ;; through, so shift+cmd+<key> (e.g. Vorssaint's shift+cmd+0) still works.
+  tabSG (tap-hold $tt $ht tab (multi lmet lsft (layer-while-held toggles)))
   zmute (tap-hold $tt $ht ' @MSa)
 
   ;; -----------------------------

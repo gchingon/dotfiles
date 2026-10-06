@@ -36,6 +36,8 @@
     y-6bc (cmd zsh -lc "/Users/schingon/.config/rx/yabai-layout.sh sixth-bc")
     y-6br (cmd zsh -lc "/Users/schingon/.config/rx/yabai-layout.sh sixth-br")
     y-full (cmd zsh -lc "/Users/schingon/.config/rx/yabai-layout.sh full")
+    y-dprev (cmd zsh -lc "/Users/schingon/.config/rx/yabai-layout.sh display-prev")
+    y-dnext (cmd zsh -lc "/Users/schingon/.config/rx/yabai-layout.sh display-next")
   )
 )
 
@@ -72,5 +74,7 @@
     y-6bc (cmd bash -c "echo 'no yabai configured'")
     y-6br (cmd bash -c "echo 'no yabai configured'")
     y-full (cmd bash -c "echo 'no yabai configured'")
+    y-dprev (cmd bash -c "echo 'no yabai configured'")
+    y-dnext (cmd bash -c "echo 'no yabai configured'")
   )
 )

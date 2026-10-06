@@ -54,3 +54,9 @@ transcoding/
 # Secrets and environment files
 *.env
 secrets/
+.secrets/
+agent-vault.env
+whatserver.env
+
+# Archives (old configs)
+.archive/

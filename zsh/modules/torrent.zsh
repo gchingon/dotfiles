@@ -7,7 +7,7 @@ REPOS=("$HOME/.dotfiles" "$HOME/.lua-is-the-devil" "$HOME/.noktados" "$DX/widclu
 
 open-downloaded-torrents() {
   open "$DN"/*.torrent
-  open -a wezterm
+  open -a kitty
 }
 
 move-emp-torrents() {
@@ -51,5 +51,5 @@ move-all-torrents() {
   move-mam-torrents
   move-btn-torrents
   move-ptp-torrents
-  open -a wezterm
+  open -a kitty
 }

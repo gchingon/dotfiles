@@ -54,8 +54,8 @@
 ;; Sublayer entry — chords activate layers
 ;; caps (hold, no chord)   → apps    — see mehsc in aliases-shared.kbd
 ;; tab  (hold, no chord)   → toggles — see tabSG in aliases-shared.kbd
-;; lmet (hold, no chord)   → goto    — see suXMS in aliases-shared.kbd
-;; rmet (hold, no chord)   → yabai   — see hyper in aliases-shared.kbd
+;; lmet (hold, no chord)   → yabai   — see suXMS in aliases-shared.kbd
+;; rmet (hold, no chord)   → goto    — see hyper in aliases-shared.kbd
 ;; caps+u → raycast (one-shot 3s)
 ;; lctl+down+[ → restart yabai service (uncommon on purpose; physical keys,
 ;;               so this is lctl+down+/ in Dvorak output). Was lalt, but
@@ -88,10 +88,9 @@
 ;;
 ;; caps (hold) → apps layer; tap = esc
 ;; tab  (hold) → toggles layer; tap = tab
-;; lmet (hold) → goto layer; tap = Force Quit dialog
-;; rmet (hold) → yabai layer; tap = f18
+;; lmet (hold) → yabai layer; tap = Force Quit dialog
+;; rmet (hold) → goto layer; tap = f18
 ;; caps+u chord → raycast layer (one-shot 3s)
-;; rmet (hold) → yabai layer — see hyper in aliases-shared.kbd
 ;;────────────────────────────────────────────
 (deflayer main
   _      brdn    brup    f3      f4      f5      f6      prev    pp      next    mute    vold    volu          ;; Fn row
@@ -112,11 +111,11 @@
 ;; BOTTOM n/m/,/./  = Finder/ Grok Bot / WhatsApp / clipboard history /Affinity Designer
 ;;────────────────────────────────────────────
 (deflayer apps
-  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
-  grv    XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _      _     ;; NUM
-  _      XX      XX      XX      XX      XX      @a-spot @a-pass @a-cale @a-prev @a-davr _       _      _     ;; QWERTY
-  _      XX      XX      XX      XX      XX      @a-comt @a-clau @a-obsi @a-note @a-msgs @a-sset @a-term       ;; HOME
-  _      XX      XX      XX      XX      XX      @a-find @a-grok @a-what @rclip  @a-afnt _       _             ;; BOTTOM
+  _      _       _       _       _       _       _       _       _       _       _       _       _            ;; Fn
+  grv    _       _       _       _       _       _       _       _       _       _       _       _      _     ;; NUM
+  _      _       _       _       _       _       @a-spot @a-pass @a-cale @a-prev @a-davr _       _      _     ;; QWERTY
+  _      _       _       _       _       _       @a-comt @a-clau @a-obsi @a-note @a-msgs @a-sset @a-term       ;; HOME
+  _      _       _       _       _       _       @a-find @a-grok @a-what @rclip  @a-afnt _       _             ;; BOTTOM
   _      _       _       _              _               _       _       _       _       _                     ;; MOD
 )
 
@@ -140,9 +139,10 @@
 
 ;;────────────────────────────────────────────
 ;; YABAI layer — window placement
-;; Activated by: hold RGUI/rmet (tap is still f18)
+;; Activated by: hold LGUI/lmet (tap is still Force Quit dialog)
 ;;
 ;; j/p = cycle left/right widths
+;; t/y = move window to prev/next display (and follow it)
 ;; i/o = top-left/top-right
 ;; ,/. = bottom-left/bottom-right
 ;; 1/2/3 = thirds
@@ -153,11 +153,11 @@
 ;; v = top/middle/bottom third
 ;;────────────────────────────────────────────
 (deflayer yabai
-  _      XX      XX      XX      XX      XX      XX       XX       XX       XX       XX       XX     XX           ;; Fn
-  grv    @y-3l   @y-3c   @y-3r   XX      5       6        7        8        9        0        _      _      _     ;; NUM
-  _      @y-6tl  @y-6tc  @y-6tr  @y-ctop XX      XX       XX       @y-tl    @y-tr    @y-right _      _      _     ;; QWERTY
-  _      @y-6bl  @y-6bc  @y-6br  @y-cbot XX      XX       @y-left  XX       XX       XX       _      _             ;; HOME
-  _      XX      XX      XX      @y-c3rd XX      XX       @y-full  @y-bl    @y-br    XX       _      _             ;; BOTTOM
+  _      _       _       _       _       _       _        _        _        _        _        _      _            ;; Fn
+  grv    @y-3l   @y-3c   @y-3r   _       5       6        7        8        9        0        _      _      _     ;; NUM
+  _      @y-6tl  @y-6tc  @y-6tr  @y-ctop @y-dprev @y-dnext _        @y-tl    @y-tr    @y-right _      _      _     ;; QWERTY
+  _      @y-6bl  @y-6bc  @y-6br  @y-cbot _       _        @y-left  _        _        _        _      _             ;; HOME
+  _      _       _       _       @y-c3rd _       _        @y-full  @y-bl    @y-br    _        _      _             ;; BOTTOM
   _      _       _       _              _                _        _        _        _        _                    ;; MOD
 )
 
@@ -170,17 +170,17 @@
 ;; BOTTOM n/m/,/./  = Sleep/Restart/Shut Down/Log Out/System Information
 ;;────────────────────────────────────────────
 (deflayer toggles
-  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
-  grv    XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _      _     ;; NUM
-  _      XX      XX      XX      XX      XX      @tg-scrn @tg-prnt @tg-zoom @tg-calc @sys-shr _   _      _     ;; QWERTY
-  _      XX      XX      XX      XX      XX      @sys-wfi @sys-blu @tg-lock @tg-dnd  @sys-mic @tg-caff _       ;; HOME
-  _      XX      XX      XX      XX      XX      @tg-slep @tg-rest @tg-shut @tg-lout @tg-info _       _             ;; BOTTOM
+  _      _       _       _       _       _       _       _       _       _       _       _       _            ;; Fn
+  grv    _       _       _       _       _       _       _       _       _       _       _       _      _     ;; NUM
+  _      _       _       _       _       _       @tg-scrn @tg-prnt @tg-zoom @tg-calc @sys-shr _   _      _     ;; QWERTY
+  _      _       _       _       _       _       @sys-wfi @sys-blu @tg-lock @tg-dnd  @sys-mic @tg-caff _       ;; HOME
+  _      _       _       _       _       _       @tg-slep @tg-rest @tg-shut @tg-lout @tg-info _       _             ;; BOTTOM
   _      _       _       _              _               _       _       _       _       _                     ;; MOD
 )
 
 ;;────────────────────────────────────────────
 ;; GOTO layer — nvim/Obsidian directory jumps
-;; Activated by: hold lmet (left ⌘), tap is unchanged (Force Quit dialog)
+;; Activated by: hold RGUI/rmet (right ⌘), tap is unchanged (f18)
 ;;
 ;; HOME h/j/k/l = nvim in .config/repos/Documents/notes (kitty, reuses tab)
 ;; QWERTY y/u/i/o = same 4 directories, opened in Obsidian instead
@@ -188,11 +188,11 @@
 ;; see aliases-goto.kbd. Room to grow: ;/'/p and the whole BOTTOM row.
 ;;────────────────────────────────────────────
 (deflayer goto
-  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX           ;; Fn
-  grv    XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _      _     ;; NUM
-  _      XX      XX      XX      XX      XX      @obs-dots @obs-repos @obs-docs @obs-notes XX     _      _      _     ;; QWERTY
-  _      XX      XX      XX      XX      XX      @gt-dots  @gt-repos  @gt-docs  @gt-notes  XX     XX     _            ;; HOME
-  _      XX      XX      XX      XX      XX      XX      XX      XX      XX      XX      _       _             ;; BOTTOM
+  _      _       _       _       _       _       _       _       _       _       _       _       _            ;; Fn
+  grv    _       _       _       _       _       _       _       _       _       _       _       _      _     ;; NUM
+  _      _       _       _       _       _       @obs-dots @obs-repos @obs-docs @obs-notes _      _      _      _     ;; QWERTY
+  _      _       _       _       _       _       @gt-dots  @gt-repos  @gt-docs  @gt-notes  _      _      _            ;; HOME
+  _      _       _       _       _       _       _       _       _       _       _       _       _             ;; BOTTOM
   _      _       _       _              _               _       _       _       _       _                     ;; MOD
 )
 

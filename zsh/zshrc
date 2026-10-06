@@ -1,11 +1,6 @@
 # ~/.config/zsh/zshrc
 # Main Zsh configuration file
 
-# Source all module files
-for module in "$HOME/.config/zsh/modules"/*.zsh; do
-  source "$module" >/dev/null 2>&1 || echo "Failed to source $module"
-done
-
 # History settings
 HISTSIZE=5000                  # Max history entries in memory
 HISTFILE="$HOME/.zsh_history"  # History file location

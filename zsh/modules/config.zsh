@@ -7,14 +7,11 @@ source-zshrc() {
   source "$HOME/.config/zsh/zshrc" >/dev/null
 }
 
-# Compile zsh files for faster loading
-# `zcompile` creates .zwc files to speed up sourcing
+# Clean up compiled files (zcompile causes more issues than benefits)
+# Modern zsh is fast enough without compilation
 update-zwc() {
-  local file
-  for file in "$DZ"/modules/*.zsh "$DZ"/z*; do
-    [[ -f "$file" ]] || continue
-    zcompile "$file" && echo "Compiled $file"
-  done
+  find "$DZ" -name "*.zwc*" -delete 2>/dev/null
+  echo "✓ Removed all .zwc files"
 }
 
 # Open config files in Neovim
@@ -23,8 +20,13 @@ open-zsh-history() { nvim "$HOME/.zsh_history"; }
 open-aliases() { nvim "$DZ/modules/aliases.zsh"; }
 open-functions() { nvim "$DZ/modules/functions.zsh"; }
 open-nvim-init() { nvim "$NV/init.lua"; }
-open-wezterm() { nvim "$CF/wezterm/wezterm.lua"; }
-open-ghostty() { nvim "$CF/ghostty/config"; }
+
+# System utilities
+sketchybar-restart() {
+  pkill -f sketchybar
+  sketchybar
+  echo "✓ SketchyBar restarted"
+}
 
 open-secrets() {
   local target="${1:-}"

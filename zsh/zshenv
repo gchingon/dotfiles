@@ -26,7 +26,7 @@ case "$(hostname)" in
     export RP="$DX/repos"
     ;;
   mbp*|Mac*)
-    export RP="$HOME/repos"
+    export RP="$HOME/code"
     ;;
 esac
 
