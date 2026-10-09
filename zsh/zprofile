@@ -1,11 +1,11 @@
-# ~/.config/zsh/zprofile
-# Sets up PATH based on OS
+# ~/.config/zsh/zprofile  (source of truth; ~/.zprofile is a symlink to this)
+# Login shells only (zsh -l, e.g. kanata/launchd `zsh -lc`). Sets up PATH based on OS.
+# ~/.local/bin and ~/.cargo/bin are added in zshenv/zshrc, so not repeated here.
 
 if [[ "$(uname)" == "Darwin" ]]; then
   # macOS: Apple Silicon Homebrew
   eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ "$(uname)" == "Linux" ]]; then
   # Linux: Add any Linux-specific PATH setup here if needed
-  # Example: export PATH="$HOME/.local/bin:$PATH"
   :  # No-op placeholder
 fi

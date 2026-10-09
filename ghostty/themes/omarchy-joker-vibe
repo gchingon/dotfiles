@@ -1,0 +1,23 @@
+# Omarchy theme 'joker-vibe' — generated locally (custom). Do not edit.
+background = #0C1014
+foreground = #ECFFFE
+cursor-color = #FFFFFF
+selection-background = #2B4D48
+selection-foreground = #FFFFFF
+
+palette = 0=#0C1014
+palette = 1=#FF5A5F
+palette = 2=#00D46A
+palette = 3=#FFC14D
+palette = 4=#4DB8FF
+palette = 5=#C07BFF
+palette = 6=#00F0FF
+palette = 7=#ECFFFE
+palette = 8=#2B4D48
+palette = 9=#FF7B7F
+palette = 10=#32F08A
+palette = 11=#FFD177
+palette = 12=#7CCFFF
+palette = 13=#D39BFF
+palette = 14=#68FFFF
+palette = 15=#FFFFFF

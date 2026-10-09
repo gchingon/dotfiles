@@ -1,0 +1,23 @@
+# Omarchy theme 'tokyo-vibe' — generated locally (custom). Do not edit.
+background = #00041F
+foreground = #FFEBF7
+cursor-color = #FFFFFF
+selection-background = #2C3F90
+selection-foreground = #FFFFFF
+
+palette = 0=#00041F
+palette = 1=#FF4D9D
+palette = 2=#3BEE8A
+palette = 3=#FFC07A
+palette = 4=#B79CFF
+palette = 5=#FF82E6
+palette = 6=#57E6FF
+palette = 7=#FFEBF7
+palette = 8=#2C3F90
+palette = 9=#FF75B5
+palette = 10=#67F5A4
+palette = 11=#FFD0A0
+palette = 12=#C8B3FF
+palette = 13=#FFB3FF
+palette = 14=#84F0FF
+palette = 15=#FFFFFF

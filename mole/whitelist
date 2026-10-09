@@ -1,0 +1,13 @@
+# Mole Whitelist - Protected paths won't be deleted
+# Default protections: Playwright browsers, Ollama models, Surge Mac, R renv, Finder metadata
+# Add one pattern per line to keep items safe.
+
+~/Library/Caches/tealdeer/tldr-pages
+~/.ollama/models/*
+FINDER_METADATA
+/Users/schingon/.gradle/caches/*
+/Users/schingon/Library/Caches/JetBrains*
+/Users/schingon/Library/Caches/com.jetbrains.toolbox*
+/Users/schingon/Library/Application Support/JetBrains*
+/Users/schingon/Library/Caches/com.apple.finder
+/Users/schingon/Library/Mobile Documents*

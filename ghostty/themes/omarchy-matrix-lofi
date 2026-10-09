@@ -1,0 +1,23 @@
+# Omarchy theme 'matrix-lofi' — generated locally (custom). Do not edit.
+background = #000C00
+foreground = #DAEFDF
+cursor-color = #EEFAF0
+selection-background = #4A7D61
+selection-foreground = #EEFAF0
+
+palette = 0=#000C00
+palette = 1=#48915F
+palette = 2=#5EB37E
+palette = 3=#79C69B
+palette = 4=#3F9A85
+palette = 5=#77C6AB
+palette = 6=#8CD4CF
+palette = 7=#DAEFDF
+palette = 8=#4A7D61
+palette = 9=#5CAA71
+palette = 10=#7AC392
+palette = 11=#94D1AB
+palette = 12=#55AD9A
+palette = 13=#8ED3BA
+palette = 14=#A9E0DD
+palette = 15=#EEFAF0

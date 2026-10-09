@@ -10,7 +10,6 @@
     "felixkratz/formulae/borders"
   ],
   "trustedcasks": [
-    "lab421/tap/forel",
-    "nikitabobko/tap/aerospace"
+    "lab421/tap/forel"
   ]
 }

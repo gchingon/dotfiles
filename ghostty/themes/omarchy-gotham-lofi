@@ -1,0 +1,23 @@
+# Omarchy theme 'gotham-lofi' — generated locally (custom). Do not edit.
+background = #0C1014
+foreground = #D6E9E6
+cursor-color = #F1FCFA
+selection-background = #355864
+selection-foreground = #F1FCFA
+
+palette = 0=#0C1014
+palette = 1=#B65D52
+palette = 2=#4E9B86
+palette = 3=#C39C5D
+palette = 4=#4D7180
+palette = 5=#8D90AA
+palette = 6=#5E9BAF
+palette = 7=#D6E9E6
+palette = 8=#355864
+palette = 9=#C27A56
+palette = 10=#66AF9C
+palette = 11=#D1AD71
+palette = 12=#75A9B6
+palette = 13=#6D7288
+palette = 14=#A5D2CC
+palette = 15=#F1FCFA

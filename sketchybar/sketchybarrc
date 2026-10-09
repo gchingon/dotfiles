@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SketchyBar — Tokyo Night, AeroSpace-aware
+# SketchyBar — Tokyo Night, yabai
 # Reload: brew services restart sketchybar  (or: sketchybar --reload)
 
 PLUGIN_DIR="$CONFIG_DIR/plugins"

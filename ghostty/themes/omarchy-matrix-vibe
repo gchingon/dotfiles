@@ -1,0 +1,23 @@
+# Omarchy theme 'matrix-vibe' — generated locally (custom). Do not edit.
+background = #001600
+foreground = #28FE14
+cursor-color = #F1FFF5
+selection-background = #3A7A4D
+selection-foreground = #F1FFF5
+
+palette = 0=#001600
+palette = 1=#14A44A
+palette = 2=#00C95C
+palette = 3=#2CEB76
+palette = 4=#00B88F
+palette = 5=#27F0A9
+palette = 6=#4CFFE6
+palette = 7=#28FE14
+palette = 8=#3A7A4D
+palette = 9=#22C35A
+palette = 10=#1CE06E
+palette = 11=#55F691
+palette = 12=#16D4A5
+palette = 13=#56FFC9
+palette = 14=#7CFFF0
+palette = 15=#F1FFF5

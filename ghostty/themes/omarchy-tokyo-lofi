@@ -1,0 +1,23 @@
+# Omarchy theme 'tokyo-lofi' — generated locally (custom). Do not edit.
+background = #0A0D24
+foreground = #EFE4F3
+cursor-color = #FCFBFE
+selection-background = #464D7A
+selection-foreground = #FCFBFE
+
+palette = 0=#0A0D24
+palette = 1=#D06F9C
+palette = 2=#74BE95
+palette = 3=#DDB48D
+palette = 4=#AFA3D8
+palette = 5=#D8A1D1
+palette = 6=#77C4D3
+palette = 7=#EFE4F3
+palette = 8=#464D7A
+palette = 9=#D98AAA
+palette = 10=#8DCCA8
+palette = 11=#E2C3A2
+palette = 12=#BBB1E3
+palette = 13=#E3BADC
+palette = 14=#92D1DE
+palette = 15=#FCFBFE

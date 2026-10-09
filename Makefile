@@ -17,9 +17,11 @@ help:
 install:
 	@echo "Setting up ~/.config symlinks..."
 	mkdir -p ~/.local/bin
-	ln -sfv ~/code/omarchy4mac/omarchy ~/.config/omarchy 2>/dev/null || true
-	ln -sfv ~/code/omarchy4mac/sketchybar ~/.config/sketchybar 2>/dev/null || true
-	ln -sfv ~/code/omarchy4mac/borders ~/.config/borders 2>/dev/null || true
+	mkdir -p ~/.hammerspoon
+	ln -sfn ~/.config/hammerspoon/init.lua ~/.hammerspoon/init.lua
+	for f in ~/.config/bin/*; do case "$$f" in *.swift) ;; *) ln -sfn "$$f" ~/.local/bin/$$(basename "$$f");; esac; done
+	@echo "yabai: cp ~/.config/yabai/com.asmvik.yabai.plist ~/Library/LaunchAgents/ && launchctl load it (see comment inside)"
+	@echo "theme: run 'theme --sync' once, then re-create the custom themes (theme-switcher/custom/)"
 	@echo "✓ Symlinks created"
 
 setup: install test

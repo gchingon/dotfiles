@@ -58,7 +58,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 # omarchy4mac shell defaults
-source "/Users/schingon/code/omarchy4mac/zsh/omarchy.zsh"
+source "/Users/schingon/.config/zsh/omarchy.zsh"
 
 # Re-source your own modules last so any alias/function name both define
 # (e.g. `t`) resolves to your version, not omarchy4mac's. omarchy.zsh can't
@@ -68,3 +68,6 @@ for module in "$HOME/.config/zsh/modules"/*.zsh; do
   source "$module" >/dev/null 2>&1 || echo "Failed to source $module"
 done
 export TYPESAFE_API_KEY="$(security find-generic-password -a "$USER" -s typesafe-api-key -w 2>/dev/null)"
+
+# Mole shell completion
+if output="$(mole completion zsh 2>/dev/null)"; then eval "$output"; fi

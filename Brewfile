@@ -166,3 +166,11 @@ cargo "choose"
 cargo "difftastic"
 cargo "kanata"
 cargo "xq"
+
+# omarchy-style desktop pieces (moved here from the omarchy4mac repo)
+cask "ghostty"
+cask "hammerspoon"
+brew "sketchybar"
+brew "fastfetch"
+brew "bun"
+cask "font-hack-nerd-font"
