@@ -32,7 +32,7 @@
 
   ;; Absolute paths — kanata runs as root LaunchDaemon so $HOME = /var/root.
   ;; These defvar values are substituted at parse time, before cmd reaches the shell.
-  UH /Users/schingon
+  UH /Users/salvajechingon
   CF (concat $UH /.config)
   RX (concat $CF /rx)
   LB (concat $UH /.local/bin)

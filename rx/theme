@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# theme — Unified theme/color switcher for kitty, yazi, nvim, sketchybar (+ optional ghostty, zsh vars)
+# theme — Unified theme/color switcher for kitty, yazi, nvim, sketchybar (+ zsh vars)
 source "$(dirname "$0")/lib/common.sh"
 check_deps jq
 PY_TOML="$(command -v python3.11 || true)"
@@ -10,8 +10,6 @@ THEME_TOML="${THEME_DIR}/themes.v2.toml"
 ACTIVE_FILE="${THEME_DIR}/active_theme.json"
 KITTY_THEME="${HOME}/.config/kitty/theme.conf"
 YAZI_THEME="${HOME}/.config/yazi/yazi.toml"
-GHOSTTY_TEMPLATE="${THEME_DIR}/templates/ghostty.template"
-GHOSTTY_THEME="${HOME}/.config/ghostty/theme.conf"
 ZSH_THEME_VARS="${THEME_DIR}/current-theme.zsh"
 
 compile_themes_if_needed() {
@@ -151,26 +149,6 @@ apply_yazi() {
   ' "$YAZI_THEME" > "$tmp" && mv "$tmp" "$YAZI_THEME"
 }
 
-apply_ghostty() {
-  local theme="$1"
-  [[ -f "$GHOSTTY_TEMPLATE" ]] || return 0
-  mkdir -p "$(dirname "$GHOSTTY_THEME")"
-  cp "$GHOSTTY_TEMPLATE" "$GHOSTTY_THEME"
-  for key in BACKGROUND FOREGROUND CURSOR COLOR0 COLOR1 COLOR2 COLOR3 COLOR4 COLOR5 COLOR6 COLOR7 COLOR8 COLOR9 COLOR10 COLOR11 COLOR12 COLOR13 COLOR14 COLOR15; do
-    local jq_key
-    case "$key" in
-      BACKGROUND) jq_key="background" ;;
-      FOREGROUND) jq_key="foreground" ;;
-      CURSOR) jq_key="cursor" ;;
-      *) jq_key="$(printf '%s' "$key" | tr '[:upper:]' '[:lower:]')" ;;
-    esac
-    local val
-    val="$(jq -r --arg t "$theme" --arg k "$jq_key" '.themes[$t].terminal[$k] // empty' "$THEME_JSON")"
-    [[ -z "$val" ]] && continue
-    sed -i '' "s|%%${key}%%|${val}|g" "$GHOSTTY_THEME"
-  done
-}
-
 write_zsh_vars() {
   local theme="$1"
   local fg bg c1 c2 c3 c4 c5 c6
@@ -228,7 +206,6 @@ mkdir -p "$THEME_DIR"
 printf '{"active": "%s"}\n' "$theme" > "$ACTIVE_FILE"
 apply_kitty "$theme"
 apply_yazi "$theme"
-apply_ghostty "$theme"
 write_zsh_vars "$theme"
 nudge_nvim
 reload_sketchybar

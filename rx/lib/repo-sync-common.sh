@@ -29,10 +29,10 @@ repo_sync_path_for_machine() {
   case "$machine" in
     mbp*)
       case "$repo" in
-        config) printf '%s\n' '/Users/schingon/.config' ;;
-        notes) printf '%s\n' '/Users/schingon/Documents/notes' ;;
-        crypt|agent-vault) printf '%s\n' '/Users/schingon/Documents/crypt' ;;
-        pod-content) printf '%s\n' '/Users/schingon/Documents/pod-content' ;;
+        config) printf '%s\n' '/Users/salvajechingon/.config' ;;
+        notes) printf '%s\n' '/Users/salvajechingon/Documents/notes' ;;
+        crypt|agent-vault) printf '%s\n' '/Users/salvajechingon/Documents/crypt' ;;
+        pod-content) printf '%s\n' '/Users/salvajechingon/Documents/pod-content' ;;
       esac
       ;;
     2mini*)

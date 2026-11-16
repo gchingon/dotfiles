@@ -12,7 +12,6 @@ git clone https://github.com/yourusername/omarchy4mac ~/code/omarchy4mac
 # 2. Link omarchy components
 ln -sf ~/code/omarchy4mac/omarchy ~/.config/omarchy
 ln -sf ~/code/omarchy4mac/sketchybar ~/.config/sketchybar
-ln -sf ~/code/omarchy4mac/borders ~/.config/borders
 
 # 3. Install dependencies (via Brewfile or manually)
 brew install zsh nvim kitty yabai kanata raycast atuin rclone

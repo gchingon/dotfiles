@@ -41,7 +41,7 @@ This document explains the purpose and organization of every directory in `~/.co
 
 ### **kitty/** — Terminal emulator (primary terminal)
 - `kitty.conf` — Colors, fonts, keybindings
-- Only terminal referenced; wezterm/ghostty removed
+- Only terminal referenced
 
 ---
 
@@ -75,10 +75,6 @@ This document explains the purpose and organization of every directory in `~/.co
 ### **sketchybar/** → Symlink to `~/code/omarchy4mac/sketchybar`
 - macOS top status bar
 - Shows workspaces, clock, battery, app name
-
-### **borders/** → Symlink to `~/code/omarchy4mac/borders`
-- Active window borders
-- Visual window focus indicator
 
 ---
 

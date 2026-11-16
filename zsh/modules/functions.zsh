@@ -2,7 +2,6 @@
 # Editor and config shortcuts
 
 # Config editors (already in config.zsh, removing duplicates)
-# open-nvim-init() and open-ghostty() removed - use config.zsh versions
 
 # App-specific reloads
 # Quick entry points

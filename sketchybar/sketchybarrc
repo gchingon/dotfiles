@@ -126,7 +126,7 @@ sketchybar --add item updates center \
                  drawing=off \
                  update_freq=21600 \
                  script="$PLUGIN_DIR/updates.sh" \
-                 click_script="open -na Ghostty --args -e $HOME/.local/bin/omarchy-tui sh -c 'brew update && brew upgrade'" \
+                 click_script="open -na kitty --args $HOME/.local/bin/omarchy-tui sh -c 'brew update && brew upgrade'" \
            --subscribe updates system_woke display_change
 
 # Current theme name — label re-reads on every `sketchybar --reload`, which the
@@ -228,7 +228,7 @@ sketchybar --add item agents right \
                  drawing=off \
                  update_freq=900 \
                  script="$PLUGIN_DIR/agents.sh" \
-                 click_script="open -na Ghostty --args -e $HOME/.local/bin/omarchy-tui bunx ccusage daily"
+                 click_script="open -na kitty --args $HOME/.local/bin/omarchy-tui bunx ccusage daily"
 
 # ---------- Force first run ----------
 sketchybar --update

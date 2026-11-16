@@ -7,7 +7,7 @@
   ],
   "trustedformulae": [
     "asmvik/formulae/yabai",
-    "felixkratz/formulae/borders"
+    "openclaw/tap/goplaces"
   ],
   "trustedcasks": [
     "lab421/tap/forel"

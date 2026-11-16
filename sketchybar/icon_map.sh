@@ -549,9 +549,6 @@ function __icon_map() {
    "Gemini" | "Google Gemini")
         icon_result=":gemini:"
         ;;
-   "Ghostty")
-        icon_result=":ghostty:"
-        ;;
    "GIMP")
         icon_result=":gimp:"
         ;;

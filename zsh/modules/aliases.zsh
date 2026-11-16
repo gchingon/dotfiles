@@ -24,39 +24,39 @@ alias tn='theme'                          # Cycle or run theme with default beha
 alias tl='theme --list'                   # List available themes; source: theme alias above
 alias tc='theme'                          # Show current theme (no args prints current + list); source: theme alias above
 alias ytv='ytd video'                     # Download video format via ytd helper; source: ytd -- ~/.local/bin/ytd
-alias dots='dots-sync'                    # Run dotfiles sync helper; source: dots-sync() -- /Users/schingon/.config/zsh/modules/functions.zsh
+alias dots='dots-sync'                    # Run dotfiles sync helper; source: dots-sync() -- /Users/salvajechingon/.config/zsh/modules/functions.zsh
 alias d4d='defaults delete com.charliemonroe.Downie-4'
 alias dl='dly -l'
 
 # ===== Git and Sync Aliases =====
 alias g='git'                             # Short alias for git; source: git -- CLI tool
-alias gac='git-add-commit-push'           # Stage, commit, and push current repo; source: git-add-commit-push() -- /Users/schingon/.config/zsh/modules/git.zsh
+alias gac='git-add-commit-push'           # Stage, commit, and push current repo; source: git-add-commit-push() -- /Users/salvajechingon/.config/zsh/modules/git.zsh
 alias gfh='git fetch'                     # Fetch from current git remote; source: git -- CLI tool
-alias gpl='git-pull'                      # Pull current branch with rebase; source: git-pull() -- /Users/schingon/.config/zsh/modules/git.zsh
-alias gph='git-push'                      # Push current branch; source: git-push() -- /Users/schingon/.config/zsh/modules/git.zsh
+alias gpl='git-pull'                      # Pull current branch with rebase; source: git-pull() -- /Users/salvajechingon/.config/zsh/modules/git.zsh
+alias gph='git-push'                      # Push current branch; source: git-push() -- /Users/salvajechingon/.config/zsh/modules/git.zsh
 alias gst='git status'                    # Show git working tree status; source: git -- CLI tool
-alias notesync='$RX/repo-sync-peers.sh notes' # Direct-push notes repo to peer working trees; source: repo-sync-peers.sh -- /Users/schingon/.config/rx/repo-sync-peers.sh
-alias podsync='$RX/repo-sync-peers.sh pod-content' # Direct-push pod-content repo to peer working trees; source: repo-sync-peers.sh -- /Users/schingon/.config/rx/repo-sync-peers.sh
-alias cfs='confsync'                      # Sync ~/.config via origin then direct-push peers; source: confsync() -- /Users/schingon/.config/zsh/modules/sync.zsh
-alias cts='cryptsync'                     # Sync crypt / agent vault repo; source: cryptsync() -- /Users/schingon/.config/zsh/modules/agent_vault.zsh
+alias notesync='$RX/repo-sync-peers.sh notes' # Direct-push notes repo to peer working trees; source: repo-sync-peers.sh -- /Users/salvajechingon/.config/rx/repo-sync-peers.sh
+alias podsync='$RX/repo-sync-peers.sh pod-content' # Direct-push pod-content repo to peer working trees; source: repo-sync-peers.sh -- /Users/salvajechingon/.config/rx/repo-sync-peers.sh
+alias cfs='confsync'                      # Sync ~/.config via origin then direct-push peers; source: confsync() -- /Users/salvajechingon/.config/zsh/modules/sync.zsh
+alias cts='cryptsync'                     # Sync crypt / agent vault repo; source: cryptsync() -- /Users/salvajechingon/.config/zsh/modules/agent_vault.zsh
 alias nts='notesync'                      # Short alias for notes peer sync; source: notesync alias above
 alias pds='podsync'                       # Short alias for pod-content peer sync; source: podsync alias above
 
 # ===== Agent / Vault Aliases =====
-alias av='cd "$AGENT_VAULT_PATH"'         # Enter the agent vault repo; source: AGENT_VAULT_PATH env -- /Users/schingon/.config/agent-vault.env
-alias crypt='cd "$AGENT_VAULT_PATH"'      # Enter the crypt repo; source: AGENT_VAULT_PATH env -- /Users/schingon/.config/agent-vault.env
-alias avi='agent-vault-init'              # Initialize the agent vault repo; source: agent-vault-init -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-init.sh
-alias avs='agent-vault-status'            # Show agent vault status; source: agent-vault-status -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-status.sh
-alias avsync='agent-vault-sync'           # Sync agent vault with origin and peers; source: agent-vault-sync -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-sync.sh
-alias avc='agent-vault-checkpoint'        # Write a checkpoint and sync vault; source: agent-vault-checkpoint -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-checkpoint.sh
-alias avh='agent-vault-handoff'           # Create an agent handoff note; source: agent-vault-handoff -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-handoff.sh
-alias avm='agent-vault-monitor'           # Generate an agent vault monitor report; source: agent-vault-monitor -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-monitor.sh
-alias avb='agent-vault-memory-backup'     # Save memory backup note into vault; source: agent-vault-memory-backup -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-memory-backup.sh
-alias cryptstatus='agent-vault-status'    # Show crypt / vault status; source: agent-vault-status -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-status.sh
-alias cryptcheck='agent-vault-checkpoint' # Checkpoint crypt / vault state; source: agent-vault-checkpoint -- ~/.local/bin -> /Users/schingon/.config/rx/agent-vault-checkpoint.sh
+alias av='cd "$AGENT_VAULT_PATH"'         # Enter the agent vault repo; source: AGENT_VAULT_PATH env -- /Users/salvajechingon/.config/agent-vault.env
+alias crypt='cd "$AGENT_VAULT_PATH"'      # Enter the crypt repo; source: AGENT_VAULT_PATH env -- /Users/salvajechingon/.config/agent-vault.env
+alias avi='agent-vault-init'              # Initialize the agent vault repo; source: agent-vault-init -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-init.sh
+alias avs='agent-vault-status'            # Show agent vault status; source: agent-vault-status -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-status.sh
+alias avsync='agent-vault-sync'           # Sync agent vault with origin and peers; source: agent-vault-sync -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-sync.sh
+alias avc='agent-vault-checkpoint'        # Write a checkpoint and sync vault; source: agent-vault-checkpoint -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-checkpoint.sh
+alias avh='agent-vault-handoff'           # Create an agent handoff note; source: agent-vault-handoff -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-handoff.sh
+alias avm='agent-vault-monitor'           # Generate an agent vault monitor report; source: agent-vault-monitor -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-monitor.sh
+alias avb='agent-vault-memory-backup'     # Save memory backup note into vault; source: agent-vault-memory-backup -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-memory-backup.sh
+alias cryptstatus='agent-vault-status'    # Show crypt / vault status; source: agent-vault-status -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-status.sh
+alias cryptcheck='agent-vault-checkpoint' # Checkpoint crypt / vault state; source: agent-vault-checkpoint -- ~/.local/bin -> /Users/salvajechingon/.config/rx/agent-vault-checkpoint.sh
 alias obs='obsidian'                      # Launch the Obsidian app; source: obsidian -- /Applications/Obsidian.app/Contents/MacOS/obsidian
-alias obsidian_search='vault_search'      # Search markdown content in the vault; source: vault_search() -- /Users/schingon/.config/zsh/modules/agent_vault.zsh
-alias vault_grep='vault_search'           # Short alias for vault search; source: vault_search() -- /Users/schingon/.config/zsh/modules/agent_vault.zsh
+alias obsidian_search='vault_search'      # Search markdown content in the vault; source: vault_search() -- /Users/salvajechingon/.config/zsh/modules/agent_vault.zsh
+alias vault_grep='vault_search'           # Short alias for vault search; source: vault_search() -- /Users/salvajechingon/.config/zsh/modules/agent_vault.zsh
 
 # ===== Hermes / Skills Aliases =====
 alias hsl='hermes sessions list'          # List Hermes sessions; source: hermes -- ~/.local/bin/hermes
@@ -70,20 +70,20 @@ alias skills-sync="python3 ${HOME}/.hermes/scripts/skill-adopt.py sync"   # Sync
 # ===== File Management Aliases =====
 alias d='fd -H -t f .DS_Store -X rm -frv' # Delete .DS_Store files recursively; source: fd -- brew formula / CLI tool, rm -- CLI tool
 alias f='fzf '                            # Launch fzf with room for arguments; source: fzf -- brew formula / CLI tool
-alias ft='fd-types'                       # List file extensions per directory; source: fd-types() -- /Users/schingon/.config/zsh/modules/file_management.zsh
+alias ft='fd-types'                       # List file extensions per directory; source: fd-types() -- /Users/salvajechingon/.config/zsh/modules/file_management.zsh
 alias mk='mkdir -pv'                      # Make directories verbosely with parents; source: mkdir -- CLI tool
-alias mio='move-iso'                      # Move ISO / DMG / PKG files to backup target; source: move-iso() -- /Users/schingon/.config/zsh/modules/file_management.zsh
+alias mio='move-iso'                      # Move ISO / DMG / PKG files to backup target; source: move-iso() -- /Users/salvajechingon/.config/zsh/modules/file_management.zsh
 alias mtt='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv $HOME/.Trash' # Empty mounted-volume and user trash; source: rm -- CLI tool
 alias rm='rm -rfv'                        # Remove recursively and verbosely; source: rm -- CLI tool
 alias srm='sudo rm -rfv'                  # Remove recursively with sudo; source: rm -- CLI tool
-alias mpx='move-pix'                      # Move image files to Pictures; source: move-pix() -- /Users/schingon/.config/zsh/modules/file_management.zsh
-alias rpx='rm-pix'                        # Remove image files from a directory; source: rm-pix() -- /Users/schingon/.config/zsh/modules/file_management.zsh
+alias mpx='move-pix'                      # Move image files to Pictures; source: move-pix() -- /Users/salvajechingon/.config/zsh/modules/file_management.zsh
+alias rpx='rm-pix'                        # Remove image files from a directory; source: rm-pix() -- /Users/salvajechingon/.config/zsh/modules/file_management.zsh
 alias rmst='rm *.srt'
 
 # ===== Blog / Notes / Transcript Aliases =====
-alias blog='$RX/blog.sh blog'             # Create or manage a blog post; source: blog.sh -- /Users/schingon/.config/rx/blog.sh
-alias epi='$RX/blog.sh epi'               # Create or manage an episode post; source: blog.sh -- /Users/schingon/.config/rx/blog.sh
-alias feat='$RX/blog.sh feat'             # Create or manage a feature post; source: blog.sh -- /Users/schingon/.config/rx/blog.sh
+alias blog='$RX/blog.sh blog'             # Create or manage a blog post; source: blog.sh -- /Users/salvajechingon/.config/rx/blog.sh
+alias epi='$RX/blog.sh epi'               # Create or manage an episode post; source: blog.sh -- /Users/salvajechingon/.config/rx/blog.sh
+alias feat='$RX/blog.sh feat'             # Create or manage a feature post; source: blog.sh -- /Users/salvajechingon/.config/rx/blog.sh
 alias vtm='tsp vtm'                       # Convert an existing VTT transcript; source: tsp -- ~/.local/bin/tsp
 alias stm='tsp stm'                       # Convert an existing SRT transcript; source: tsp -- ~/.local/bin/tsp
 alias cl='clear; ls'                      # Clear the screen and list current directory; source: clear -- shell builtin / CLI, ls alias below
@@ -99,24 +99,24 @@ alias w2b='clipops wcpcmd'                # Copy command and output as markdown 
 alias wob='clipops wcmd'                  # Copy command output as markdown block; source: clipops -- ~/.local/bin/clipops
 
 # ===== Image Management Aliases =====
-alias ffav='ffmpeg-remux-audio-video'     # Remux audio and video without re-encoding; source: ffmpeg-remux-audio-video() -- /Users/schingon/.config/zsh/modules/media.zsh
-alias 50p='imagemagick-resize-50'         # Resize an image to 50 percent; source: imagemagick-resize-50() -- /Users/schingon/.config/zsh/modules/imagemagick.zsh
-alias 500='imagemagick-resize-500'        # Resize an image to width 500; source: imagemagick-resize-500() -- /Users/schingon/.config/zsh/modules/imagemagick.zsh
-alias 720='imagemagick-resize-720'        # Resize an image to width 720; source: imagemagick-resize-720() -- /Users/schingon/.config/zsh/modules/imagemagick.zsh
-alias coltxt='pick-color-fill-text'       # Render colored text into an image; source: pick-color-fill-text() -- /Users/schingon/.config/zsh/modules/imagemagick.zsh
-alias shave='imagemagick-shave'           # Shave pixels from image edges; source: imagemagick-shave() -- /Users/schingon/.config/zsh/modules/imagemagick.zsh
-alias ytt='youtube-thumbnail'             # Generate a YouTube thumbnail image; source: youtube-thumbnail() -- /Users/schingon/.config/zsh/modules/imagemagick.zsh
+alias ffav='ffmpeg-remux-audio-video'     # Remux audio and video without re-encoding; source: ffmpeg-remux-audio-video() -- /Users/salvajechingon/.config/zsh/modules/media.zsh
+alias 50p='imagemagick-resize-50'         # Resize an image to 50 percent; source: imagemagick-resize-50() -- /Users/salvajechingon/.config/zsh/modules/imagemagick.zsh
+alias 500='imagemagick-resize-500'        # Resize an image to width 500; source: imagemagick-resize-500() -- /Users/salvajechingon/.config/zsh/modules/imagemagick.zsh
+alias 720='imagemagick-resize-720'        # Resize an image to width 720; source: imagemagick-resize-720() -- /Users/salvajechingon/.config/zsh/modules/imagemagick.zsh
+alias coltxt='pick-color-fill-text'       # Render colored text into an image; source: pick-color-fill-text() -- /Users/salvajechingon/.config/zsh/modules/imagemagick.zsh
+alias shave='imagemagick-shave'           # Shave pixels from image edges; source: imagemagick-shave() -- /Users/salvajechingon/.config/zsh/modules/imagemagick.zsh
+alias ytt='youtube-thumbnail'             # Generate a YouTube thumbnail image; source: youtube-thumbnail() -- /Users/salvajechingon/.config/zsh/modules/imagemagick.zsh
 
 # ===== Miscellaneous Aliases =====
 alias clock='tty-clock -B -C 5 -c'        # Show a big terminal clock; source: tty-clock -- brew formula / CLI tool
 alias or='open /Volumes/hold/ulto/'       # Open the ulto volume in Finder; source: open -- macOS CLI tool
 alias oss='open -a ScreenSaverEngine'     # Start the macOS screensaver; source: open -- macOS CLI tool
 alias res="rm $DZ/z*.zwc && source $HOME/.zshenv && szr"   # Reload zshenv then zshrc; source: source -- shell builtin, szr alias below
-alias szr='source-zshrc'                  # Re-source zsh config and compile zwc files; source: source-zshrc() -- /Users/schingon/.config/zsh/modules/config.zsh
+alias szr='source-zshrc'                  # Re-source zsh config and compile zwc files; source: source-zshrc() -- /Users/salvajechingon/.config/zsh/modules/config.zsh
 alias pag='ps aux | grep '                # Start a ps/grep process search; source: ps and grep -- CLI tools
 alias sl='sudo ls -la '                   # Run ls -la with sudo; source: ls -- CLI tool, sudo -- CLI tool
-alias ssh2='ssh-2mini'                    # SSH into 2mini with TERM fix; source: ssh-2mini() -- /Users/schingon/.config/zsh/modules/functions.zsh
-alias ssh4='ssh-4mini'                    # SSH into 4mini with TERM fix; source: ssh-4mini() -- /Users/schingon/.config/zsh/modules/functions.zsh
+alias ssh2='ssh-2mini'                    # SSH into 2mini with TERM fix; source: ssh-2mini() -- /Users/salvajechingon/.config/zsh/modules/functions.zsh
+alias ssh4='ssh-4mini'                    # SSH into 4mini with TERM fix; source: ssh-4mini() -- /Users/salvajechingon/.config/zsh/modules/functions.zsh
 
 # ===== eza Aliases =====
 alias ls='eza --color=always --icons --git'      # List files with icons and git status; source: eza -- brew formula / CLI tool
@@ -147,26 +147,26 @@ alias bs='brew search '                   # Search Homebrew formulas and casks; 
 # ===== Neovim / Editor Aliases =====
 alias n='nvim'                            # Open Neovim; source: nvim -- CLI tool
 alias dly='daily'                         # Open today's daily note; source: daily -- ~/.local/bin/daily
-alias daws='$RX/aws-daily-notes.sh'        # Open or create an AWS daily note; source: aws-daily-notes.sh -- /Users/schingon/.config/rx/aws-daily-notes.sh
+alias daws='$RX/aws-daily-notes.sh'        # Open or create an AWS daily note; source: aws-daily-notes.sh -- /Users/salvajechingon/.config/rx/aws-daily-notes.sh
 alias pdi='podidea'                       # Open or create pod-content idea note; source: podidea -- ~/.local/bin/podidea
-alias va='open-aliases'                   # Edit aliases.zsh; source: open-aliases() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias nd='dreams_md_shortcut'             # Append a dream note skeleton; source: dreams_md_shortcut() -- /Users/schingon/.config/zsh/modules/functions.zsh
-alias nf='open-functions'                 # Edit functions.zsh; source: open-functions() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias nm='open-nvim-init'                 # Edit Neovim init.lua; source: open-nvim-init() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias ns='open-secrets'                   # Edit a plaintext temp copy in Neovim, then encrypt on exit; source: open-secrets() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias nz='open-zshrc'                     # Edit zshrc; source: open-zshrc() -- /Users/schingon/.config/zsh/modules/config.zsh
-alias nh='open-zsh-history'               # Edit zsh history; source: open-zsh-history() -- /Users/schingon/.config/zsh/modules/config.zsh
+alias va='open-aliases'                   # Edit aliases.zsh; source: open-aliases() -- /Users/salvajechingon/.config/zsh/modules/config.zsh
+alias nd='dreams_md_shortcut'             # Append a dream note skeleton; source: dreams_md_shortcut() -- /Users/salvajechingon/.config/zsh/modules/functions.zsh
+alias nf='open-functions'                 # Edit functions.zsh; source: open-functions() -- /Users/salvajechingon/.config/zsh/modules/config.zsh
+alias nm='open-nvim-init'                 # Edit Neovim init.lua; source: open-nvim-init() -- /Users/salvajechingon/.config/zsh/modules/config.zsh
+alias ns='open-secrets'                   # Edit a plaintext temp copy in Neovim, then encrypt on exit; source: open-secrets() -- /Users/salvajechingon/.config/zsh/modules/config.zsh
+alias nz='open-zshrc'                     # Edit zshrc; source: open-zshrc() -- /Users/salvajechingon/.config/zsh/modules/config.zsh
+alias nh='open-zsh-history'               # Edit zsh history; source: open-zsh-history() -- /Users/salvajechingon/.config/zsh/modules/config.zsh
 
 # ===== Rclone Aliases =====
-alias rccl='rclone-copy-large'            # Copy with rclone large-file profile; source: rclone-copy-large() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rccs='rclone-copy'                  # Copy with rclone small-file profile; source: rclone-copy() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcml='rclone-move-large'            # Move with rclone large-file profile; source: rclone-move-large() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcms='rclone-move'                  # Move with rclone small-file profile; source: rclone-move() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcsl='rclone-sync-large'            # Sync with rclone large-file profile; source: rclone-sync-large() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcss='rclone-sync'                  # Sync with rclone small-file profile; source: rclone-sync() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcdn='rclone-dedupe-new'            # Dedupe with rclone, keep newest; source: rclone-dedupe-new() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcdo='rclone-dedupe-old'            # Dedupe with rclone, keep oldest; source: rclone-dedupe-old() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcm='rclone-move'                   # Move files with rclone; source: rclone-move() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rcc='rclone-copy'                   # Copy files with rclone; source: rclone-copy() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rdo='rclone-dedupe-old'             # Dedupe and keep oldest; source: rclone-dedupe-old() -- /Users/schingon/.config/zsh/modules/rclone.zsh
-alias rdn='rclone-dedupe-new'             # Dedupe and keep newest; source: rclone-dedupe-new() -- /Users/schingon/.config/zsh/modules/rclone.zsh
+alias rccl='rclone-copy-large'            # Copy with rclone large-file profile; source: rclone-copy-large() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rccs='rclone-copy'                  # Copy with rclone small-file profile; source: rclone-copy() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcml='rclone-move-large'            # Move with rclone large-file profile; source: rclone-move-large() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcms='rclone-move'                  # Move with rclone small-file profile; source: rclone-move() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcsl='rclone-sync-large'            # Sync with rclone large-file profile; source: rclone-sync-large() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcss='rclone-sync'                  # Sync with rclone small-file profile; source: rclone-sync() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcdn='rclone-dedupe-new'            # Dedupe with rclone, keep newest; source: rclone-dedupe-new() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcdo='rclone-dedupe-old'            # Dedupe with rclone, keep oldest; source: rclone-dedupe-old() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcm='rclone-move'                   # Move files with rclone; source: rclone-move() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rcc='rclone-copy'                   # Copy files with rclone; source: rclone-copy() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rdo='rclone-dedupe-old'             # Dedupe and keep oldest; source: rclone-dedupe-old() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh
+alias rdn='rclone-dedupe-new'             # Dedupe and keep newest; source: rclone-dedupe-new() -- /Users/salvajechingon/.config/zsh/modules/rclone.zsh

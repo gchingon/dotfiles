@@ -4,6 +4,9 @@
 [[ -f "$HOME/.config/machine.env" ]] && source "$HOME/.config/machine.env"
 PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
+# Repo root (same on every machine)
+export RP="$HOME/code"
+
 # Base directories
 export XDG_CONFIG_HOME="$HOME/.config"
 export CF="$XDG_CONFIG_HOME"
@@ -17,24 +20,15 @@ export NV="$CF/nvim"        # Real Neovim repo
 export RX="$CF/rx"          # shortcut to global scripts
 export KN="$CF/kanata"
 export KT="$CF/kitty"
+export DJ="$DX/jackpot-dx"
+export PJ="$HOME/Pictures/jackpot-px"
 
-case "$(hostname)" in
-  2mini*)
-    export RP="$DX/2mepos"
-    ;;
-  4mini*)
-    export RP="$DX/repos"
-    ;;
-  mbp*|Mac*)
-    export RP="$HOME/code"
-    ;;
-esac
-
+# Repos
 export URL="$RP/sites"
 export SCS="$RP/sucias"
 export WC="$RP/widows-club"
 export POD="$RP/pod-content"   # podcast stuff
-export NT="$RP/notes"     # git repo for notes
+export NT="$RP/notes"          # git repo for notes
 export VT="$RP/crypt"
 export RW="$NT/raw"
 export CT="$RW"

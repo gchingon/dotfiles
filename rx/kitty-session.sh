@@ -17,7 +17,7 @@
 
 SESSION_NAME="${1:?Usage: kitty-session.sh <session-name>}"
 
-REAL_HOME="/Users/schingon"
+REAL_HOME="/Users/salvajechingon"
 SESSIONS_DIR="$REAL_HOME/.config/kitty/sessions"
 SESSION_FILE="$SESSIONS_DIR/${SESSION_NAME}.kitty-session"
 KITTEN="/Applications/kitty.app/Contents/MacOS/kitten"

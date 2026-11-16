@@ -6,7 +6,7 @@
     ;; Direct Finder empty-trash (native confirm dialog) — was a Raycast
     ;; deeplink, but that just opened Raycast without actually running the
     ;; extension reliably.
-    mtrsh (cmd zsh -lc "/Users/schingon/.config/rx/system-toggle.sh trash")
+    mtrsh (cmd zsh -lc "/Users/salvajechingon/.config/rx/system-toggle.sh trash")
   )
 )
 (platform (linux)

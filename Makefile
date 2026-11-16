@@ -84,3 +84,8 @@ link-scripts:
 	@echo "✓ Symlinks created in ~/.local/bin/"
 
 .DEFAULT_GOAL := help
+
+bootstrap:
+	@$(HOME)/.config/setup.sh
+
+.PHONY: bootstrap

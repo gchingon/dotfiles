@@ -15,15 +15,15 @@
 
 (platform (macos)
   (defalias
-    gt-dots  (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-dots")
-    gt-repos (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-repos")
-    gt-docs  (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-docs")
-    gt-notes (cmd zsh -lc "/Users/schingon/.config/rx/kitty-session.sh nvim-notes")
+    gt-dots  (cmd zsh -lc "/Users/salvajechingon/.config/rx/kitty-session.sh nvim-dots")
+    gt-repos (cmd zsh -lc "/Users/salvajechingon/.config/rx/kitty-session.sh nvim-repos")
+    gt-docs  (cmd zsh -lc "/Users/salvajechingon/.config/rx/kitty-session.sh nvim-docs")
+    gt-notes (cmd zsh -lc "/Users/salvajechingon/.config/rx/kitty-session.sh nvim-notes")
 
-    obs-dots  (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh dots")
-    obs-repos (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh repos")
-    obs-docs  (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh docs")
-    obs-notes (cmd zsh -lc "/Users/schingon/.config/rx/obsidian-open.sh notes")
+    obs-dots  (cmd zsh -lc "/Users/salvajechingon/.config/rx/obsidian-open.sh dots")
+    obs-repos (cmd zsh -lc "/Users/salvajechingon/.config/rx/obsidian-open.sh repos")
+    obs-docs  (cmd zsh -lc "/Users/salvajechingon/.config/rx/obsidian-open.sh docs")
+    obs-notes (cmd zsh -lc "/Users/salvajechingon/.config/rx/obsidian-open.sh notes")
   )
 )
 

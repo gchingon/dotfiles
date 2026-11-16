@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 #
-# theme — unified theme switcher for Ghostty + Neovim (LazyVim),
+# theme — unified theme switcher for kitty, Neovim (LazyVim), btop, Claude Code,
+#         Obsidian, Hermes and SketchyBar,
 #         driven by Omarchy's own theme definitions.
 #
 # Usage:
 #   theme                 show current theme + list installed
 #   theme <name>          switch to <name>
-#   theme random          switch to a random theme matching the current
-#                         macOS appearance (light system → light themes only,
-#                         dark system → dark themes only); never repicks current
+#   theme random          switch to a random DARK theme (this setup is always dark;
+#                         macOS light/dark is never consulted); never repicks current
 #   theme -l | --list     list installed themes
-#   theme --mode          print current macOS appearance: light | dark
+#   theme --mode          always prints: dark
 #   theme --appearance    print the light/dark appearance of the current theme
 #                         (or of [name], if given)
 #   theme -s | --sync     download / refresh all themes from the Omarchy repo
 #   theme --seed-custom   (re)build your own themes from ~/.config/theme-switcher/custom/
 #                         (colors.toml per theme) into the cache, + wallpapers
-#   theme --no-reload <n> switch without trying to live-reload Ghostty
+#   theme --no-reload <n> switch without trying to live-reload kitty/nvim/btop
 #
 # `--sync` pulls every theme from github.com/omacom/omarchy (quattro), renders
-# Ghostty, btop, and neovim from Omarchy's own templates, and fetches each
+# btop, claude, obsidian and neovim from Omarchy's own templates, and fetches each
 # theme's backgrounds into ~/Pictures/Wallpapers. Switching is then offline.
 
 set -euo pipefail
@@ -35,14 +35,14 @@ fi
 
 # Omarchy 4 (Quattro): the repo moved to omacom/omarchy, default branch
 # quattro. A theme ships colors.toml (24 named colours, plus mode), an
-# optional neovim.lua, and backgrounds/. btop, ghostty, and a fallback
+# optional neovim.lua, and backgrounds/. btop, claude, obsidian, and a fallback
 # neovim spec are rendered from default/themed/*.tpl, the same templates
 # Omarchy renders at theme-set time.
 REPO="omacom/omarchy"
 REF="${OMARCHY_REF:-quattro}"         # set OMARCHY_REF=master for the 3.x layout (unsupported)
 RAW="https://raw.githubusercontent.com/$REPO/$REF"
 API="https://api.github.com/repos/$REPO/contents"
-TEMPLATES=(btop.theme.tpl ghostty.conf.tpl neovim.lua.tpl claude.json.tpl obsidian.css.tpl)
+TEMPLATES=(btop.theme.tpl neovim.lua.tpl claude.json.tpl obsidian.css.tpl)
 
 CACHE="$HOME/.config/theme-switcher/cache"      # cache/<name>/{colors.toml,neovim.lua,btop.theme,claude.json,obsidian.css}
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
@@ -56,29 +56,7 @@ BTOP_THEMES_DIR="$HOME/.config/btop/themes"
 BTOP_CONFIG="$HOME/.config/btop/btop.conf"
 SKETCHYBAR_COLORS="$HOME/.config/sketchybar/colors.sh"
 KITTY_CONFIG="$HOME/.config/kitty/theme.conf"
-BORDERS_CONFIG="$HOME/.config/borders/bordersrc"
 
-# Ghostty reads BOTH the macOS app-support config and the XDG config, with the
-# app-support one loaded last (it wins). Edit whichever actually takes effect.
-GHOSTTY_MAC="$HOME/Library/Application Support/com.mitchellh.ghostty"
-GHOSTTY_XDG="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty"
-
-# every ghostty config Ghostty might read. We keep the `theme =` line in sync in
-# ALL of them so it doesn't matter which one wins precedence — they all agree.
-# (Ghostty loads both the macOS app-support config and the XDG config; which one
-# wins has bitten us before, so we stop betting on it.)
-ghostty_configs() {
-  local found=0
-  [[ -f "$GHOSTTY_MAC/config" ]] && { echo "$GHOSTTY_MAC/config"; found=1; }
-  [[ -f "$GHOSTTY_XDG/config" ]] && { echo "$GHOSTTY_XDG/config"; found=1; }
-  # nothing exists yet → default to the macOS app-support path
-  [[ "$found" -eq 1 ]] || echo "$GHOSTTY_MAC/config"
-}
-# all themes/ dirs Ghostty might search — write generated theme files to each
-ghostty_theme_dirs() {
-  [[ -d "$GHOSTTY_MAC" ]] && echo "$GHOSTTY_MAC/themes"
-  echo "$GHOSTTY_XDG/themes"
-}
 
 c_bold=$'\033[1m'; c_dim=$'\033[2m'; c_grn=$'\033[32m'; c_red=$'\033[31m'; c_yel=$'\033[33m'; c_rst=$'\033[0m'
 die() { echo "${c_red}error:${c_rst} $*" >&2; exit 1; }
@@ -187,17 +165,9 @@ installed_themes() {
 
 current_theme() { [[ -f "$STATE" ]] && cat "$STATE" || echo "(none)"; }
 
-system_appearance() {
-  # Ask the live session via System Events — `defaults read` can serve a stale
-  # cfprefsd view in some process contexts (observed lying in a shell session).
-  local dm
-  dm="$(osascript -e 'tell application "System Events" to tell appearance preferences to get dark mode' 2>/dev/null)"
-  case "$dm" in
-    true)  echo dark ;;
-    false) echo light ;;
-    *)     [[ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" == *Dark* ]] && echo dark || echo light ;;
-  esac
-}
+# This setup is dark-only: never ask macOS (System Events would also pop an
+# Automation permission prompt). setup.sh sets the system to dark once.
+system_appearance() { echo dark; }
 
 # light/dark from the theme's `mode` key (v4), else background luminance
 theme_appearance() {
@@ -212,8 +182,6 @@ theme_appearance() {
 }
 
 pick_random_theme() {
-  # optional $1 forces the mode — used by theme-appearance-watch, which has
-  # already detected the flip (re-detecting here races the OS transition)
   local want cur t pool=()
   want="${1:-$(system_appearance)}"
   cur="$(current_theme)"
@@ -261,7 +229,6 @@ sync_themes() {
   sync_templates
 
   mkdir -p "$CACHE"
-  local d; while IFS= read -r d; do mkdir -p "$d"; done < <(ghostty_theme_dirs)
   local n got=0 skipped=0
   while IFS= read -r n; do
     [[ -n "$n" ]] || continue
@@ -281,20 +248,15 @@ sync_themes() {
       || { nvim="$(render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/neovim.lua.tpl")"; nvim_src="aether"; }
     printf '%s\n' "$nvim" > "$CACHE/$n/neovim.lua"
 
-    # btop + ghostty from the templates
+    # btop, claude, obsidian from the templates (kitty renders at switch time)
     render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/btop.theme.tpl" > "$CACHE/$n/btop.theme"
     render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/claude.json.tpl" > "$CACHE/$n/claude.json"
     render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/obsidian.css.tpl" > "$CACHE/$n/obsidian.css"
     mkdir -p "$BTOP_THEMES_DIR"
     cp "$CACHE/$n/btop.theme" "$BTOP_THEMES_DIR/omarchy-$n.theme"
-    local td
-    while IFS= read -r td; do
-      { echo "# Omarchy theme '$n' — generated by \`theme --sync\`. Do not edit."
-        render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/ghostty.conf.tpl"; } > "$td/omarchy-$n"
-    done < <(ghostty_theme_dirs)
 
     local bgs; bgs="$(sync_backgrounds "$n")"
-    printf '  %s%-18s%s ghostty✓ btop✓ claude✓ obsidian✓ nvim✓(%s)%s\n' "$c_dim" "$n" "$c_rst" "$nvim_src" \
+    printf '  %s%-18s%s btop✓ kitty✓ claude✓ obsidian✓ hermes✓ nvim✓(%s)%s\n' "$c_dim" "$n" "$c_rst" "$nvim_src" \
       "$([[ "${bgs:-0}" -gt 0 ]] && echo " +$bgs wallpapers" || echo "")"
     got=$((got+1))
   done <<< "$names"
@@ -304,21 +266,16 @@ sync_themes() {
 }
 
 # Render every artifact for a theme whose colors.toml is already in $CACHE/<n>:
-# nvim (Omarchy's aether template), btop, claude, obsidian, ghostty. This is
+# nvim (Omarchy's aether template), btop, claude, obsidian. This is
 # what sync_themes does per remote theme; custom themes have no remote copy.
 render_artifacts() {
-  local n="$1" td
+  local n="$1"
   [[ -f "$TPL_CACHE/neovim.lua.tpl" ]] || sync_templates
   render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/neovim.lua.tpl"   > "$CACHE/$n/neovim.lua"
   render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/btop.theme.tpl"   > "$CACHE/$n/btop.theme"
   render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/claude.json.tpl"  > "$CACHE/$n/claude.json"
   render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/obsidian.css.tpl" > "$CACHE/$n/obsidian.css"
   mkdir -p "$BTOP_THEMES_DIR"; cp "$CACHE/$n/btop.theme" "$BTOP_THEMES_DIR/omarchy-$n.theme"
-  while IFS= read -r td; do
-    mkdir -p "$td"
-    { echo "# Omarchy theme '$n' — generated locally (custom). Do not edit."
-      render_template "$CACHE/$n/colors.toml" "$TPL_CACHE/ghostty.conf.tpl"; } > "$td/omarchy-$n"
-  done < <(ghostty_theme_dirs)
 }
 
 # Your own palettes (theme-switcher/custom/<name>/colors.toml) -> cache + all
@@ -331,7 +288,7 @@ seed_custom_themes() {
     n="$(basename "$d")"
     mkdir -p "$CACHE/$n"; cp "$d/colors.toml" "$CACHE/$n/colors.toml"
     render_artifacts "$n"
-    printf '  %s%-18s%s btop✓ ghostty✓ claude✓ obsidian✓ nvim✓(aether)\n' "$c_dim" "$n" "$c_rst"
+    printf '  %s%-18s%s btop✓ kitty✓ claude✓ obsidian✓ hermes✓ nvim✓(aether)\n' "$c_dim" "$n" "$c_rst"
     count=$((count+1))
   done
   local wp="$HOME/.config/theme-switcher/make-wallpapers.py"
@@ -347,58 +304,6 @@ list_themes() {
     if [[ "$t" == "$cur" ]]; then echo "  ${c_grn}* $t${c_rst}"; else echo "    $t"; fi
   done < <(installed_themes)
   if [[ "$any" -eq 0 ]]; then echo "  ${c_dim}(none yet — run: theme --sync)${c_rst}"; fi
-}
-
-apply_ghostty() {
-  local name="$1" cfg
-  [[ -d "$CACHE/$name" ]] || die "theme '$name' not synced; run: theme --sync"
-  while IFS= read -r cfg; do
-    mkdir -p "$(dirname "$cfg")"
-    if [[ -f "$cfg" ]] && grep -qE '^[[:space:]]*theme[[:space:]]*=' "$cfg"; then
-      # /g so any duplicate theme lines are ALL rewritten — a stale one further
-      # down the file would otherwise win and silently pin the old theme.
-      GT="omarchy-$name" perl -0pi -e 's/^[ \t]*theme[ \t]*=.*$/theme = $ENV{GT}/mg' "$cfg"
-    else
-      printf '\ntheme = omarchy-%s\n' "$name" >> "$cfg"
-    fi
-    echo "  ${c_dim}ghostty${c_rst}  → omarchy-$name  ${c_dim}(${cfg/#$HOME/~})${c_rst}"
-  done < <(ghostty_configs)
-}
-
-reload_ghostty() {
-  # Ghostty has no reload CLI/signal. We drive its "Reload Configuration" menu
-  # item via AppleScript — clicking the menu item is far more reliable than
-  # synthesising the ⌘⇧, keybind (a shifted-comma keystroke frequently doesn't
-  # register as the bind). Keystroke is kept as a fallback. Both need
-  # Accessibility permission; if neither works we tell the user to do it by hand.
-  local out
-  out="$(osascript 2>&1 <<'EOF' || true
-tell application "System Events"
-  if not (exists process "ghostty") then return "noproc"
-  tell process "ghostty"
-    set frontmost to true
-    delay 0.2
-    -- preferred: click the actual menu item
-    try
-      click menu item "Reload Configuration" of menu 1 of menu bar item "Ghostty" of menu bar 1
-      return "menu"
-    end try
-    -- fallback: fire the reload_config keybind
-    keystroke "," using {command down, shift down}
-    return "key"
-  end tell
-end tell
-EOF
-)"
-  case "$out" in
-    menu) echo "  ${c_dim}ghostty${c_rst}  ↻ reloaded (menu)" ;;
-    key)  echo "  ${c_dim}ghostty${c_rst}  ↻ reloaded (keybind)" ;;
-    *)
-      echo "  ${c_yel}ghostty${c_rst}  use ${c_bold}Ghostty → Reload Configuration${c_rst} (or ${c_bold}⌘⇧,${c_rst}) to reload this window"
-      echo "          ${c_dim}(grant Ghostty Accessibility perm to auto-reload: System Settings → Privacy & Security → Accessibility)${c_rst}"
-      notify "Ghostty did not reload — press ⌘⇧, in Ghostty"
-      ;;
-  esac
 }
 
 apply_nvim() {
@@ -563,23 +468,9 @@ reload_kitty() {
   fi
 }
 
-# borders.tpl is also local-only, same reasoning as kitty.conf.tpl above.
-apply_borders() {
-  local name="$1" src="$CACHE/$1/colors.toml" tpl="$TPL_CACHE/borders.tpl"
-  [[ -f "$src" && -f "$tpl" && -f "$BORDERS_CONFIG" ]] || return 0
-  render_template "$src" "$tpl" > "$BORDERS_CONFIG"
-  chmod +x "$BORDERS_CONFIG"
-  echo "  ${c_dim}borders${c_rst}  → colors regenerated"
-}
-
-reload_borders() {
-  pgrep -x borders >/dev/null 2>&1 || return 0
-  brew services restart borders >/dev/null 2>&1 && echo "  ${c_dim}borders${c_rst}  ↻ reloaded"
-}
-
 # Hermes (the CLI agent): its skin paints its own colors and ignores the
-# terminal palette, so a dark-built skin is unreadable on a light Ghostty.
-# Light theme -> the `daylight` skin, dark -> `default`. New sessions pick it up.
+# terminal palette. Hermes IS themable: dark -> the `default` skin, and a light
+# theme (if you ever add one) -> `daylight`. Running sessions pick it up live.
 apply_hermes() {
   # Resolve hermes by path too: launchd and app-launched shells often lack
   # ~/.local/bin on PATH, and a silent skip here leaves every session stale.
@@ -709,8 +600,8 @@ fi
 
 name="${args[0]}"
 if [[ "$name" == "random" && ! -d "$CACHE/random" ]]; then
-  # `theme random [light|dark]` — mode arg wins, else detect once
-  want="${args[1]:-$(system_appearance)}"
+  # always dark (see system_appearance)
+  want=dark
   name="$(pick_random_theme "$want")"
   echo "${c_dim}random pick ($want mode):${c_rst} ${c_bold}$name${c_rst}"
 fi
@@ -739,12 +630,10 @@ fi
 trap 'rm -rf "$LOCK"' EXIT
 
 echo "${c_bold}Switching to ${c_grn}$name${c_rst}${c_bold}:${c_rst}"
-apply_ghostty "$name"
 apply_nvim "$name"
 apply_btop "$name"
 apply_sketchybar "$name"
 apply_kitty "$name"
-apply_borders "$name"
 apply_claude "$name"
 apply_hermes "$name"
 apply_obsidian "$name"
@@ -752,11 +641,10 @@ apply_wallpaper "$name"
 mkdir -p "$(dirname "$STATE")"; echo "$name" > "$STATE"
 
 if [[ "$do_reload" -eq 1 ]]; then
-  reload_ghostty
   reload_nvim "$(colorscheme_of "$CACHE/$name/neovim.lua")"
   reload_btop
   reload_sketchybar
   reload_kitty
 fi
-echo "${c_grn}done.${c_rst} ${c_dim}New Ghostty windows + nvim sessions + btop launches use $name immediately.${c_rst}"
+echo "${c_grn}done.${c_rst} ${c_dim}New kitty windows + nvim sessions + btop launches use $name immediately.${c_rst}"
 notify "Switched to $name"

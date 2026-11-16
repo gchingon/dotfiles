@@ -306,8 +306,8 @@ local function sh(cmd) return function() hs.execute(cmd, true) end end
 local function app(name) return function() hs.application.launchOrFocus(name) end end
 local function url(u) return sh("open '" .. u .. "'") end
 local function settings(pane) return sh([[open "x-apple.systempreferences:]] .. pane .. [["]]) end
-local function ghostty(cmd) return sh([[open -na Ghostty --args -e "$HOME/.local/bin/omarchy-tui" sh -c ']] .. cmd .. [[']]) end
-local function nvimEdit(path) return sh([[open -na Ghostty --args -e nvim "]] .. path .. [["]]) end
+local function term(cmd) return sh([[open -na kitty --args "$HOME/.local/bin/omarchy-tui" sh -c ']] .. cmd .. [[']]) end
+local function nvimEdit(path) return sh([[open -na kitty --args nvim "]] .. path .. [["]]) end
 local function keystroke(code, mods)
   return sh([[osascript -e 'tell application "System Events" to key code ]] .. code .. [[ using {]] .. mods .. [[}']])
 end
@@ -366,7 +366,7 @@ local MENU = {
     { text = "Theme random", sub = "Shuffle within light/dark", action = sh("~/.local/bin/theme random") },
     { text = "Background", sub = "Next wallpaper for this theme", action = toast("omarchy-cycle-wallpaper") },
     { text = "Screensaver text", sub = "Edit the ASCII art", action = nvimEdit(os.getenv("HOME") .. "/.config/omarchy/branding/screensaver.txt") },
-    { text = "Sync themes", sub = "Pull Omarchy 4 themes", action = ghostty("~/.local/bin/theme --sync") },
+    { text = "Sync themes", sub = "Pull Omarchy 4 themes", action = term("~/.local/bin/theme --sync") },
     { text = "Appearance", sub = "macOS light / dark", action = settings("com.apple.Appearance-Settings.extension") },
   }},
   { text = "Setup", sub = "Configure the desktop", children = {
@@ -383,31 +383,30 @@ local MENU = {
       { text = "yabai", sub = "yabairc", action = nvimEdit(D .. "/yabai/yabairc") },
       { text = "SketchyBar", sub = "sketchybarrc", action = nvimEdit(D .. "/sketchybar/sketchybarrc") },
       { text = "Hammerspoon", sub = "init.lua", action = nvimEdit(D .. "/hammerspoon/init.lua") },
-      { text = "Ghostty", sub = "Application Support config", action = nvimEdit(os.getenv("HOME") .. "/Library/Application Support/com.mitchellh.ghostty/config") },
+      { text = "kitty", sub = "kitty.conf", action = nvimEdit(D .. "/kitty/kitty.conf") },
       { text = "Zsh", sub = "shell defaults", action = nvimEdit(ZSH) },
       { text = "Starship", sub = "starship.toml", action = nvimEdit(D .. "/starship.toml") },
     }},
   }},
   { text = "Install", sub = "Add software", children = {
-    { text = "Package", sub = "brew search in Ghostty", action = ghostty("read -p \"brew search: \" q && brew search \"$q\"") },
+    { text = "Package", sub = "brew search in kitty", action = term("read -p \"brew search: \" q && brew search \"$q\"") },
     { text = "Homebrew", sub = "brew.sh", action = url("https://brew.sh") },
     { text = "Omarchy themes", sub = "Community themes", action = url("https://omarchy.org/themes/") },
   }},
   { text = "Remove", sub = "Remove software", children = {
-    { text = "Package", sub = "brew uninstall in Ghostty", action = ghostty("brew list --cask; brew list --formula | column; read -p \"brew uninstall: \" q && brew uninstall \"$q\"") },
+    { text = "Package", sub = "brew uninstall in kitty", action = term("brew list --cask; brew list --formula | column; read -p \"brew uninstall: \" q && brew uninstall \"$q\"") },
   }},
   { text = "Update", sub = "Update software and configs", children = {
-    { text = "Homebrew", sub = "brew update && upgrade", action = ghostty("brew update && brew upgrade") },
+    { text = "Homebrew", sub = "brew update && upgrade", action = term("brew update && brew upgrade") },
     { text = "macOS", sub = "Software Update", action = settings("com.apple.Software-Update-Settings.extension") },
-    { text = "Themes", sub = "theme --sync", action = ghostty("~/.local/bin/theme --sync") },
+    { text = "Themes", sub = "theme --sync", action = term("~/.local/bin/theme --sync") },
     { text = "Config", sub = "Reload a service", children = {
       { text = "yabai", sub = "restart service", action = sh(os.getenv("HOME") .. "/.config/rx/yabai-restart.sh") },
       { text = "SketchyBar", sub = "--reload", action = sh("/opt/homebrew/bin/sketchybar --reload") },
       { text = "Hammerspoon", sub = "hs.reload()", action = function() hs.reload() end },
-      { text = "Borders", sub = "brew services restart", action = sh("/opt/homebrew/bin/brew services restart borders") },
     }},
   }},
-  { text = "About", sub = "fastfetch", action = ghostty("fastfetch") },
+  { text = "About", sub = "fastfetch", action = term("fastfetch") },
   { text = "System", sub = "Lock, sleep, restart, shut down", children = {
     { text = "Screensaver", sub = "Start it now", action = function() launchScreensaver(true) end },
     { text = "Lock", sub = "Lock screen", action = keystroke(12, "control down, command down") },
@@ -559,15 +558,14 @@ local apps = {
   { name = "Docker",           sub = "Containers",        action = function() hs.application.launchOrFocus("Docker") end },
   { name = "Figma",            sub = "Web · figma.com",   action = function() hs.execute("open https://figma.com") end },
   { name = "Finder",           sub = "Files",             action = function() hs.application.launchOrFocus("Finder") end },
-  { name = "Ghostty",          sub = "Terminal",          action = function() hs.execute("open -na Ghostty") end },
-  { name = "Ghostty + nvim",   sub = "Editor",            action = function() hs.execute("open -na Ghostty --args -e nvim") end },
+  { name = "kitty + nvim",      sub = "Editor",            action = function() hs.execute("open -na kitty --args nvim") end },
   { name = "GitHub",           sub = "Web · github.com",  action = function() hs.execute("open https://github.com") end },
   { name = "Google Contacts",  sub = "Web",               action = function() hs.execute("open https://contacts.google.com") end },
   { name = "Google Messages",  sub = "Brave web app",     action = function() hs.application.launchOrFocusByBundleID("com.brave.Browser.app.hpfldicfbfomlpcikngkocigghgafkph") end },
   { name = "Google Photos",    sub = "Web",               action = function() hs.execute("open https://photos.google.com") end },
   { name = "HEY (mail)",       sub = "Web",               action = function() hs.execute("open https://app.hey.com") end },
   { name = "HEY Calendar",     sub = "Web",               action = function() hs.execute("open https://app.hey.com/calendar") end },
-  { name = "Lazygit",          sub = "Ghostty + lazygit", action = function() hs.execute("open -na Ghostty --args -e lazygit") end },
+  { name = "Lazygit",          sub = "kitty + lazygit", action = function() hs.execute("open -na kitty --args lazygit") end },
   { name = "LocalSend",        sub = "Cross-device file share", action = function() hs.application.launchOrFocus("LocalSend") end },
   { name = "mpv",              sub = "Media player",      action = function() hs.application.launchOrFocus("mpv") end },
   { name = "OBS Studio",       sub = "brew install --cask obs", action = function() hs.application.launchOrFocus("OBS") end },
@@ -606,34 +604,3 @@ hs.allowAppleScript(true)
 
 -- Tell us the config reloaded
 hs.alert.show("Hammerspoon: keybindings ready (⌥K)")
-
--- Ghostty live reload. `theme` rewrites the Ghostty config, but Ghostty has no
--- reload signal and the theme-appearance listener (launchd) has no
--- Accessibility permission, so its AppleScript reload fails and open windows
--- keep the old colors. Hammerspoon has the permission: watch the config and
--- click Ghostty > Reload Configuration whenever it changes.
-local ghosttyConfigs = {
-  os.getenv("HOME") .. "/Library/Application Support/com.mitchellh.ghostty",
-  os.getenv("HOME") .. "/.config/ghostty",
-}
-local ghosttyReloadTimer
-local function reloadGhostty()
-  local app = hs.application.find("com.mitchellh.ghostty")
-  if not app then return end
-  if not app:selectMenuItem({ "Ghostty", "Reload Configuration" }) then
-    hs.eventtap.keyStroke({ "cmd", "shift" }, ",", 0, app)
-  end
-end
-GhosttyWatchers = {}
-for _, dir in ipairs(ghosttyConfigs) do
-  GhosttyWatchers[#GhosttyWatchers + 1] = hs.pathwatcher.new(dir, function(paths)
-    for _, p in ipairs(paths) do
-      if p:match("/config$") then
-        -- debounce: `theme` writes both configs within the same second
-        if ghosttyReloadTimer then ghosttyReloadTimer:stop() end
-        ghosttyReloadTimer = hs.timer.doAfter(0.5, reloadGhostty)
-        return
-      end
-    end
-  end):start()
-end
